@@ -81,25 +81,61 @@ class odom(Node):
         
         if self.is_imu ==False :    
             self.is_imu=True
-            print(Quaternion(msg.orientation))
-            #코타니언으로 변환
+
+            #처음 로봇이 바라보는 방향을 저장
             imu_q=msg.orientation
-            #처음 기계의 euler orientation을 얻기 위해 imu로 얻은 코타니언을 오일러 각으로 변환
-            self.imu_offset=Quaternion.to_euler(imu_q)[2]
+
+            #방향을 코타니언으로 변환. 이후 뺄것 임
+            self.imu_offset=Quaternion.to_euler(imu_q)
+            
+            #타임 텀을 측정하기 위한 변수
             self.prev_time= rclpy.clock.Clock().now()
 
+            #다임 텀별 평균 속도를 구하기 위한 변수
+            self.prev_imu_velocity_x = 0
+            self.prev_imu_velocity_y = 0
+
+
         else :
-            #각속도와 가속도를 시간으로 평균내기 위해 시간을 측정
-            self.prev_time= rclpy.clock.Clock().now()
-            self.period = (self.current_time-self.prev_time).nanoseconds/1000000000
-            #현재 기계의 코타니언을 방향을 휙득
+            #1. 시간 갱신            
+            self.current_time= rclpy.clock.Clock().now()
+            # 1-1 측정에 걸린 시간 간격 계산
+            self.period = ((self.current_time-self.prev_time).nanoseconds)/1000000000
+            # print("diff = {0}, nano = {1}, result = {2}".format(self.current_time-self.prev_time, (self.current_time-self.prev_time).nanoseconds, (self.current_time-self.prev_time).nanoseconds/1000000000))
+
+            # 1-2 현재 시간을 이전 시간으로 갱신
+            self.prev_time= self.current_time
             
-            imu_q= msg.orientation
-            #처음 기계의 방향과 지금 기계의 방향 사이의 각을 계산해 적용
-            #tan(theta)
-            self.theta=Quaternion.to_euler(imu_q)[2] - self.imu_offset;
-        print(self.theta)
-        time.sleep(1)
+
+            #2. imu로부터 얻은 각속도로 글로벌 좌표계의 theta 계산
+            #2-1 z축의 각속도(theta)
+            imu_angular_z = msg.angular_velocity.z
+            
+            #2-2 z축의 각속도(rad/sec) * 시간(sec) = 이동거리
+            #    http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Imu.html
+            self.theta += (imu_angular_z * self.period);
+
+            #!2-3 각도 360도를 넘었을때 처리를 해줘야할까?
+            #    https://www.google.com/search?q=360%EB%8F%84+%EB%9D%BC%EB%94%94%EC%95%88&sxsrf=AOaemvLHvEFx0Qq0GMbTm62Q3ezyEE8NLQ%3A1630564870742&ei=BnIwYZvlLIXx-QaDvpP4Cg&oq=360%EB%8F%84+%EB%9D%BC%EB%94%94%EC%95%88&gs_lcp=Cgdnd3Mtd2l6EAMyCggAEIAEEIcCEBQyBQgAEIAEMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB46BAgjECc6CAgAEIAEELEDOgQIABBDOgsIABCABBCxAxCDAUoECEEYAFCLGlj1KWCvKmgAcAB4AIAB-wKIAb8QkgEHMC43LjMuMZgBAKABAcABAQ&sclient=gws-wiz&ved=0ahUKEwibgJ2_19_yAhWFeN4KHQPfBK8Q4dUDCA4&uact=5
+            # print("angular_z = {0}, self.period = {1}, theta =  {2}".format(imu_angular_z, self.period, self.theta))
+
+
+            #3 x와 y값
+            #3-1 x축 y축 가속도
+            imu_accel_x = msg.linear_acceleration.x
+            imu_accel_y = msg.linear_acceleration.y
+
+            #3-2 x축 y축 현재 속도
+            imu_velocity_x = imu_accel_x * self.period
+            imu_velocity_y = imu_accel_y * self.period
+
+            #3-3 현재 속도와 이전 속도의 중간값으로 현재 x, y 좌표 계산
+            self.x+=(imu_velocity_x + self.prev_imu_velocity_x)/ 2
+            self.y+=(imu_velocity_y + self.prev_imu_velocity_y)/ 2
+
+            #3-4 이전 속도 갱신
+            self.prev_imu_velocity_x = imu_velocity_x
+            self.prev_imu_velocity_y = imu_velocity_y
 
 
     def listener_callback(self, msg):
@@ -116,17 +152,18 @@ class odom(Node):
                 # 로봇의 선속도, 각속도를 저장하는 변수, 시뮬레이터에서 주는 각 속도는 방향이 반대이므로 (-)를 붙여줍니다.
                 linear_x=msg.twist.linear.x
                 angular_z=-msg.twist.angular.z
+
                 '''
                 로직 4. 로봇 위치 추정
                 (테스트) linear_x = 1, self.theta = 1.5707(rad), self.period = 1 일 때
                 self.x=0, self.y=1 이 나와야 합니다. 로봇의 헤딩이 90도 돌아가 있는
                 상태에서 선속도를 가진다는 것은 x축방향이 아니라 y축방향으로 이동한다는 뜻입니다. 
 
-                self.x+=
-                self.y+=
-                self.theta+=
-
                 '''
+                self.x+=linear_x*cos(self.theta)*self.period
+                self.y+=linear_x*sin(self.theta)*self.period
+                self.theta+=angular_z*self.period
+
 
                 self.base_link_transform.header.stamp =rclpy.clock.Clock().now().to_msg()
                 self.laser_transform.header.stamp =rclpy.clock.Clock().now().to_msg()
@@ -134,25 +171,33 @@ class odom(Node):
                 '''
                 로직 5. 추정한 로봇 위치를 메시지에 담아 publish, broadcast
 
-                q =
-                
-                self.base_link_transform.transform.translation.x = 
-                self.base_link_transform.transform.translation.y = 
-                self.base_link_transform.transform.rotation.x = 
-                self.base_link_transform.transform.rotation.y = 
-                self.base_link_transform.transform.rotation.z = 
-                self.base_link_transform.transform.rotation.w = 
-                
-                self.odom_msg.pose.pose.position.x=
-                self.odom_msg.pose.pose.position.y=
-                self.odom_msg.pose.pose.orientation.x=
-                self.odom_msg.pose.pose.orientation.y=
-                self.odom_msg.pose.pose.orientation.z=
-                self.odom_msg.pose.pose.orientation.w=
-                self.odom_msg.twist.twist.linear.x=
-                self.odom_msg.twist.twist.angular.z=
-
                 '''
+                #theta가 오일러 각이므로 쿼터니언으로 변환
+                q = Quaternion.from_euler(0, 0, self.theta)
+                
+                #좌표계를 broadcast할 때는 시간을 넣어줘야 하기 때문에 넣어줌.
+                self.base_link_transform.header.stamp = rclpy.clock.Clock().now().to_msg()
+                self.laser_transform.header.stamp = rclpy.clock.Clock().now().to_msg()
+                #계산한 x,y가 이동값이 됨
+                self.base_link_transform.transform.translation.x = self.x
+                self.base_link_transform.transform.translation.y = self.y
+
+                #계산한 q가 회전값이 됨.
+                self.base_link_transform.transform.rotation.x = q.x
+                self.base_link_transform.transform.rotation.y = q.y
+                self.base_link_transform.transform.rotation.z = q.z
+                self.base_link_transform.transform.rotation.w = q.w
+                
+                #odometry 메세지에 이동, 회전, 제어 값을 채움
+                self.odom_msg.pose.pose.position.x=self.x
+                self.odom_msg.pose.pose.position.y=self.y
+                self.odom_msg.pose.pose.orientation.x=q.x
+                self.odom_msg.pose.pose.orientation.y=q.y
+                self.odom_msg.pose.pose.orientation.z=q.z
+                self.odom_msg.pose.pose.orientation.w=q.w
+                self.odom_msg.twist.twist.linear.x = linear_x
+                self.odom_msg.twist.twist.angular.x=angular_z
+
 
                 self.broadcaster.sendTransform(self.base_link_transform)
                 self.broadcaster.sendTransform(self.laser_transform)
