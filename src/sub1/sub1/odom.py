@@ -83,6 +83,7 @@ class odom(Node):
             self.is_imu=True
 
             #처음 로봇이 바라보는 방향을 저장
+            #! imu_q = Quaternion(msg.orientation)
             imu_q=msg.orientation
 
             #방향을 코타니언으로 변환. 이후 뺄것 임
@@ -113,7 +114,7 @@ class odom(Node):
             
             #2-2 z축의 각속도(rad/sec) * 시간(sec) = 이동거리
             #    http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Imu.html
-            self.theta += (imu_angular_z * self.period);
+            # self.theta += (imu_angular_z * self.period);
 
             #!2-3 각도 360도를 넘었을때 처리를 해줘야할까?
             #    https://www.google.com/search?q=360%EB%8F%84+%EB%9D%BC%EB%94%94%EC%95%88&sxsrf=AOaemvLHvEFx0Qq0GMbTm62Q3ezyEE8NLQ%3A1630564870742&ei=BnIwYZvlLIXx-QaDvpP4Cg&oq=360%EB%8F%84+%EB%9D%BC%EB%94%94%EC%95%88&gs_lcp=Cgdnd3Mtd2l6EAMyCggAEIAEEIcCEBQyBQgAEIAEMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB46BAgjECc6CAgAEIAEELEDOgQIABBDOgsIABCABBCxAxCDAUoECEEYAFCLGlj1KWCvKmgAcAB4AIAB-wKIAb8QkgEHMC43LjMuMZgBAKABAcABAQ&sclient=gws-wiz&ved=0ahUKEwibgJ2_19_yAhWFeN4KHQPfBK8Q4dUDCA4&uact=5
@@ -130,8 +131,8 @@ class odom(Node):
             imu_velocity_y = imu_accel_y * self.period
 
             #3-3 현재 속도와 이전 속도의 중간값으로 현재 x, y 좌표 계산
-            self.x+=(imu_velocity_x + self.prev_imu_velocity_x)/ 2
-            self.y+=(imu_velocity_y + self.prev_imu_velocity_y)/ 2
+            # self.x+=(imu_velocity_x + self.prev_imu_velocity_x)/ 2
+            # self.y+=(imu_velocity_y + self.prev_imu_velocity_y)/ 2
 
             #3-4 이전 속도 갱신
             self.prev_imu_velocity_x = imu_velocity_x
@@ -139,7 +140,7 @@ class odom(Node):
 
 
     def listener_callback(self, msg):
-        #print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
+        print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
         if self.is_imu ==True:
             if self.is_status == False :
                 self.is_status=True
@@ -211,7 +212,6 @@ def main(args=None):
     sub1_odom = odom()
 
     rclpy.spin(sub1_odom)
-
 
     sub1_odom.destroy_node()
     rclpy.shutdown()
