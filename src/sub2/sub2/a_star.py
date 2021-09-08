@@ -14,6 +14,13 @@ from collections import deque
 # 주의할 점 : odom을 받아서 사용하는데 기존 odom 노드는 시작했을 때 로봇의 초기 위치가 x,y,heading(0,0,0) 입니다. 로봇의 초기위치를 맵 상에서 로봇의 위치와 맞춰줘야 합니다. 
 # 따라서 sub2의 odom 노드를 수정해줍니다. turtlebot_status 안에는 정답데이터(절대 위치)가 있는데 그 정보를 사용해서 맵과 로봇의 좌표를 맞춰 줍니다.
 
+# self.odom_msg.pose.pose.position.x
+# self.odom_msg.pose.pose.position.y
+# 를 보면 0에 가까운 수다. (e-10 이렇게 붙어있다.)
+
+# odom.py에서 self.x와 self.y을 0이라고 했기 때문에
+# self.x를 -1로 하니까 base_link와 laser가 격자 1칸 만큼 움직인다.
+
 # 노드 로직 순서
 # 1. publisher, subscriber 만들기
 # 2. 파라미터 설정
@@ -40,8 +47,9 @@ class a_star(Node):
         self.is_found_path=False
         self.is_grid_update=False
 
-
         # 로직 2. 파라미터 설정
+
+        # default는 거실에 있는 에어컨 앞
         self.goal = [184,224] 
         self.map_size_x=350
         self.map_size_y=350
@@ -49,49 +57,57 @@ class a_star(Node):
         self.map_offset_x=-8-8.75
         self.map_offset_y=-4-8.75
     
-        self.GRIDSIZE=350 
- 
+        self.GRIDSIZE=350
+
+        # 가로 세로 1은 비용이 1, 대각선은 1.414
         self.dx = [-1,0,0,1,-1,-1,1,1]
         self.dy = [0,1,-1,0,-1,1,-1,1]
         self.dCost = [1,1,1,1,1.414,1.414,1.414,1.414]
        
 
+    # goal_pose 정보를 받으면 실행되는 goal_callback에서 grid_update가 실행된다.
     def grid_update(self):
         self.is_grid_update=True
-        '''
-        로직 3. 맵 데이터 행렬로 바꾸기
-        map_to_grid=
-        self.grid=
-        '''
 
+        # 로직 3. 맵 데이터 행렬로 바꾸기
+        map_to_grid = np.reshape(self.map_msg.data, (350, 350))
+        self.grid = map_to_grid
 
     def pose_to_grid_cell(self,x,y):
-        map_point_x = 0
-        map_point_y = 0
-        '''
-        로직 4. 위치(x,y)를 map의 grid cell로 변환 
-        (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
-        pose가 (-16.75,12.75) 라면 맵의 시작점에 위치하게 된다. 따라서 map_point_x,y는 (0,0)이 된다.
-        map_point_x= ?
-        map_point_y= ?
-        '''
+        # map_point_x = 0
+        # map_point_y = 0
+
+        # 로직 4. 위치(x,y)를 map의 grid cell로 변환
+        # (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
+        # pose가 (-16.75,-12.75) 라면 맵의 시작점에 위치하게 된다. 따라서 map_point_x,y는 (0,0)이 된다.
+        # 즉 x가 8.75 증가했는데 175만큼 커졌고 (x가 1증가하면 175/8.75 커진다.)
+        # y도 마찬가지다.
+        
+        # cf. int(2.3)은 2다.
+
+        # 명세서를 보니까 self.map_resolution=0.05 self.map_offset_x=-8-8.75 self.map_offset_y=-4-8.75
+        # 이 값들을 이용하라고 되어있어서 숫자 대신에 변수를 써도 좋을 것 같다.
+
+        map_point_x = int((x+16.75)*175/8.75)
+        map_point_y = int((y+12.75)*175/8.75)
         
         return map_point_x,map_point_y
 
 
     def grid_cell_to_pose(self,grid_cell):
-
         x = 0
         y = 0
-        '''
-        로직 5. map의 grid cell을 위치(x,y)로 변환
-        (테스트) grid cell이 (175,175)라면 맵의 중앙에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 중앙인 (-8,-4)가 된다.
-        grid cell이 (350,350)라면 맵의 제일 끝 좌측 상단에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 좌측 상단인 (0.75,6.25)가 된다.
 
-        x=?
-        y=?
+        # 로직 5. map의 grid cell을 위치(x,y)로 변환
+        # (테스트) grid cell이 (175,175)라면 맵의 중앙에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 중앙인 (-8,-4)가 된다.
+        # grid cell이 (350,350)라면 맵의 제일 끝 좌측 상단에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 좌측 상단인 (0.75,6.25)가 된다.
 
-        '''
+        # 최단 경로 탐색 결과는 grid_cell로 나오고
+        # 전역 경로로 만들 때는 절대 위치로 변환해서 사용해야 한다.
+
+        x = grid_cell[0]/20-16.75
+        y = grid_cell[1]/20-12.75
+
         return [x,y]
 
 
@@ -127,6 +143,7 @@ class a_star(Node):
 
                 x=self.odom_msg.pose.pose.position.x
                 y=self.odom_msg.pose.pose.position.y
+                # 터틀봇의 절대 위치를 그리드 위치로 변환하기 인 것 같다.
                 start_grid_cell=self.pose_to_grid_cell(x,y)
 
                 self.path = [[0 for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)]
