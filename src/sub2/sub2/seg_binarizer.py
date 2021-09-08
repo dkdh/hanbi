@@ -32,7 +32,7 @@ class IMGParser(Node):
         #초기 이미지를 None으로 초기화한다
         self.img_bgr = None
 
-        self.timer_period = 0.03
+        self.timer_period = 0.03 # 주기가 0.03초인 타이머 함수 설정
 
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
         
@@ -50,15 +50,18 @@ class IMGParser(Node):
         # 로직 3. bgr 이미지의 binarization
         # 지갑, 키 등의 물체에 대한 bgr 값을 알고, 이 값 범위에 해당되는
         # cv2.inRange 함수를 써서 각 물체에 대해 binarization 하십시오.
+        """
         
-        lower_wal = 
-        upper_wal = 
-        lower_bp = 
-        upper_bp = 
-        lower_rc = 
-        upper_rc = 
-        lower_key = 
-        upper_key = 
+        # BGR 범위 정함
+        lower_wal = np.array([100, 245, 255]) # wallet
+        upper_wal = np.array([110, 255, 255])
+        lower_bp = np.array([100, 210, 235]) # backpack
+        upper_bp = np.array([110, 220, 255])
+        lower_rc = np.array([100, 210, 200]) # remote control
+        upper_rc = np.array([110, 220, 220])
+        lower_key = np.array([100, 240, 200]) # key
+        upper_key = np.array([110, 250, 220])
+
 
         self.img_wal = cv2.inRange(self.img_bgr, lower_wal, upper_wal)
 
@@ -68,7 +71,6 @@ class IMGParser(Node):
 
         self.img_key = cv2.inRange(self.img_bgr, lower_key, upper_key)
 
-        """
 
         """
         # 로직 4. 물체의 contour 찾기
