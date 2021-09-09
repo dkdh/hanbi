@@ -137,59 +137,33 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
 
 
 def project2img_mtx(params_cam):
-
     """
     project2img_mtx 내 projection 행렬 계산 로직 순서
     1. params에서 카메라의 width, height, fov를 가져와서 focal length를 계산.
     2. 카메라의 파라메터로 이미지 프레임 센터를 계산.
-    3. Projection 행렬을 계산 
-
+    3. Projection 행렬을 계산
     """
 
-    
     """
     로직 1. params에서 카메라의 width, height, fov를 가져와서 focal length를 계산.
-    
-    fc_x = 
-    fc_y = 
     """
+    tan_fov = math.tan(math.radians(params_cam['FOV'] / 2)) # Radian 사용.
+    fc_x = params_cam.get('HEIGHT') / (2 * tan_fov)
+    fc_y = params_cam.get('HEIGHT') / (2 * tan_fov)
 
     """
     로직 2. 카메라의 파라메터로 이미지 프레임 센터를 계산.
-    cx = 
-    cy = 
     """
+    cx = params_cam.get('WIDTH') / 2
+    cy = params_cam.get('HEIGHT') / 2
 
     """
-
     로직 3. Projection 행렬을 계산.
-    R_f =
-
     """
+    R_f = np.array([[fc_x, 0, cx],
+                    [0, fc_y, cy]])
 
-    """
-    테스트
-
-    params_cam = {
-        "WIDTH": 320, # image width
-        "HEIGHT": 240, # image height
-        "FOV": 60, # Field of view
-        "X": 0., # meter
-        "Y": 0,
-        "Z":  1.0,
-        "YAW": 0, # deg
-        "PITCH": 0.0,
-        "ROLL": 0
-    }
-
-    이면
-
-    R_f = 
-    [[207.84609691   0.         160.        ]
-    [  0.         207.84609691 120.        ]]
-    """
-
-    return np.zeros((2,3))
+    return R_f
 
 
 def draw_pts_img(img, xi, yi):
