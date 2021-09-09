@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import rclpy
 import math
+
+from numpy.testing._private.parameterized import param
 from rclpy.node import Node
 from sensor_msgs.msg import CompressedImage, LaserScan
 
@@ -95,7 +97,6 @@ def translationMtx(x, y, z):
 
 
 def transformMTX_lidar2cam(params_lidar, params_cam):
-
     """
     transformMTX_lidar2cam 내 좌표 변환행렬 로직 순서
     1. params에서 라이다와 카메라 센서들의 자세, 위치 정보를 뽑기.
@@ -106,72 +107,33 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
 
     """
     로직 1. params에서 라이다와 카메라 센서들의 자세, 위치 정보를 뽑기.
+    """
+    lidar_yaw, lidar_pitch, lidar_roll = params_lidar.get("YAW"), params_lidar.get("PITCH"), params_lidar.get("ROLL")
+    cam_yaw, cam_pitch, cam_roll = params_cam.get("YAW"), params_cam.get("PITCH"), params_cam.get("ROLL")
 
-    lidar_yaw, lidar_pitch, lidar_roll =
-    cam_yaw, cam_pitch, cam_roll =
-    
-    lidar_pos = 
-    cam_pos = 
+    lidar_pos = {"X": params_lidar.get("X"), "Y": params_lidar.get("Y"), "Z": params_lidar.get("Z")}
+    cam_pos = {"X": params_cam.get("X"), "Y": params_cam.get("Y"), "Z": params_cam.get("Z")}
 
     """
-
-    """
-
     로직 2. 라이다에서 카메라 까지 변환하는 translation 행렬을 정의
-    Tmtx = 
-
     """
+    Tmtx = translationMtx(-(cam_pos.get("X") - lidar_pos.get("X")), -(cam_pos.get("Y") - lidar_pos.get("Y")), -(cam_pos.get("Z") - lidar_pos.get("Z")))
 
     """
     로직 3. 카메라의 자세로 맞춰주는 rotation 행렬을 정의
+    """
+    # Rmtx = rotationMtx((cam_yaw - lidar_yaw - 90) % 360, (cam_pitch - lidar_pitch + 0) % 360, (cam_roll - lidar_roll + 180) % 360)
+    # Rmtx = rotationMtx(90, 0, 180)
+    Rmtx = rotationMtx(math.pi/2, 0, math.pi/2)
 
-    Rmtx = 
 
     """
-
-    """
-
     로직 4. 위의 두 행렬을 가지고 최종 라이다-카메라 변환 행렬을 정의
-    RT = 
-
     """
+    # RT = np.linalg.inv(np.matmul(Tmtx, Rmtx))
+    RT = np.matmul(Rmtx, Tmtx)
 
-    """
-    테스트
-
-    params_lidar = {
-        "X": 0, # meter
-        "Y": 0,
-        "Z": 0.6,
-        "YAW": 0, # deg
-        "PITCH": 0,
-        "ROLL": 0
-    }
-
-
-    params_cam = {
-        "WIDTH": 640, # image width
-        "HEIGHT": 480, # image height
-        "FOV": 90, # Field of view
-        "X": 0., # meter
-        "Y": 0,
-        "Z":  1.0,
-        "YAW": 0, # deg
-        "PITCH": 0.0,
-        "ROLL": 0
-    }
-
-    이면
-
-    R_T = 
-    [[ 6.12323400e-17 -1.00000000e+00  0.00000000e+00  0.00000000e+00]
-    [ 6.12323400e-17  3.74939946e-33 -1.00000000e+00  4.00000000e-01]
-    [ 1.00000000e+00  6.12323400e-17  6.12323400e-17 -2.44929360e-17]
-    [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
-
-    """
-
-    return np.eye(4)
+    return RT
 
 
 def project2img_mtx(params_cam):
@@ -410,11 +372,12 @@ class SensorCalib(Node):
 
 def main(args=None):
 
-    rclpy.init(args=args)
-
-    calibrator = SensorCalib()
-
-    rclpy.spin(calibrator)
+    # rclpy.init(args=args)
+    #
+    # calibrator = SensorCalib()
+    #
+    # rclpy.spin(calibrator)
+    transformMTX_lidar2cam(params_lidar, params_cam)
 
 
 if __name__ == '__main__':
