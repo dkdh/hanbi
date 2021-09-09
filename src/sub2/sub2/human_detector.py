@@ -51,14 +51,21 @@ def non_maximum_supression(bboxes, threshold=0.5):
             y1_br = bbox[1] + bbox[3]
             y2_br = new_bbox[1] + new_bbox[3]
             
-            """
             # 로직 4 : 두 bbox의 겹치는 영역을 구해서, 영역이 안 겹칠때 new_bbox로 save
-            x_overlap = 
-            y_overlap = 
+            if x1_br < x2_tl or x1_tl < x2_br or y2_br < y1_tl or y1_br < y2_tl:
+                x_overlap = 0
+                y_overlap = 0
+            else:
+                x_array = [x1_tl, x1_br, x2_tl, x2_br]
+                y_array = [y1_tl, y1_br, y2_tl, y2_br]
+                x_array.sort()
+                y_array.sort()
+                x_overlap = x_array[2] - x_array[1]
+                y_overlap = y_array[2] - y_array[1]
             overlap_area = x_overlap * y_overlap
             
-            area_1 = 
-            area_2 = 
+            area_1 = (x1_br - x1_tl) * (y1_br - y1_tl)
+            area_2 = (x2_br - x2_tl) * (y2_br - y2_tl)
             
             total_area = area_1 + area_2 - overlap_area
             overlap_area = overlap_area / float(total_area)
@@ -66,8 +73,6 @@ def non_maximum_supression(bboxes, threshold=0.5):
             if overlap_area < threshold:
 
                 new_bboxes.append(bbox)
-
-            """
 
     return new_bboxes
 
