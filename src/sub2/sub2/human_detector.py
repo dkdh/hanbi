@@ -159,11 +159,8 @@ class HumanDetector(Node):
             self.bbox_msg.num_bbox = len(rects_temp)
 
 
-        """
-        로직 7 : bbox 결과 show
-        cv2.
-        cv2.waitKey(1)
-        """           
+        
+        # 로직 7 : bbox 결과 show
         cv2.imshow("detection result", img_bgr)        
         cv2.waitKey(1)
 
