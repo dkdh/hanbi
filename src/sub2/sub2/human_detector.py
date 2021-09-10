@@ -125,8 +125,6 @@ class HumanDetector(Node):
             xl, yl, wl, hl = [], [], [], []
             rects = non_maximum_supression(rects_temp)
 
-            """
-    
             # 로직 5 : bbox를 ros msg 파일에 write
 
             ## 각 bbox의 center, width, height의 꼭지점들을 리스트에 넣어 놓고
@@ -138,21 +136,19 @@ class HumanDetector(Node):
                 yl.append(y)
                 wl.append(w)
                 hl.append(h)
-
+            
             if self.able_to_pub:
 
-                self.bbox_msg.num_bbox = 
+                self.bbox_msg.num_bbox = len(rects_temp)
 
-                obj_list = 
+                obj_list = rects_temp
 
-                self.bbox_msg.idx_bbox = 
+                self.bbox_msg.idx_bbox = [0 for i in range(len(rects_temp))]
 
-                self.bbox_msg.x = 
-                self.bbox_msg.y = 
-                self.bbox_msg.w = 
-                self.bbox_msg.h = 
-
-            """
+                self.bbox_msg.x = xl
+                self.bbox_msg.y = yl
+                self.bbox_msg.w = wl
+                self.bbox_msg.h = hl
 
             for (x,y,w,h) in rects:
 
