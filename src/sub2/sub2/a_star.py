@@ -91,7 +91,7 @@ class a_star(Node):
         map_point_x = int((x+16.75)*175/8.75)
         map_point_y = int((y+12.75)*175/8.75)
         
-        return map_point_x,map_point_y
+        return map_point_x, map_point_y
 
 
     def grid_cell_to_pose(self,grid_cell):
@@ -124,94 +124,124 @@ class a_star(Node):
     def goal_callback(self,msg):
         
         if msg.header.frame_id=='map':
-            '''
-            로직 6. goal_pose 메시지 수신하여 목표 위치 설정
-            goal_x=
-            goal_y=
-            goal_cell=
-            self.goal = 
-            '''             
-            print(msg)
             
+            # 로직 6. goal_pose 메시지 수신하여 목표 위치 설정
+            goal_x= msg.pose.position.x
+            goal_y= msg.pose.position.y
+            goal_cell= self.pose_to_grid_cell(goal_x, goal_y)
+            # print(self.goal) 찍어보면 (328,223) 이렇게 나온다.
+            self.goal = list(goal_cell)
 
+            # 지도 받아왔고 odom 정보도 있는 상태에서 목적지가 정해졌다면
             if self.is_map ==True and self.is_odom==True  :
-                if self.is_grid_update==False :
+                
+                if self.is_grid_update == False:
                     self.grid_update()
 
-        
                 self.final_path=[]
 
+                # 현재 위치
                 x=self.odom_msg.pose.pose.position.x
                 y=self.odom_msg.pose.pose.position.y
                 # 터틀봇의 절대 위치를 그리드 위치로 변환하기 인 것 같다.
-                start_grid_cell=self.pose_to_grid_cell(x,y)
+                start_grid_cell = self.pose_to_grid_cell(x,y)
+                start_grid_cell = list(start_grid_cell)
 
+                # self.GRIDSIZE는 350이다.
+                # 0으로 채워진 350 X 350 행렬 만들기
                 self.path = [[0 for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)]
+
+                # 350 * 350 으로 채워진 350 X 350 행렬 만들기
                 self.cost = np.array([[self.GRIDSIZE*self.GRIDSIZE for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)])
 
-                
                 # 다익스트라 알고리즘을 완성하고 주석을 해제 시켜주세요. 
                 # 시작지, 목적지가 탐색가능한 영역이고, 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
-                # if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
-                #     self.dijkstra(start_grid_cell)
-
+                # 0은 장애물이 없는 영역을 의미한다.
+                if self.grid[start_grid_cell[0]][start_grid_cell[1]] == 0 and self.grid[self.goal[0]][self.goal[1]] == 0  and start_grid_cell != self.goal :
+                    # 시작점을 넣어주었다.
+                    self.dijkstra(start_grid_cell)
 
                 self.global_path_msg=Path()
                 self.global_path_msg.header.frame_id='map'
+
+                # 순서 바꿔주고
+                # 각 grid cell에 대해서
                 for grid_cell in reversed(self.final_path) :
                     tmp_pose=PoseStamped()
                     waypoint_x,waypoint_y=self.grid_cell_to_pose(grid_cell)
+                    
                     tmp_pose.pose.position.x=waypoint_x
                     tmp_pose.pose.position.y=waypoint_y
                     tmp_pose.pose.orientation.w=1.0
+                    
+                    # 차곡차곡 담기
                     self.global_path_msg.poses.append(tmp_pose)
-            
+
+                # 경로가 존재한다면
                 if len(self.final_path)!=0 :
                     self.a_star_pub.publish(self.global_path_msg)
 
     def dijkstra(self,start):
+        # deque는 양쪽에서 삽입 삭제가 가능하다.
         Q = deque()
         Q.append(start)
         self.cost[start[0]][start[1]] = 1
         found = False
-        '''
-        로직 7. grid 기반 최단경로 탐색
-        
-        while ??:
-            if ??:
-                ??
 
-            current =??
+        # 로직 7. grid 기반 최단경로 탐색
+        while Q:
+            # popleft를 통해서 한 쪽 방향으로만 뺀다.
+            # 파장이 퍼지듯이 경로를 찾기 때문에
+            # 가장 먼저 도착하면 그게 최단경로다.
+            if current == self.goal:
+                found = True
+                break
 
+            current = Q.popleft()
+
+            # 시작점을 기준으로 8방향을 의미하는 것 같다.
             for i in range(8):
-                next = ??
-                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
-                        if self.grid[next[0]][next[1]] < 50:
-                            if ??:
-                                Q.??
-                                self.path[next[0]][next[1]] = ???
-                                self.cost[next[0]][next[1]] = ???
 
-        node = ??
-        while ?? 
-            nextNode = ??
-            self.final_path.??
-            node = ??
-        '''       
-        
+                next = [current[0]+self.dx[i], current[1]+self.dy[i]]
+                
+                # 범위를 벗어나지 않는 좌표 중에서
+                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
+                    # 이동가능한 영역이라는 의미인 것 같다.
+                    if self.grid[next[0]][next[1]] < 50:
+
+                        # cost 비교
+                        if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next[0]][next[1]]:
+                            
+                            # 넥스트를 넣어준다.
+                            Q.append(next)
+                            # 명세서 : path를 역으로 추적해서 최종 경로를 얻는다.
+                            # 이 노드가 어디서 왔는지를 적어주어야 하는 것 같다.
+                            self.path[next[0]][next[1]] = current
+                            self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
+
+        # path를 역으로 추적하는 코드
+        # 나중에 reversed로 list 순서 바꿔준다.
+        node = self.goal
+        # 도착지 넣어주고
+        self.final_path.append(node)
+
+        while node != start:
+            # node는 nextNode에서 왔다
+            nextNode = self.path[node[0]][node[1]]
+            # nextNode 넣어주고
+            self.final_path.append(nextNode)
+            node = nextNode
+
+    def a_star(self,start):
+        pass        
 
         
 def main(args=None):
     rclpy.init(args=args)
-
     global_planner = a_star()
-
     rclpy.spin(global_planner)
-
-
     global_planner.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
