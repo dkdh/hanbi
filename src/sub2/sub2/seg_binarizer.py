@@ -51,7 +51,7 @@ class IMGParser(Node):
         # 지갑, 키 등의 물체에 대한 bgr 값을 알고, 이 값 범위에 해당되는
         # cv2.inRange 함수를 써서 각 물체에 대해 binarization 하십시오.
         """
-        
+
         # BGR 범위 정함
         lower_wal = np.array([100, 245, 255]) # wallet
         upper_wal = np.array([110, 255, 255])
@@ -77,20 +77,27 @@ class IMGParser(Node):
         # 지갑, 키 등의 물체들이 차지한 픽셀만 흰색으로 이진화되어 있는 이미지에 대해서,
         # 흰색 영역을 감싸는 contour들을 구하십시오.
         # cv2.findContours를 가지고 
-
-        contours_wal, _ = cv2.findContours( .....
-
-        contours_bp, _ = 
-
-        contours_rc, _ = 
-
-        contours_key, _ = 
-
         """
+        
+        # cv2.CHAIN_APPROX_SIMPLE : 꼭짓점 표시
+        # cv2.CHAIN_APPROX_NONE : 모든 좌표에 컨투어를 그림
+
+        # _, countours_wal, _ 로 받으니까 ValueError: not enough values to unpack (expected 3, got 2) 에러가 뜸
+        # 버전3은 3개를 return 시킨다고 되어있었는데 그게 아닌건가
+
+        contours_wal, _ = cv2.findContours(self.img_wal, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+        contours_bp, _ = cv2.findContours(self.img_bp, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+        contours_rc, _ = cv2.findContours(self.img_rc, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+        contours_key, _ = cv2.findContours(self.img_key, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
 
         """
         # 로직 5. 물체의 bounding box 좌표 찾기
-        
+        """
+
         self.find_cnt(contours_wal)
         
         self.find_cnt(contours_bp)
@@ -99,7 +106,6 @@ class IMGParser(Node):
         
         self.find_cnt(contours_key)
 
-        """
 
     def find_cnt(self, contours):
 
@@ -107,14 +113,13 @@ class IMGParser(Node):
         # 로직 5. 물체의 bounding box 좌표 찾기
         # 지갑, 키 등의 물체들의 흰색 영역을 감싸는 contour 결과를 가지고
         # bbox를 원본 이미지에 draw 하십시오.
-        
-        for cnt in contours:
-    
-            x, y, w, h = 
-
-            cv2.rectangle( ... )
-
         """     
+
+        for cnt in contours: # countours : 그림 그릴 컨투어 배열
+    
+            x,y,w,h = cv2.boundingRect(cnt) #  cv2.boundingRect : 인자로 받은 contour에 외접하고 똑바로 세워진 직사각형의 좌상단 꼭지점 좌표 (x,y)와 가로 세로 폭을 리턴
+            cv2.rectangle(self.img_bgr,(x,y),(x+w,y+h),(0,255,0),2) # (0, 255, 0) : 초록색
+
 
 
     def timer_callback(self):
