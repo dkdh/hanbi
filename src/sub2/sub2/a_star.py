@@ -7,6 +7,7 @@ from squaternion import Quaternion
 from nav_msgs.msg import Odometry,OccupancyGrid,MapMetaData,Path
 from math import pi,cos,sin
 from collections import deque
+from queue import PriorityQueue
 
 # a_star 노드는  OccupancyGrid map을 받아 grid map 기반 최단경로 탐색 알고리즘을 통해 로봇이 목적지까지 가는 경로를 생성하는 노드입니다.
 # 로봇의 위치(/pose), 맵(/map), 목표 위치(/goal_pose)를 받아서 전역경로(/global_path)를 만들어 줍니다. 
@@ -129,7 +130,7 @@ class a_star(Node):
             goal_x= msg.pose.position.x
             goal_y= msg.pose.position.y
             goal_cell= self.pose_to_grid_cell(goal_x, goal_y)
-            # print(self.goal) 찍어보면 (328,223) 이렇게 나온다.
+            # self.goal 출력해보면 (328,223) 이렇게 나온다.
             self.goal = list(goal_cell)
 
             # 지도 받아왔고 odom 정보도 있는 상태에서 목적지가 정해졌다면
@@ -159,7 +160,7 @@ class a_star(Node):
                 # 0은 장애물이 없는 영역을 의미한다.
                 if self.grid[start_grid_cell[0]][start_grid_cell[1]] == 0 and self.grid[self.goal[0]][self.goal[1]] == 0  and start_grid_cell != self.goal :
                     # 시작점을 넣어주었다.
-                    self.dijkstra(start_grid_cell)
+                    self.a_star(start_grid_cell)
 
                 self.global_path_msg=Path()
                 self.global_path_msg.header.frame_id='map'
@@ -169,7 +170,6 @@ class a_star(Node):
                 for grid_cell in reversed(self.final_path) :
                     tmp_pose=PoseStamped()
                     waypoint_x,waypoint_y=self.grid_cell_to_pose(grid_cell)
-                    
                     tmp_pose.pose.position.x=waypoint_x
                     tmp_pose.pose.position.y=waypoint_y
                     tmp_pose.pose.orientation.w=1.0
@@ -231,11 +231,67 @@ class a_star(Node):
             # nextNode 넣어주고
             self.final_path.append(nextNode)
             node = nextNode
+    
+    # Manhattan distance와 Euclidean distance 중 Manhattan distance을 선택함
+    # 방식은 크게 중요하지 않다고 생각했음. 다만 Euclidean distance는 계산하는데 더 시간이 오래 걸릴 것 같아서
+    # Manhattan distance를 선택함
+    def heuristic(self, start, goal):
+        x1, y1 = start
+        x2, y2 = goal
+        return abs(x1 - x2) + abs(y1 - y2)
 
     def a_star(self,start):
-        pass        
+        Q = PriorityQueue()
+        # Q.put((우선 순위, 좌표))
+        # 우선 순위에 비용을 넣겠다. 그러면 비용이 작은 좌표부터 나올 것이다.
+        Q.put((1, start))
+        self.cost[start[0]][start[1]] = 1
+        found = False
 
-        
+        for i in range(50,51):
+            for j in range(1,100):
+                print(self.grid[i][j], end=" ")
+            print("")
+
+        while not Q.empty():
+            if found:
+                break
+
+            # Q.get() 하면 (우선순위, [ , ]) 이렇게 나온다.
+            current = Q.get()[1]
+            # print("current:", current)
+            if current == self.goal:
+                found = True
+
+            for i in range(8):
+                next = [current[0]+self.dx[i], current[1]+self.dy[i]]
+                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
+                    # 맵의 데이터를 이용한다.
+                    # 대단히 중요한 부분이다. [next[0]][next[1]]이 아닌 점에 주목하기
+                    if self.grid[next[1]][next[0]] < 50:
+                    
+                        # f = g+h
+                        g = self.cost[current[0]][current[1]] + self.dCost[i]
+                        f = g + self.heuristic(next, self.goal)
+                        if f < self.cost[next[0]][next[1]]:
+                            # 넥스트를 넣어준다.
+                            # Q.put((f, next))
+                            Q.put((g, next))
+                            self.path[next[0]][next[1]] = current
+                            self.cost[next[0]][next[1]] = g
+
+        node = self.goal
+        self.final_path.append(node)
+        print(self.final_path)
+
+        while node != start:
+            nextNode = self.path[node[0]][node[1]]
+            self.final_path.append(nextNode)
+            node = nextNode
+            
+        print(self.final_path)
+
+
 def main(args=None):
     rclpy.init(args=args)
     global_planner = a_star()

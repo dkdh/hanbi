@@ -89,7 +89,7 @@ class loadMap(Node):
         # 350 X 350 행렬로 만들기
         map_to_grid = np.array(self.map_data)
         grid = np.reshape(map_to_grid, (350, 350))
-
+        
 
         # 로직 3. 점유영역 근처 필터처리
         for x in range(350):

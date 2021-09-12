@@ -98,7 +98,10 @@ class odom(Node):
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
             e = imu_q.to_euler()
             ### 첫 번째 방식 ###
-            self.theta = e[2] - self.imu_offset
+            # self.theta = e[2] - self.imu_offset
+            # 왜 imu_offset을 빼주지 않아도 되는 걸까?
+            # 생각해보면 맵1이 아예 시작 방향과 딱 떨어지게 나와서 imu_offset을 빼줄 필요가 없는 것 같다.
+            self.theta = e[2]
 
     # 각속도를 누적해서 로봇의 헤딩을 구하는 방법
     def listener_callback(self, msg):
