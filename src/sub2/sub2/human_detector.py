@@ -50,9 +50,6 @@ def non_maximum_supression(bboxes, threshold=0.5):
             y2_tl = new_bbox[1]
             y1_br = bbox[1] + bbox[3]
             y2_br = new_bbox[1] + new_bbox[3]
-
-            print(x1_tl, x1_br, y1_tl, y1_br)
-            print(x2_tl, x2_br, y2_tl, y2_br)
             
             # 로직 4 : 두 bbox의 겹치는 영역을 구해서, 영역이 안 겹칠때 new_bbox로 save
             if x1_br < x2_tl or x2_br < x1_tl or y2_br < y1_tl or y1_br < y2_tl:
@@ -156,6 +153,8 @@ class HumanDetector(Node):
             for (x,y,w,h) in rects:
 
                 cv2.rectangle(img_bgr, (x,y),(x+w,y+h),(0,255,255), 2)
+
+            # print("human num:", len(rects))
 
         else:
             # pass
