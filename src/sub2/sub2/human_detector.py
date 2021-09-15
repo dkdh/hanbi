@@ -50,9 +50,12 @@ def non_maximum_supression(bboxes, threshold=0.5):
             y2_tl = new_bbox[1]
             y1_br = bbox[1] + bbox[3]
             y2_br = new_bbox[1] + new_bbox[3]
+
+            print(x1_tl, x1_br, y1_tl, y1_br)
+            print(x2_tl, x2_br, y2_tl, y2_br)
             
             # 로직 4 : 두 bbox의 겹치는 영역을 구해서, 영역이 안 겹칠때 new_bbox로 save
-            if x1_br < x2_tl or x1_tl < x2_br or y2_br < y1_tl or y1_br < y2_tl:
+            if x1_br < x2_tl or x2_br < x1_tl or y2_br < y1_tl or y1_br < y2_tl:
                 x_overlap = 0
                 y_overlap = 0
             else:
@@ -145,10 +148,10 @@ class HumanDetector(Node):
 
                 self.bbox_msg.idx_bbox = [0 for i in range(len(rects_temp))]
 
-                self.bbox_msg.x = xl
-                self.bbox_msg.y = yl
-                self.bbox_msg.w = wl
-                self.bbox_msg.h = hl
+                self.bbox_msg.x = [x in xl]
+                self.bbox_msg.y = [y in yl]
+                self.bbox_msg.w = [w in wl]
+                self.bbox_msg.h = [h in hl]
 
             for (x,y,w,h) in rects:
 
