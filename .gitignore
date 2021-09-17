@@ -9,6 +9,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+install/
+log/
 develop-eggs/
 dist/
 downloads/
@@ -136,9 +138,3 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
-#pycharm
-.idea
-
-#vs
-.vs
