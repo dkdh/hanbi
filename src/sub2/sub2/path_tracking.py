@@ -52,7 +52,6 @@ class followTheCarrot(Node):
         self.min_lfd=0.1
         self.max_lfd=1.0
 
-
     def timer_callback(self):
 
         if self.is_status and self.is_odom ==True and self.is_path==True:

@@ -71,6 +71,7 @@ class a_star(Node):
         self.is_grid_update=True
 
         # 로직 3. 맵 데이터 행렬로 바꾸기
+        # map_to_grid = np.reshape(self.map_msg.data, (350, 350), order="F")
         map_to_grid = np.reshape(self.map_msg.data, (350, 350))
         self.grid = map_to_grid
 
@@ -248,11 +249,6 @@ class a_star(Node):
         self.cost[start[0]][start[1]] = 1
         found = False
 
-        for i in range(50,51):
-            for j in range(1,100):
-                print(self.grid[i][j], end=" ")
-            print("")
-
         while not Q.empty():
             if found:
                 break
@@ -268,6 +264,7 @@ class a_star(Node):
                 if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
                     # 맵의 데이터를 이용한다.
                     # 대단히 중요한 부분이다. [next[0]][next[1]]이 아닌 점에 주목하기
+                    # if self.grid[next[0]][next[1]] < 50:
                     if self.grid[next[1]][next[0]] < 50:
                     
                         # f = g+h

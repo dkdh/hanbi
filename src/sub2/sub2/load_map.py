@@ -99,8 +99,11 @@ class loadMap(Node):
                     # 그 좌표를 127로 바꿔주고
                     grid[x][y] = 127
 
-                    for i in range(-2,3):
-                        for j in range(-2,3):
+                    # for i in range(-2,3):
+                    #     for j in range(-2,3):
+                    # 벽에 딱 붙어서 가는 걸 막기 위해서
+                    for i in range(-4,5):
+                        for j in range(-4,5):
                             if 0 <= x+i < 350 and 0 <= y+j < 350:
                                 # 그 점도 장애물이 있으면 그 장애물 주위도 127로 바꿔야 하기 때문에 놔둔다.
                                 if grid[x+i][y+j] != 100:
