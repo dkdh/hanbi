@@ -89,7 +89,7 @@ class loadMap(Node):
         # 350 X 350 행렬로 만들기
         map_to_grid = np.array(self.map_data)
         grid = np.reshape(map_to_grid, (350, 350))
-
+        
 
         # 로직 3. 점유영역 근처 필터처리
         for x in range(350):
@@ -99,8 +99,11 @@ class loadMap(Node):
                     # 그 좌표를 127로 바꿔주고
                     grid[x][y] = 127
 
-                    for i in range(-2,3):
-                        for j in range(-2,3):
+                    # for i in range(-2,3):
+                    #     for j in range(-2,3):
+                    # 벽에 딱 붙어서 가는 걸 막기 위해서
+                    for i in range(-4,5):
+                        for j in range(-4,5):
                             if 0 <= x+i < 350 and 0 <= y+j < 350:
                                 # 그 점도 장애물이 있으면 그 장애물 주위도 127로 바꿔야 하기 때문에 놔둔다.
                                 if grid[x+i][y+j] != 100:
@@ -113,8 +116,10 @@ class loadMap(Node):
 
         self.f.close()
         # [[, , , , ,]] 형태에서 [] 벗겨내기
-        # self.map_msg.data=list_map_data[0]
-        self.map_msg.data=line_data
+        self.map_msg.data=list_map_data[0]
+
+        # 기존과 비교
+        # self.map_msg.data=line_data
 
     def timer_callback(self):
         self.map_msg.header.stamp =rclpy.clock.Clock().now().to_msg()
