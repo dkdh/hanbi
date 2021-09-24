@@ -12,7 +12,6 @@ pipeline {
 						sh 'docker rm -f vue-nginx'
 						sh 'docker build -t dockerize-vuejs-app ./frontend'
 						sh 'docker run --name vue-nginx -d -p 8080:8080 dockerize-vuejs-app'
-						wrewrewrw
                     } catch(e) {
                         currentBuild.result = "FAILURE"
                     } finally {
