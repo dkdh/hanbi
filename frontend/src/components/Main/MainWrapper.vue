@@ -1,8 +1,10 @@
 <template>
   <div id="MainWrapper">
-    <Map v-if="category == 0"></Map>
-    <lost v-if="category == 1"></lost>
-    <log v-if="category == '2'"></log>
+    {{ category_idx }}
+    {{ category_idx == 0 }}
+    <Map v-if="category_idx == 0"></Map>
+    <lost v-if="category_idx == 1"></lost>
+    <log v-if="category_idx == 2"></log>
   </div>
 </template>
 <script>
@@ -13,7 +15,7 @@ import Lost from "./LostView.vue";
 import Map from "./MapView.vue";
 export default {
   computed: {
-    ...mapState(["category"]),
+    ...mapState(["category_idx"]),
   },
   components: {
     Log,

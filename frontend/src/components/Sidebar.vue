@@ -1,6 +1,7 @@
 <template>
   <el-aside id="Sidebar">
     <el-card>
+      {{ category_idx }}
       <a v-for="(e, idx) in category" :key="e" @click="onClick(idx)">
         <h1>{{ e }}</h1></a
       >
@@ -15,7 +16,7 @@ import store from "@/store";
 import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapState(["category"]),
+    ...mapState(["category_idx"]),
   },
   data() {
     return {
