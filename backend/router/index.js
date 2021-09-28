@@ -4,7 +4,7 @@ const mapService = require("../service/map")
 
 router.get("/map", async (req, res) => {
 
-    await mapService.map(req)
+    await mapService.get_map(req)
         .then((data) => {
             res.writeHead(200, { "Context-Type": "image/jpg" });//보낼 헤더를 만듬
             res.write(data);   //본문을 만들고
