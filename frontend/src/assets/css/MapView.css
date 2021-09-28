@@ -1,7 +1,14 @@
 #MapView #map {
-  height: 700px;
+  position: relative;
+}
+#MapView #mapImg {
+  height: auto;
   width: 700px;
   border: 1px solid black;
+}
+#MapView #robot {
+  position: absolute;
+  bottom: 0;
 }
 
 /*# sourceMappingURL=MapView.css.map */
