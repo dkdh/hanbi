@@ -11,6 +11,7 @@
 import Nav from "../components/Nav.vue";
 import MainWrapper from "../components/Main/MainWrapper.vue";
 import SideBar from "../components/Sidebar.vue";
+import { mapActions } from "vuex";
 import "../assets/css/Main.css";
 export default {
   computed: {},
@@ -18,6 +19,12 @@ export default {
     SideBar,
     Nav,
     MainWrapper,
+  },
+  methods: {
+    ...mapActions(["setSockets"]),
+  },
+  created() {
+    this.setSockets();
   },
 };
 </script>
