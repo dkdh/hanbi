@@ -1,0 +1,17 @@
+#Sidebar {
+  background-color: blueviolet;
+  height: 100%;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  > .el-card {
+    height: 100%;
+    width: 100%;
+    > .el-card__body {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,7 @@
+$nav-height: 60px;
+#mainView {
+  display: flex;
+  background-color: blue;
+  padding-top: $nav-height;
+  height: -webkit-calc(100% - #{$nav-height});
+}

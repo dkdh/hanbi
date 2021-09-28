@@ -1,0 +1,12 @@
+#MainWrapper {
+  width: 100%;
+  height: 100%;
+  background-color: brown;
+  display: flex;
+  justify-content: center;
+}
+#MainWrapper > * {
+  margin-top: 10rem;
+}
+
+/*# sourceMappingURL=MainWrapper.css.map */

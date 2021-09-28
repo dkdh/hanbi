@@ -1,0 +1,9 @@
+$map_size_y: 700px;
+$map_size_x: 700px;
+#MapView {
+  #map {
+    height: $map_size_x;
+    width: $map_size_y;
+    border: 1px solid black;
+  }
+}
