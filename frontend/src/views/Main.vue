@@ -12,11 +12,8 @@ import Nav from "../components/Nav.vue";
 import MainWrapper from "../components/Main/MainWrapper.vue";
 import SideBar from "../components/Sidebar.vue";
 import "../assets/css/Main.css";
-import { mapState } from "vuex";
 export default {
-  computed: {
-    ...mapState("a"),
-  },
+  computed: {},
   components: {
     SideBar,
     Nav,

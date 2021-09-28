@@ -4,12 +4,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        category: 0
+        category_idx: 0
     },
     mutations: {
         setCategory(state, a) {
             // console.log("hi : ", a, state)
-            state.category = a
+            state.category_idx = a
         }
     },
     actions: {},
