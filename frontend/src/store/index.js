@@ -19,9 +19,9 @@ export default new Vuex.Store({
             obstacle: "#525252"
         },
         losts: [
-            { name: 0, img: 0 },
-            { name: 0, img: 0 },
-            { name: 0, img: 0 },
+            { name: "열쇠", img: 0, date: new Date() },
+            { name: "지갑", img: 0, date: new Date() },
+            { name: "갈비찜덮밥", img: 0, date: new Date() },
         ]
     },
     mutations: {

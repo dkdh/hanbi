@@ -1,8 +1,29 @@
 #LostView {
   #lostWrapper {
     display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 70%;
+    margin-left: 80px;
     > * {
       margin-right: 80px;
+      .time {
+        font-size: 13px;
+        color: #999;
+      }
+      .image {
+        width: 100%;
+        display: block;
+      }
+      .clearfix:before,
+      .clearfix:after {
+        display: table;
+        content: "";
+      }
+
+      .clearfix:after {
+        clear: both;
+      }
     }
   }
 }

@@ -12,9 +12,9 @@
           class="image"
         />
         <div style="padding: 14px">
-          <span>Yummy hamburger</span>
-          <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
+          <span>{{ e.name }}</span>
+          <div class="bottom clearfix" style="display: flex">
+            <time class="time">{{ e.date }}</time>
             <el-button type="text" class="button">Operating</el-button>
           </div>
         </div>
