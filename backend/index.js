@@ -13,7 +13,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use("/", router)
+app.use("/api", router)
 
 server.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

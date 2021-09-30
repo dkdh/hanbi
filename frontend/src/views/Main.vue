@@ -23,7 +23,7 @@ export default {
   methods: {
     ...mapActions(["setSockets"]),
   },
-  created() {
+  mounted() {
     this.setSockets();
   },
 };

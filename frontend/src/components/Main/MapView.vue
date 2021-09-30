@@ -5,7 +5,8 @@
     </div>
     <div id="mapWapper">
       <div id="map">
-        <img id="mapImg" src="@/assets/map_before.png" />
+        <!-- <img id="mapImg" src="@/assets/map_before.png" /> -->
+        <canvas id="mapImg" width="500px" height="500px"> </canvas>
         <div
           id="robot"
           style="width: 10px; height: 10px; background-color: red"
@@ -38,7 +39,7 @@ export default {
       // const robot = document.querySelector("#robot");
       // // const [robotY, robotX] = [robot.offsetTop, robot.offsetLeft];
       // robot.style.top = targetRobot[0];
-      // robot.style.left = targetRobot[1];
+      // robot.style.left = targetRobot[1];console.log("ggg : ", robotDiv)
       // console.log("robot's cur coords : ", robotY, robotX);
     },
     node2web() {
