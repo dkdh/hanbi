@@ -20,7 +20,6 @@
 
 <script>
 import "@/assets/css/MapView.css";
-window.onload = () => {};
 export default {
   computed: {},
   date() {

@@ -1,0 +1,8 @@
+#LostView #lostWrapper {
+  display: flex;
+}
+#LostView #lostWrapper > * {
+  margin-right: 80px;
+}
+
+/*# sourceMappingURL=LostView.css.map */

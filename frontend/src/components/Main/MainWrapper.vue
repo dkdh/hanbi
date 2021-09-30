@@ -9,7 +9,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import "../../assets/css/MainWrapper.css";
+import "@/assets/css/MainWrapper.css";
 import Log from "./LogView.vue";
 import Lost from "./LostView.vue";
 import Map from "./MapView.vue";

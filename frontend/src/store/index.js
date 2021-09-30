@@ -19,7 +19,9 @@ export default new Vuex.Store({
             obstacle: "#525252"
         },
         losts: [
-            { name: 0, img: 0 }
+            { name: 0, img: 0 },
+            { name: 0, img: 0 },
+            { name: 0, img: 0 },
         ]
     },
     mutations: {
@@ -85,34 +87,42 @@ export default new Vuex.Store({
             })
         },
         setMap({ state }, data) {
-            let { map, colors } = state
-            map, data
-            const dSizeX = data.length
-            const dSizeY = data[0].length
+            try {
+                let { map, colors } = state
+                map, data
+                const dSizeX = data.length
+                const dSizeY = data[0].length
 
-            let mapImg = document.querySelector("#mapImg")
-            var ctx = mapImg.getContext('2d')
+                let mapImg = document.querySelector("#mapImg")
+                var ctx = mapImg.getContext('2d')
 
-            ctx.clearRect(0, 0, dSizeX, dSizeY)
+                ctx.clearRect(0, 0, dSizeX, dSizeY)
 
-            for (let y = 0; y < dSizeY; y++) {
-                for (let x = 0; x < dSizeX; x++) {
-                    //! 색 수정, 알고리즘 수정
-                    if (data[y][x] > 50) ctx.fillStyle = colors.bg;
-                    if (data[y][x] <= 50) ctx.fillStyle = colors.obstacle;
-                    ctx.fillRect(x, y, 1, 1)
+                for (let y = 0; y < dSizeY; y++) {
+                    for (let x = 0; x < dSizeX; x++) {
+                        //! 색 수정, 알고리즘 수정
+                        if (data[y][x] > 50) ctx.fillStyle = colors.bg;
+                        if (data[y][x] <= 50) ctx.fillStyle = colors.obstacle;
+                        ctx.fillRect(x, y, 1, 1)
+                    }
                 }
+                console.log(" setMap : ", mapImg)
+            } catch {
+                console.log("no mapImg")
             }
-            console.log(" setMap : ", mapImg)
         },
         setRobot({ state }, data) {
-            state
-            const [y, x] = data
-            let robotDiv = document.querySelector("#robot")
-            console.log(y, x)
-            robotDiv.style.bottom = y + "px";
-            robotDiv.style.left = x + "px";
-            robotDiv.style.backgroundColor = state.colors.robot
+            try {
+                state
+                const [y, x] = data
+                let robotDiv = document.querySelector("#robot")
+                console.log(y, x)
+                robotDiv.style.bottom = y + "px";
+                robotDiv.style.left = x + "px";
+                robotDiv.style.backgroundColor = state.colors.robot
+            } catch {
+                console.log("no Robot")
+            }
         }
     },
     getters: {},
