@@ -16,7 +16,7 @@
       <!-- {{ actions }} -->
       <el-timeline :reverse="reverse">
         <el-timeline-item
-          v-for="(activity, index) in actions"
+          v-for="(activity, index) in log"
           :key="index"
           :timestamp="activity.timestamp"
         >
@@ -32,29 +32,33 @@
 
 <script>
 import "@/assets/css/LogView.css";
+import { mapState } from "vuex";
 export default {
   // props: ["actions"],
+  computed: {
+    ...mapState(["log"]),
+  },
   data() {
     return {
       reverse: true,
-      actions: [
-        {
-          timestamp: new Date(),
-          content: "hello",
-        },
-        {
-          timestamp: new Date(),
-          content: "hello",
-        },
-        {
-          timestamp: new Date(),
-          content: "hello",
-        },
-        {
-          timestamp: new Date(),
-          content: "hello",
-        },
-      ],
+      // actions: [
+      //   {
+      //     timestamp: new Date(),
+      //     content: "hello",
+      //   },
+      //   {
+      //     timestamp: new Date(),
+      //     content: "hello",
+      //   },
+      //   {
+      //     timestamp: new Date(),
+      //     content: "hello",
+      //   },
+      //   {
+      //     timestamp: new Date(),
+      //     content: "hello",
+      //   },
+      // ],
     };
   },
   mounted() {},

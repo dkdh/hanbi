@@ -66,6 +66,9 @@ export default new Vuex.Store({
                 setInterval(() => {
                     socket.emit("Robot2Web")
                 }, 700)
+                setInterval(() => {
+                    socket.emit("Log2Web")
+                }, 700)
             });
 
             socket.on('disconnect', function () {
@@ -118,7 +121,7 @@ export default new Vuex.Store({
                 var ctx = mapImg.getContext('2d')
 
                 ctx.clearRect(0, 0, dSizeX, dSizeY)
-                console.log("map : ", data)
+                // console.log("map : ", data)
                 for (let y = 0; y < dSizeY; y++) {
                     for (let x = 0; x < dSizeX; x++) {
                         //! 색 수정, 알고리즘 수정
@@ -139,7 +142,7 @@ export default new Vuex.Store({
                 state
                 const [y, x] = data
                 let robotDiv = document.querySelector("#robot")
-                console.log("zzz : ", state.map.dsizeY - y, x)
+                console.log("set Robot : ", state.map.dsizeY - y, x)
                 robotDiv.style.top = (state.map.dsizeY - y) + "px";
                 robotDiv.style.left = x + "px";
                 robotDiv.style.backgroundColor = state.colors.robot
@@ -149,6 +152,8 @@ export default new Vuex.Store({
         },
         setLog({ state }, data) {
             state, data
+            state.log = data
+            console.log("log : ", data)
         }
     },
     getters: {},

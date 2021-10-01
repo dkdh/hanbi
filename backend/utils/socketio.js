@@ -8,7 +8,7 @@ var outF = fs.createWriteStream(null, { flags: 'w', fd });
 info = {
   map: [],
   robot: [], // y, x
-  log: []
+  log: [{ timestamp: new Date(), content: "from nodejs" }, { timestamp: new Date(), content: "from nodejs2" }, { timestamp: new Date(), content: "from nodejs3" }]
 }
 //* 테스트 데이터 주입
 info.map = fs.readFileSync(path.resolve(__dirname, "../", "assets", "map.txt"), "utf-8")
@@ -70,12 +70,13 @@ module.exports.createSocket = function (http_server) {
 
       //todo 로직 3-1. get Log history and save DB
       //로직 3-1. 테스트 케이스 
-      info.log.push({ timestamp: new Date(), content: "from nodejs" }, { timestamp: new Date(), content: "from nodejs2" }, { timestamp: new Date(), content: "from nodejs3" })
+      info.log.push({})
     });
     socket.on("Log2Web", async (data) => {
       //todo 
+      console.log("emit log to web")
       //! socket.to(roomName).emit('Robot2Web', mapData);
-      socket.emit('Robot2Web', info.log);
+      socket.emit('Log2Web', info.log);
     })
   });
 };
