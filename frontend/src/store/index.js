@@ -2,17 +2,17 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { io } from "socket.io-client";
 import params from "../config"
-// import fs from "fs"
+import Environment from "@/store/Environment.js"
+import Robot from "@/store/Robot.js"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    namespaced: true,
     state: {
         category_idx: 0,
         socket: null,
-        robot: {
-            y: 0, x: 0
-        },
+
         colors: {
             bg: "#65AC52",
             robot: "#D60707",
@@ -24,14 +24,18 @@ export default new Vuex.Store({
             { name: "갈비찜덮밥", img: 0, date: new Date() },
         ],
         map: {
-            dsizeY: 350,
-            dsizeX: 350
+            dsizeY: 500,
+            dsizeX: 500
         },
         log: [
             { timestamp: new Date(), content: "vuex" },
             { timestamp: new Date(), content: "vuex2" },
             { timestamp: new Date(), content: "vuex3" }
-        ]
+        ],
+        env: {
+            temperature: 23,
+            weather: "Cloud"
+        }
     },
     mutations: {
         setCategory(state, a) {
@@ -47,7 +51,7 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        setSockets({ state, dispatch }) {
+        setSockets({ state, dispatch, commit }) {
             let { socket } = state
             //로직 1. 소켓 생성
             // //socket 등록
@@ -69,6 +73,9 @@ export default new Vuex.Store({
                 setInterval(() => {
                     socket.emit("Log2Web")
                 }, 700)
+                setInterval(() => {
+                    socket.emit("Environment2Web")
+                }, 1000)
             });
 
             socket.on('disconnect', function () {
@@ -87,18 +94,19 @@ export default new Vuex.Store({
             })
             socket.on("Map2Web", (data) => {
                 if (data) {
-                    console.log("Map2Web : Get map data from server")
+                    console.log("Map : Get map data from server")
                     dispatch("setMap", data)
                 } else {
-                    console.log("Map2Web : No Data from server")
+                    console.log("Map : No Data from server")
                 }
             })
             socket.on("Robot2Web", (data) => {
                 console.log(data)
                 if (data) {
+                    console.log("Robot : ", data)
                     dispatch("setRobot", data)
                 } else {
-                    console.log("Set2Web : No Data from server")
+                    console.log("Robot : No Data from server")
                 }
             })
             socket.on("Log2Web", (data) => {
@@ -106,7 +114,15 @@ export default new Vuex.Store({
                 if (data) {
                     dispatch("setLog", data)
                 } else {
-                    console.log("Set2Web : No Log from server")
+                    console.log("Log : No Log from server")
+                }
+            })
+            socket.on("Environment2Web", (data) => {
+                if (data) {
+                    console.log("setEnvironment")
+                    commit("Environment/setEnvironment", data)
+                } else {
+                    console.log("Environment : No Environment from werver")
                 }
             })
         },
@@ -116,12 +132,13 @@ export default new Vuex.Store({
                 map, data, colors
                 dSizeX = data.length
                 dSizeY = data[0].length
+                console.log("map Data : ", { dSizeY, dSizeX, data })
 
-                let mapImg = document.querySelector("#mapImg")
+                let mapImg = document.querySelector(".mappingImg")
                 var ctx = mapImg.getContext('2d')
 
                 ctx.clearRect(0, 0, dSizeX, dSizeY)
-                // console.log("map : ", data)
+                console.log("map : ", data)
                 for (let y = 0; y < dSizeY; y++) {
                     for (let x = 0; x < dSizeX; x++) {
                         //! 색 수정, 알고리즘 수정
@@ -137,26 +154,30 @@ export default new Vuex.Store({
                 console.log("no mapImg")
             }
         },
-        setRobot({ state }, data) {
-            try {
-                state
-                const [y, x] = data
-                let robotDiv = document.querySelector("#robot")
-                console.log("set Robot : ", state.map.dsizeY - y, x)
-                robotDiv.style.top = (state.map.dsizeY - y) + "px";
-                robotDiv.style.left = x + "px";
-                robotDiv.style.backgroundColor = state.colors.robot
-            } catch {
-                console.log("no Robot")
+        setRobot({ state, commit }, data) {
+            state
+
+            const { pos } = data
+            const [x, y] = pos
+            let robotDiv = document.querySelectorAll(".robot")
+            // console.log("set Robot : ", state.map.dsizeY - y, x)
+            for (let i = 0; i < robotDiv.length; i++) {
+                robotDiv[i].style.top = (state.map.dsizeY - y) + "px";
+                robotDiv[i].style.left = x + "px";
+                robotDiv[i].style.backgroundColor = state.colors.robot
             }
+            commit("Robot/setRobot", data)
+
         },
         setLog({ state }, data) {
             state, data
             state.log = data
             console.log("log : ", data)
-        }
+        },
     },
     getters: {},
     modules: {
+        Environment,
+        Robot,
     },
 });

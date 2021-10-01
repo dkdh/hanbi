@@ -1,10 +1,16 @@
-#logCont {
+#LogCont {
+  height: 100%;
+  width: 100%;
+
   > .el-card__body {
     display: flex;
-    > #blackbox {
-      border: 1px black solid;
-      height: 700px;
-      width: 400px;
+    justify-content: center;
+    height: 100%;
+    > #history {
+      margin-top: 15px;
+      > .radio {
+        margin: 25px;
+      }
     }
   }
 }

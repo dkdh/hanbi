@@ -1,5 +1,8 @@
 <template>
-  <div id="LostCont">
+  <el-card id="LostCont" shadow="always" :body-style="{ padding: '20px' }">
+    <div slot="header">
+      <span><!-- card title --></span>
+    </div>
     <!-- 카드 컴포넌트를 나열 -->
     <div id="lostWrap">
       <el-card
@@ -20,7 +23,7 @@
         </div>
       </el-card>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>

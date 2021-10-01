@@ -41,24 +41,6 @@ export default {
   data() {
     return {
       reverse: true,
-      // actions: [
-      //   {
-      //     timestamp: new Date(),
-      //     content: "hello",
-      //   },
-      //   {
-      //     timestamp: new Date(),
-      //     content: "hello",
-      //   },
-      //   {
-      //     timestamp: new Date(),
-      //     content: "hello",
-      //   },
-      //   {
-      //     timestamp: new Date(),
-      //     content: "hello",
-      //   },
-      // ],
     };
   },
   mounted() {},

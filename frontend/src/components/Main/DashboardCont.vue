@@ -1,27 +1,42 @@
 <template>
   <div id="DashboardCont">
-    <div id="c1">
-      <div id="r1">
+    <div id="DashboardWrap">
+      <div id="c1">
+        <!-- <div id="r1">
         <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+        <blackbox-cont></blackbox-cont>
+      </div> -->
+        <div id="r2">
+          <map-cont></map-cont>
+          <!-- <mapping-cont></mapping-cont> -->
+          <!-- <log-cont></log-cont> -->
+        </div>
       </div>
-      <div id="r2">
-        <map-view></map-view>
-        <Blackbox></Blackbox>
-        <log-view></log-view>
+      <div id="c2">
+        <weather-cont></weather-cont>
+        <robot-cont></robot-cont>
       </div>
     </div>
   </div>
 </template>
 <script>
-import LogView from "./LogCont.vue";
-import MapView from "./MapCont.vue";
+// import LogCont from "./LogCont.vue";
+// import MappingCont from "./MappingCont.vue";
+import MapCont from "./MapCont.vue";
 import "@/assets/css/DashboardCont.css";
-import Blackbox from "./BlackboxCont.vue";
+// import BlackboxCont from "./BlackboxCont.vue";
+import WeatherCont from "./Dashboard/WeatherCont.vue";
+import RobotCont from "./Dashboard/RobotCont.vue";
+
 export default {
-  components: { LogView, MapView, Blackbox },
+  components: {
+    // BlackboxCont,
+    // LogCont,
+    // MappingCont,
+    MapCont,
+    WeatherCont,
+    RobotCont,
+  },
 };
 </script>
 

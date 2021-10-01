@@ -1,0 +1,31 @@
+$map_size_y: 700px;
+$map_size_x: 700px;
+#MappingCont {
+  .el-card__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .mapWrap {
+      margin-top: 5rem;
+      .map {
+        position: relative;
+      }
+      .map {
+        height: 500px;
+        width: 500px;
+        .mappingImg {
+          // height: 500px;
+          // width: 500px;
+          border: 1px solid black;
+          position: relative;
+        }
+        .robot {
+          position: absolute;
+          bottom: 0;
+          width: 10px;
+          height: 10px;
+        }
+      }
+    }
+  }
+}

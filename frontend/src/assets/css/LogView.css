@@ -1,10 +1,17 @@
-#logCont > .el-card__body {
-  display: flex;
+#LogCont {
+  height: 100%;
+  width: 100%;
 }
-#logCont > .el-card__body > #blackbox {
-  border: 1px black solid;
-  height: 700px;
-  width: 400px;
+#LogCont > .el-card__body {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+#LogCont > .el-card__body > #history {
+  margin-top: 15px;
+}
+#LogCont > .el-card__body > #history > .radio {
+  margin: 25px;
 }
 
 /*# sourceMappingURL=LogView.css.map */

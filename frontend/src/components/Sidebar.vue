@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      category: { 0: "map", 1: "lost and found" },
+      category: { 0: "status", 1: "lost and found", 2: "history" },
     };
   },
   methods: {

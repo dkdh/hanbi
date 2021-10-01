@@ -4,16 +4,20 @@
     <div slot="header">
       <span>Map</span>
     </div>
-    <div id="mapWapper">
-      <div id="map">
-        <!-- <img id="mapImg" src="@/assets/map_before.png" /> -->
-        <canvas id="mapImg" width="500px" height="500px"> </canvas>
+    <div class="mapWrap">
+      <div class="map">
+        <!-- !이미지 렌더링이 안됨 -->
+        <img
+          :src="require(`@/assets/map.png`)"
+          width="500px"
+          height="500px"
+          z-index="5"
+        />
         <div
-          id="robot"
+          class="robot"
           style="width: 10px; height: 10px; background-color: red"
         ></div>
       </div>
-      <el-button type="primary" size="default" @click="poseRobot"></el-button>
     </div>
     <!-- card body -->
   </el-card>
@@ -30,22 +34,21 @@ export default {
     };
   },
   methods: {
-    poseRobot() {
-      // if 서버 이미지를 받아온다면
-      // y, x = 로봇의 목표 위치
-      // sizeY, sizeX, resol = 이전 맵의 높이, 폭, 해상도
-      //
-      // const [y, x] = [30, 0];
-      // const targetRobot = this.node2web(y, x);
-      // const robot = document.querySelector("#robot");
-      // // const [robotY, robotX] = [robot.offsetTop, robot.offsetLeft];
-      // robot.style.top = targetRobot[0];
-      // robot.style.left = targetRobot[1];console.log("ggg : ", robotDiv)
-      // console.log("robot's cur coords : ", robotY, robotX);
+    // 캔버스에 이미지 추가하기
+    addToCanvas(ctx, image, x, y) {
+      var img = new Image();
+      img.src = image;
+      img.onload = function () {
+        ctx.drawImage(img, x, y);
+      };
     },
-    node2web() {
-      return [0, 0];
-    },
+  },
+  mounted() {
+    var canvas = document.querySelector("mapImg");
+    var ctx = canvas.getContext("2d");
+    var myImage = "@/assets/map.png";
+
+    this.addToCanvas(ctx, myImage);
   },
 };
 </script>
