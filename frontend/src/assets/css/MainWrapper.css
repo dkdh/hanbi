@@ -5,8 +5,5 @@
   display: flex;
   justify-content: center;
 }
-#MainWrapper > * {
-  margin-top: 10rem;
-}
 
 /*# sourceMappingURL=MainWrapper.css.map */

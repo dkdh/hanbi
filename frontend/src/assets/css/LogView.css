@@ -1,0 +1,10 @@
+#logCont > .el-card__body {
+  display: flex;
+}
+#logCont > .el-card__body > #blackbox {
+  border: 1px black solid;
+  height: 700px;
+  width: 400px;
+}
+
+/*# sourceMappingURL=LogView.css.map */

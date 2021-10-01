@@ -9,6 +9,7 @@
     "css": "npx sass src/assets/scss:src/assets/css/"
   },
   "dependencies": {
+    "axios": "^0.21.4",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
     "es6-promise": "^4.2.8",

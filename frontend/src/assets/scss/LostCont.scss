@@ -1,5 +1,9 @@
-#LostView {
-  #lostWrapper {
+#LostCont {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  #lostWrap {
+    margin-top: 10rem;
     display: flex;
     justify-content: center;
     align-items: flex-start;

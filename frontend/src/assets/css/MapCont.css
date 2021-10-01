@@ -1,0 +1,12 @@
+#MapCont #map {
+  position: relative;
+}
+#MapCont #mapImg {
+  border: 1px solid black;
+}
+#MapCont #robot {
+  position: absolute;
+  bottom: 0;
+}
+
+/*# sourceMappingURL=MapCont.css.map */

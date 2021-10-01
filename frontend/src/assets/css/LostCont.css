@@ -1,33 +1,34 @@
-#LostView {
+#LostCont {
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
-#LostView #lostWrapper {
+#LostCont #lostWrap {
+  margin-top: 10rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   width: 70%;
   margin-left: 80px;
 }
-#LostView #lostWrapper > * {
+#LostCont #lostWrap > * {
   margin-right: 80px;
 }
-#LostView #lostWrapper > * .time {
+#LostCont #lostWrap > * .time {
   font-size: 13px;
   color: #999;
 }
-#LostView #lostWrapper > * .image {
+#LostCont #lostWrap > * .image {
   width: 100%;
   display: block;
 }
-#LostView #lostWrapper > * .clearfix:before,
-#LostView #lostWrapper > * .clearfix:after {
+#LostCont #lostWrap > * .clearfix:before,
+#LostCont #lostWrap > * .clearfix:after {
   display: table;
   content: "";
 }
-#LostView #lostWrapper > * .clearfix:after {
+#LostCont #lostWrap > * .clearfix:after {
   clear: both;
 }
 
-/*# sourceMappingURL=LostView.css.map */
+/*# sourceMappingURL=LostCont.css.map */

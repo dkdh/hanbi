@@ -1,7 +1,6 @@
 <template>
   <el-aside id="Sidebar">
     <el-card>
-      {{ category_idx }}
       <a v-for="(e, idx) in category" :key="e" @click="onClick(idx)">
         <h1>{{ e }}</h1></a
       >
@@ -20,7 +19,7 @@ export default {
   },
   data() {
     return {
-      category: { 0: "map", 1: "lost and found", 2: "log" },
+      category: { 0: "map", 1: "lost and found" },
     };
   },
   methods: {

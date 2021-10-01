@@ -4,8 +4,15 @@ const app = express()
 const port = 3000
 const server = require('http').createServer(app);
 const io = require("./utils/socketio").createSocket(server)
+const cors = require("cors")
 
-require("./utils/init")
+const params = require("./config")
+
+app.use(cors({
+  //cors 이슈 핸들링 : 서버에 접근할 도메인을 명시
+  origin: params["origin"]
+}))
+
 
 app.use((req, res, next) => {
   //접속 기록을 남겨주는 미들웨어
@@ -18,24 +25,6 @@ app.use("/api", router)
 server.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
-
-
-// const fs = require("fs")
-// path = "H:\\Project\\Ssafy_2\\PJT2\\sbj3\\S05P21A102\\backend\\assets\\"
-// var inF = fs.createReadStream(path + 'aaa.txt', { flags: 'a+' });
-// var outF = fs.createWriteStream(path + 'bbb.txt', { flags: 'w' });
-
-// inF.on('data', function (fileData) {
-//   console.log("읽기 :" + fileData); //""+ 문자열인지 인지를 하지 않으면 출력 안나옴
-//   outF.write(fileData);
-// });
-
-// inF.on('end', function () {
-//   console.log("읽기 종료");
-//   outF.end(function () {
-//     console.log("쓰기 종료")
-//   });
-// })
 
 
 // // for (i = 0; i < 10; i++) {

@@ -3,13 +3,13 @@
     <Nav></Nav>
     <div id="mainView">
       <side-bar></side-bar>
-      <main-wrapper></main-wrapper>
+      <Main></Main>
     </div>
   </div>
 </template>
 <script>
 import Nav from "../components/Nav.vue";
-import MainWrapper from "../components/Main/MainWrapper.vue";
+import Main from "../components/Main/MainCont.vue";
 import SideBar from "../components/Sidebar.vue";
 import { mapActions } from "vuex";
 import "../assets/css/Main.css";
@@ -18,7 +18,7 @@ export default {
   components: {
     SideBar,
     Nav,
-    MainWrapper,
+    Main,
   },
   methods: {
     ...mapActions(["setSockets"]),

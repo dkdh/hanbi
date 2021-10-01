@@ -1,7 +1,8 @@
-const NODE_ENV = "developments"
+const NODE_ENV = process.env.NODE_ENV || "development"
 const params = {
-    "developments": {
-        "ip_server": 'http://localhost:3000'
-    }
+    "development": {
+        "ip_server": "http://localhost:3000"
+    },
 }
-export default params[NODE_ENV]
+console.log(params[NODE_ENV])
+module.exports = params[NODE_ENV]

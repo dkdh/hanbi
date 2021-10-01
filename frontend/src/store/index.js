@@ -22,15 +22,28 @@ export default new Vuex.Store({
             { name: "열쇠", img: 0, date: new Date() },
             { name: "지갑", img: 0, date: new Date() },
             { name: "갈비찜덮밥", img: 0, date: new Date() },
+        ],
+        map: {
+            dsizeY: 350,
+            dsizeX: 350
+        },
+        log: [
+            { timestamp: new Date(), content: "vuex" },
+            { timestamp: new Date(), content: "vuex2" },
+            { timestamp: new Date(), content: "vuex3" }
         ]
     },
     mutations: {
         setCategory(state, a) {
-            // console.log("hi : ", a, state)
+            // console.log("hi : ", a, state)S
             state.category_idx = a
         },
         setRobot(state, pos) {
             state, pos
+        },
+        setLosts(state, lost) {
+            console.log(lost)
+            state.losts = lost
         }
     },
     actions: {
@@ -48,11 +61,11 @@ export default new Vuex.Store({
                 //로직 2-1. 연결되면 주기적으로 데이터를 받아옴
                 setInterval(() => {
                     socket.emit("Map2Web")
-                }, 3000)
+                }, 1500)
 
                 setInterval(() => {
                     socket.emit("Robot2Web")
-                }, 1500)
+                }, 700)
             });
 
             socket.on('disconnect', function () {
@@ -85,25 +98,35 @@ export default new Vuex.Store({
                     console.log("Set2Web : No Data from server")
                 }
             })
+            socket.on("Log2Web", (data) => {
+                console.log(data)
+                if (data) {
+                    dispatch("setLog", data)
+                } else {
+                    console.log("Set2Web : No Log from server")
+                }
+            })
         },
         setMap({ state }, data) {
             try {
-                let { map, colors } = state
-                map, data
-                const dSizeX = data.length
-                const dSizeY = data[0].length
+                let { map, colors, dSizeX, dSizeY } = state
+                map, data, colors
+                dSizeX = data.length
+                dSizeY = data[0].length
 
                 let mapImg = document.querySelector("#mapImg")
                 var ctx = mapImg.getContext('2d')
 
                 ctx.clearRect(0, 0, dSizeX, dSizeY)
-
+                console.log("map : ", data)
                 for (let y = 0; y < dSizeY; y++) {
                     for (let x = 0; x < dSizeX; x++) {
                         //! 색 수정, 알고리즘 수정
-                        if (data[y][x] > 50) ctx.fillStyle = colors.bg;
-                        if (data[y][x] <= 50) ctx.fillStyle = colors.obstacle;
-                        ctx.fillRect(x, y, 1, 1)
+                        // if (data[y][x] > 50) ctx.fillStyle = colors.bg;
+                        // if (data[y][x] <= 50) ctx.fillStyle = colors.obstacle;
+                        ctx.fillStyle = "rgb(" + data[y][x] + ", 165, 0)";
+                        //좌측 상단 기준으로 그려지는 맵을 좌측 하단을 기준으로 하도록 변경
+                        ctx.fillRect(x, dSizeY - y, 1, 1)
                     }
                 }
                 console.log(" setMap : ", mapImg)
@@ -116,13 +139,16 @@ export default new Vuex.Store({
                 state
                 const [y, x] = data
                 let robotDiv = document.querySelector("#robot")
-                console.log(y, x)
-                robotDiv.style.bottom = y + "px";
+                console.log("zzz : ", state.map.dsizeY - y, x)
+                robotDiv.style.top = (state.map.dsizeY - y) + "px";
                 robotDiv.style.left = x + "px";
                 robotDiv.style.backgroundColor = state.colors.robot
             } catch {
                 console.log("no Robot")
             }
+        },
+        setLog({ state }, data) {
+            state, data
         }
     },
     getters: {},
