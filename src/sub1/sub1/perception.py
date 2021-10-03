@@ -7,6 +7,7 @@ import rclpy
 from rclpy.node import Node
 
 from sensor_msgs.msg import CompressedImage
+from ssafy_msgs.msg import Num
 
 import torch
 import time
@@ -49,6 +50,7 @@ class IMGParser(Node):
 
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
         
+        self.num_pub_ = self.create_publisher(Num, '/people_check', 1)
 
     def img_callback(self, msg):
         # 로직 2. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장
@@ -82,6 +84,8 @@ class IMGParser(Node):
 
     def detect_social_distancing(self, img_bgr):
 
+        self.num_msg = Num()
+
         distance_minimum = 60
         people_minimum = 3
 
@@ -95,7 +99,7 @@ class IMGParser(Node):
         # person detect 결과만 저장
         detected = results.xyxy[0]
         detected = detected[detected[:, 5] == 0]
-        # detected = detected[detected[:, 4] > 0.4]
+        detected = detected[detected[:, 4] > 0.5]
         # print(detected)
 
         # 좌표값만 뽑기
@@ -146,6 +150,7 @@ class IMGParser(Node):
         for i, company in enumerate(companies):
             if company >= people_minimum:
                 violate_point = ground_points[i]
+                self.num_msg.num = company
                 break
 
         # 위반 사례 존재 시 visualize
@@ -167,6 +172,7 @@ class IMGParser(Node):
             self.detect_social_distancing(self.img_bgr)
 
             # msg publish
+            self.num_pub_.publish(self.num_msg)
 
         else:
             pass
