@@ -8,6 +8,7 @@ from rclpy.node import Node
 
 from sensor_msgs.msg import CompressedImage
 from ssafy_msgs.msg import Num
+from nav_msgs.msg import Odometry
 
 import torch
 import time
@@ -39,6 +40,13 @@ class IMGParser(Node):
             CompressedImage,
             '/image_jpeg/compressed',
             self.img_callback,
+            10)
+
+        # turtlebot의 위치를 받기 위한 subscriber
+        self.pos_sub = self.create_subscription(
+            Odometry,
+            'odom',
+            self.odom_callback,
             10)
 
         # yolo v5
@@ -82,12 +90,22 @@ class IMGParser(Node):
         
         # cv2.waitKey(4)
 
+    def odom_callback(self, msg):
+        
+        print('x : {} , y : {} '.format(msg.pose.pose.position.x,msg.pose.pose.position.y))
+        
+        self.pos_x = msg.pose.pose.position.x
+
+        self.pos_y = msg.pose.pose.position.y
+
     def detect_social_distancing(self, img_bgr):
 
         self.num_msg = Num()
 
-        distance_minimum = 60
+        distance_minimum = 80
         people_minimum = 3
+
+        circle_r = int(distance_minimum/2)
 
         corner_points = ((0, 125), (320, 125), (0, 229), (320, 229))
         matrix, _ = compute_perspective_transform(corner_points, img_bgr.shape[1], img_bgr.shape[0], img_bgr)
@@ -128,7 +146,7 @@ class IMGParser(Node):
             # if y < 0:
             #     y = 0
             #     transformed_downoids[i][1] = 0
-            cv2.circle(bird_view_img, (x, y), 30, (0, 255, 0), 2)
+            cv2.circle(bird_view_img, (x, y), circle_r, (0, 255, 0), 2)
             cv2.circle(bird_view_img, (x, y), 3, (0, 255, 0), -1)
 
         # print("transformed_downoids:", transformed_downoids)
