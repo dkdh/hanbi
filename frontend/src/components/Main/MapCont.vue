@@ -33,23 +33,8 @@ export default {
       robot: [0, 0],
     };
   },
-  methods: {
-    // 캔버스에 이미지 추가하기
-    addToCanvas(ctx, image, x, y) {
-      var img = new Image();
-      img.src = image;
-      img.onload = function () {
-        ctx.drawImage(img, x, y);
-      };
-    },
-  },
-  mounted() {
-    var canvas = document.querySelector("mapImg");
-    var ctx = canvas.getContext("2d");
-    var myImage = "@/assets/map.png";
-
-    this.addToCanvas(ctx, myImage);
-  },
+  methods: {},
+  mounted() {},
 };
 </script>
 <style>

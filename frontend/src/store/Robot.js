@@ -5,7 +5,6 @@ export default {
     },
     mutations: {
         setRobot(state, data) {
-            console.log("setRobot : ", data)
             const { battery, velocity, pos, mode } = data
             state.battery = battery
             state.velocity = velocity

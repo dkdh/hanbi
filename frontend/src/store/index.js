@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import params from "../config"
 import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
+import Map from "@/store/Map.js"
 
 Vue.use(Vuex)
 
@@ -28,14 +29,15 @@ export default new Vuex.Store({
             dsizeX: 500
         },
         log: [
-            { timestamp: new Date(), content: "vuex" },
-            { timestamp: new Date(), content: "vuex2" },
-            { timestamp: new Date(), content: "vuex3" }
+            { timestamp: String(new Date()), content: "vuex" },
+            { timestamp: String(new Date()), content: "vuex2" },
+            { timestamp: String(new Date()), content: "vuex3" }
         ],
         env: {
             temperature: 23,
             weather: "Cloud"
-        }
+        },
+        a: 0
     },
     mutations: {
         setCategory(state, a) {
@@ -46,7 +48,7 @@ export default new Vuex.Store({
             state, pos
         },
         setLosts(state, lost) {
-            console.log(lost)
+            // console.log(lost)
             state.losts = lost
         }
     },
@@ -65,14 +67,14 @@ export default new Vuex.Store({
                 //로직 2-1. 연결되면 주기적으로 데이터를 받아옴
                 setInterval(() => {
                     socket.emit("Map2Web")
-                }, 1500)
+                }, 300)
 
                 setInterval(() => {
                     socket.emit("Robot2Web")
                 }, 700)
                 setInterval(() => {
                     socket.emit("Log2Web")
-                }, 700)
+                }, 1000)
                 setInterval(() => {
                     socket.emit("Environment2Web")
                 }, 1000)
@@ -94,23 +96,21 @@ export default new Vuex.Store({
             })
             socket.on("Map2Web", (data) => {
                 if (data) {
-                    console.log("Map : Get map data from server")
-                    dispatch("setMap", data)
+                    console.log("Map : Get map data from server", data.length)
+                    dispatch("Map/setMapping", data)
                 } else {
                     console.log("Map : No Data from server")
                 }
             })
             socket.on("Robot2Web", (data) => {
-                console.log(data)
                 if (data) {
-                    console.log("Robot : ", data)
+                    // console.log("Robot : ", data)
                     dispatch("setRobot", data)
                 } else {
                     console.log("Robot : No Data from server")
                 }
             })
             socket.on("Log2Web", (data) => {
-                console.log(data)
                 if (data) {
                     dispatch("setLog", data)
                 } else {
@@ -119,41 +119,14 @@ export default new Vuex.Store({
             })
             socket.on("Environment2Web", (data) => {
                 if (data) {
-                    console.log("setEnvironment")
+                    // console.log("setEnvironment")
                     commit("Environment/setEnvironment", data)
                 } else {
                     console.log("Environment : No Environment from werver")
                 }
             })
         },
-        setMap({ state }, data) {
-            try {
-                let { map, colors, dSizeX, dSizeY } = state
-                map, data, colors
-                dSizeX = data.length
-                dSizeY = data[0].length
-                console.log("map Data : ", { dSizeY, dSizeX, data })
 
-                let mapImg = document.querySelector(".mappingImg")
-                var ctx = mapImg.getContext('2d')
-
-                ctx.clearRect(0, 0, dSizeX, dSizeY)
-                console.log("map : ", data)
-                for (let y = 0; y < dSizeY; y++) {
-                    for (let x = 0; x < dSizeX; x++) {
-                        //! 색 수정, 알고리즘 수정
-                        // if (data[y][x] > 50) ctx.fillStyle = colors.bg;
-                        // if (data[y][x] <= 50) ctx.fillStyle = colors.obstacle;
-                        ctx.fillStyle = "rgb(" + data[y][x] + ", 165, 0)";
-                        //좌측 상단 기준으로 그려지는 맵을 좌측 하단을 기준으로 하도록 변경
-                        ctx.fillRect(x, dSizeY - y, 1, 1)
-                    }
-                }
-                console.log(" setMap : ", mapImg)
-            } catch {
-                console.log("no mapImg")
-            }
-        },
         setRobot({ state, commit }, data) {
             state
 
@@ -172,12 +145,13 @@ export default new Vuex.Store({
         setLog({ state }, data) {
             state, data
             state.log = data
-            console.log("log : ", data)
+            // console.log("log : ", data)
         },
     },
     getters: {},
     modules: {
         Environment,
         Robot,
+        Map
     },
 });

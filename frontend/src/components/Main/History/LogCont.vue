@@ -37,6 +37,9 @@ export default {
   // props: ["actions"],
   computed: {
     ...mapState(["log"]),
+    ...mapState("Map", {
+      data: (state) => state.data,
+    }),
   },
   data() {
     return {
