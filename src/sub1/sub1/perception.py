@@ -7,7 +7,7 @@ import rclpy
 from rclpy.node import Node
 
 from sensor_msgs.msg import CompressedImage
-from ssafy_msgs.msg import Num
+from ssafy_msgs.msg import HandControl
 from nav_msgs.msg import Odometry
 
 import torch
@@ -58,7 +58,7 @@ class IMGParser(Node):
 
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
         
-        self.num_pub_ = self.create_publisher(Num, '/people_check', 1)
+        self.num_pub_ = self.create_publisher(HandControl, '/people_check', 1)
 
     def img_callback(self, msg):
         # 로직 2. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장
@@ -100,7 +100,7 @@ class IMGParser(Node):
 
     def detect_social_distancing(self, img_bgr):
 
-        self.num_msg = Num()
+        self.people_msg = HandControl()
 
         distance_minimum = 80
         people_minimum = 3
@@ -168,7 +168,7 @@ class IMGParser(Node):
         for i, company in enumerate(companies):
             if company >= people_minimum:
                 violate_point = ground_points[i]
-                self.num_msg.num = company
+                self.people_msg.control_mode = company
                 break
 
         # 위반 사례 존재 시 visualize
@@ -190,7 +190,9 @@ class IMGParser(Node):
             self.detect_social_distancing(self.img_bgr)
 
             # msg publish
-            self.num_pub_.publish(self.num_msg)
+            self.people_msg.put_distance = -16.0
+            self.people_msg.put_height = -19.168
+            self.num_pub_.publish(self.people_msg)
 
         else:
             pass
