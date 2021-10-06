@@ -51,14 +51,21 @@ def non_maximum_supression(bboxes, threshold=0.5):
             y1_br = bbox[1] + bbox[3]
             y2_br = new_bbox[1] + new_bbox[3]
             
-            """
             # 로직 4 : 두 bbox의 겹치는 영역을 구해서, 영역이 안 겹칠때 new_bbox로 save
-            x_overlap = 
-            y_overlap = 
+            if x1_br < x2_tl or x2_br < x1_tl or y2_br < y1_tl or y1_br < y2_tl:
+                x_overlap = 0
+                y_overlap = 0
+            else:
+                x_array = [x1_tl, x1_br, x2_tl, x2_br]
+                y_array = [y1_tl, y1_br, y2_tl, y2_br]
+                x_array.sort()
+                y_array.sort()
+                x_overlap = x_array[2] - x_array[1]
+                y_overlap = y_array[2] - y_array[1]
             overlap_area = x_overlap * y_overlap
             
-            area_1 = 
-            area_2 = 
+            area_1 = (x1_br - x1_tl) * (y1_br - y1_tl)
+            area_2 = (x2_br - x2_tl) * (y2_br - y2_tl)
             
             total_area = area_1 + area_2 - overlap_area
             overlap_area = overlap_area / float(total_area)
@@ -66,8 +73,6 @@ def non_maximum_supression(bboxes, threshold=0.5):
             if overlap_area < threshold:
 
                 new_bboxes.append(bbox)
-
-            """
 
     return new_bboxes
 
@@ -120,8 +125,6 @@ class HumanDetector(Node):
             xl, yl, wl, hl = [], [], [], []
             rects = non_maximum_supression(rects_temp)
 
-            """
-    
             # 로직 5 : bbox를 ros msg 파일에 write
 
             ## 각 bbox의 center, width, height의 꼭지점들을 리스트에 넣어 놓고
@@ -133,36 +136,33 @@ class HumanDetector(Node):
                 yl.append(y)
                 wl.append(w)
                 hl.append(h)
-
+            
             if self.able_to_pub:
 
-                self.bbox_msg.num_bbox = 
+                self.bbox_msg.num_bbox = len(rects_temp)
 
-                obj_list = 
+                obj_list = rects_temp
 
-                self.bbox_msg.idx_bbox = 
+                self.bbox_msg.idx_bbox = [0 for i in range(len(rects_temp))]
 
-                self.bbox_msg.x = 
-                self.bbox_msg.y = 
-                self.bbox_msg.w = 
-                self.bbox_msg.h = 
-
-            """
+                self.bbox_msg.x = [x in xl]
+                self.bbox_msg.y = [y in yl]
+                self.bbox_msg.w = [w in wl]
+                self.bbox_msg.h = [h in hl]
 
             for (x,y,w,h) in rects:
 
                 cv2.rectangle(img_bgr, (x,y),(x+w,y+h),(0,255,255), 2)
+
+            # print("human num:", len(rects))
 
         else:
             # pass
             self.bbox_msg.num_bbox = len(rects_temp)
 
 
-        """
-        로직 7 : bbox 결과 show
-        cv2.
-        cv2.waitKey(1)
-        """           
+        
+        # 로직 7 : bbox 결과 show
         cv2.imshow("detection result", img_bgr)        
         cv2.waitKey(1)
 
