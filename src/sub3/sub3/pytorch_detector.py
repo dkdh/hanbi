@@ -71,8 +71,8 @@ def scan_callback(msg):
 
 def main(args=None):
     # Pytorch Hub를 통한 Yolo v5 이용. weight로 학습시킨 hanvi_detection_weight.pt 이용.
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
-    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
+    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
     global g_node
 
     rclpy.init(args=args)
@@ -107,6 +107,19 @@ def main(args=None):
                 local_detect.x = float(0)
                 local_detect.y = float(0)
                 local_detect.name = results.pandas().xyxy[0].name[i]
+                # 일단 절대 좌표 고정
+                if local_detect.name == 'tent':
+                    local_detect.x = -2.62
+                    local_detect.y = 4.13
+                elif local_detect.name == 'fire':
+                    local_detect.x = 8.22
+                    local_detect.y = -2.76
+                elif local_detect.name == 'kickboard':
+                    local_detect.x = 7.79
+                    local_detect.y = -9.52
+                elif local_detect.name == 'bottle':
+                    local_detect.x = 6.0
+                    local_detect.y = -18.48
             else:
                 local_detect.confidence = float(0)
                 local_detect.x = float(0)
