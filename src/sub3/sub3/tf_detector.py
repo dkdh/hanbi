@@ -43,15 +43,47 @@ from object_detection.utils import visualization_utils as vis_util
 ## 그리고 lidar scan data를 받아서 이미지에 정사영하기위해 ex_calib에 있는
 ## class 들도 가져와 import 합니다.
 
+# tf_detector.py
+# params_lidar = {
+#     "Range" : 90, #min & max range of lidar azimuths
+#     "CHANNEL" : int(1), #verticla channel of a lidar
+#     "localIP": "127.0.0.1",
+#     "localPort": 9094,
+#     "Block_SIZE": int(1206),
+#     "X": 0, # meter
+#     "Y": 0,
+#     "Z": 0.6,
+#     "YAW": 0, # deg
+#     "PITCH": 0,
+#     "ROLL": 0
+# }
+
+
+# params_cam = {
+#     "WIDTH": 320, # image width
+#     "HEIGHT": 240, # image height
+#     "FOV": 60, # Field of view
+#     "localIP": "127.0.0.1",
+#     "localPort": 1232,
+#     "Block_SIZE": int(65000),
+#     "X": 0, # meter
+#     "Y": 0,
+#     "Z": 1,
+#     "YAW": 0, # deg
+#     "PITCH": 5,
+#     "ROLL": 0
+# }
+
+# sub2/ex_calib.py
 params_lidar = {
     "Range" : 90, #min & max range of lidar azimuths
     "CHANNEL" : int(1), #verticla channel of a lidar
     "localIP": "127.0.0.1",
-    "localPort": 9094,
+    "localPort": 2368,
     "Block_SIZE": int(1206),
     "X": 0, # meter
     "Y": 0,
-    "Z": 0.6,
+    "Z": 0.4+0.1,
     "YAW": 0, # deg
     "PITCH": 0,
     "ROLL": 0
@@ -65,14 +97,13 @@ params_cam = {
     "localIP": "127.0.0.1",
     "localPort": 1232,
     "Block_SIZE": int(65000),
-    "X": 0, # meter
+    "X": 0., # meter
     "Y": 0,
-    "Z": 1,
+    "Z":  0.8,
     "YAW": 0, # deg
-    "PITCH": 5,
+    "PITCH": 0.0,
     "ROLL": 0
 }
-
 
 class detection_net_class():
     def __init__(self, sess, graph, category_index):
@@ -185,12 +216,14 @@ def main(args=None):
     
     MODEL_NAME = 'ssd_mobilenet_v1_coco_2018_01_28'
 
-    PATH_TO_WEIGHT = os.path.join(CWD_PATH, 'model_weights', \
-        MODEL_NAME, 'frozen_inference_graph.pb')
+    # PATH_TO_WEIGHT = os.path.join(CWD_PATH, 'model_weights', \
+    #     MODEL_NAME, 'frozen_inference_graph.pb')
+    PATH_TO_WEIGHT = os.path.join('C://Users//multicampus//Desktop//catkin_ws//src//sub3//sub3//model_weights//ssd_mobilenet_v1_coco_2018_01_28//frozen_inference_graph.pb')
 
     print(PATH_TO_WEIGHT)
-    PATH_TO_LABELS = os.path.join(CWD_PATH, 'model_weights', \
-        'data', 'mscoco_label_map.pbtxt')
+    # PATH_TO_LABELS = os.path.join(CWD_PATH, 'model_weights', \
+    #     'data', 'mscoco_label_map.pbtxt')
+    PATH_TO_LABELS = os.path.join('C://Users//multicampus//Desktop//catkin_ws//src//sub3//sub3//model_weights//data//mscoco_label_map.pbtxt')
 
     NUM_CLASSES = 90
 
@@ -277,15 +310,26 @@ def main(args=None):
         # sub2 에서 ex_calib 에 했던 대로 라이다 포인트들을
         # 이미지 프레임 안에 정사영시킵니다.
 
+        # tf_detector
         xyz_p = xyz[np.where(xyz[:, 0]>=0)]
+
+        # sub2/ex_calib
+        # a = xyz[:90]
+        # b = xyz[270:]
+        # xyz_p = np.concatenate([a, b])
 
         xyz_c = l2c_trans.transform_lidar2cam(xyz_p)
 
+        # tf_detector
         xy_i = l2c_trans.project_pts2img(xyz_c, False)
+        # sub2/ex_calib
+        # xy_i = l2c_trans.project_pts2img(xyz_c)
+
+        # 0, 0 만 나오는 중
+        print(xy_i)
 
         xyii = np.concatenate([xy_i, xyz_p], axis=1)
 
-        """
 
         # 로직 12. bounding box 결과 좌표 뽑기
         ## boxes_detect 안에 들어가 있는 bounding box 결과들을
@@ -298,12 +342,18 @@ def main(args=None):
             ih = img_bgr.shape[0]
             iw = img_bgr.shape[1]
 
-            boxes_np = 
+            boxes_np = np.array(boxes_detect)
 
-            x = 
-            y = 
-            w = 
-            h = 
+            # print(boxes_np.shape)
+            # print(boxes_np)
+
+            x = boxes_np[:, 1] * iw
+            y = boxes_np[:, 0] * ih
+            w = boxes_np[:, 3] * iw - x
+            h = boxes_np[:, 2] * ih - y
+
+            # print(x)
+            # print(y)
 
             bbox = np.vstack([
                 x.astype(np.int32).tolist(),
@@ -312,10 +362,8 @@ def main(args=None):
                 h.astype(np.int32).tolist()
             ]).T
 
-        """
-
+            print(bbox)
             
-        """
 
             # 로직 13. 인식된 물체의 위치 추정
             ## bbox가 구해졌으면, bbox 안에 들어가는 라이다 포인트 들을 구하고
@@ -329,21 +377,22 @@ def main(args=None):
                 w = int(bbox[i, 2])
                 h = int(bbox[i, 3])
 
-                cx = 
-                cy = 
+                # cx = x + 2 / w
+                # cy = y + 2 / h
                 
-                xyv = 
+                # xyv = 
 
                 ## bbox 안에 들어가는 라이다 포인트들의 대표값(예:평균)을 뽑는다
-                ostate = 
+                # ostate = 
 
                 ## 대표값이 존재하면 
-                if not np.isnan(ostate[0]):
-                    ostate_list.append(ostate)
+                # if not np.isnan(ostate[0]):
+                    # ostate_list.append(ostate)
 
             image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32),
                                             xy_i[:, 1].astype(np.int32))
-
+            
+        """
             print(ostate_list)
         """
         visualize_images(image_process, infer_time)
