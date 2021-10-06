@@ -9,6 +9,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import CompressedImage
 from ssafy_msgs.msg import HandControl
 from nav_msgs.msg import Odometry
+from squaternion import Quaternion
 
 import torch
 import time
@@ -95,8 +96,13 @@ class IMGParser(Node):
         print('x : {} , y : {} '.format(msg.pose.pose.position.x,msg.pose.pose.position.y))
         
         self.pos_x = msg.pose.pose.position.x
-
         self.pos_y = msg.pose.pose.position.y
+
+        q = msg.pose.pose.orientation
+        e = Quaternion.to_euler(q)
+        self.bot_theta = e[2]
+
+        print('e: ', e)
 
     def detect_social_distancing(self, img_bgr):
 
@@ -174,6 +180,7 @@ class IMGParser(Node):
         # 위반 사례 존재 시 visualize
         if violate_point is not None:
             violate_point_int = (int(violate_point[0]), int(violate_point[1]))
+            print('x: ', violate_point[0], 'y: ', violate_point[1])
             cv2.circle(img_bgr, violate_point_int, 3, (255, 0, 0), -1)
 
         # cv2.line(img_bgr, (0, 125), (320, 125), (0, 0, 255), 1)
