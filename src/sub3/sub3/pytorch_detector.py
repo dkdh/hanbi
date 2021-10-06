@@ -71,8 +71,8 @@ def scan_callback(msg):
 
 def main(args=None):
     # Pytorch Hub를 통한 Yolo v5 이용. weight로 학습시킨 hanvi_detection_weight.pt 이용.
-    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
+    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
     global g_node
 
     rclpy.init(args=args)
