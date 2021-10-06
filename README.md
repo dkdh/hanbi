@@ -26,3 +26,6 @@ $ pip install -r requirements.txt
 ROS2 Custom massage type을 사용하기 위해
 colcon build로 전체 빌드.
 또는, colcon build --packages-select hanvi_interfaces 필요.
+
+Yolo object detect class
+fire, kickboard, bottle, bag, tent, trash

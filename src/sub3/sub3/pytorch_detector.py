@@ -71,8 +71,8 @@ def scan_callback(msg):
 
 def main(args=None):
     # Pytorch Hub를 통한 Yolo v5 이용. weight로 학습시킨 hanvi_detection_weight.pt 이용.
-    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
+    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
     global g_node
 
     rclpy.init(args=args)
@@ -99,14 +99,14 @@ def main(args=None):
         
         global_detect = DetectionList()
 
-        for _ in range(len(results.pandas().xyxy[0])):
+        for i in range(len(results.pandas().xyxy[0])):
             local_detect = Detection()
 
-            if results.pandas().xyxy[0].confidence[0] >= 0.7:
-                local_detect.confidence = results.pandas().xyxy[0].confidence[0]
+            if results.pandas().xyxy[0].confidence[i] >= 0.7:
+                local_detect.confidence = results.pandas().xyxy[0].confidence[i]
                 local_detect.x = float(0)
                 local_detect.y = float(0)
-                local_detect.name = results.pandas().xyxy[0].name[0]
+                local_detect.name = results.pandas().xyxy[0].name[i]
             else:
                 local_detect.confidence = float(0)
                 local_detect.x = float(0)
