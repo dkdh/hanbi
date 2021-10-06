@@ -90,19 +90,21 @@ module.exports.createSocket = function (http_server) {
 
     //로직 1. 로봇 이벤트
     socket.on("Robot2Web", async (data) => {
-      console.log("emit robot to Web", info.robot)
+      // console.log("emit robot to Web", info.robot)
       socket.emit('Robot2Web', info.robot);
     })
 
     //로직 2. 로그 이벤트
-    socket.on("Log2Server", async (data) => {
+    socket.on("History2Server", async (data) => {
       console.log("get Log from ROS")
-      info.log.push(data)
+      const { content } = data
+      if (!content) return
+      info.log.push({ timestamp: new Date(), content })
     });
 
-    socket.on("Log2Web", async (data) => {
-      // console.log("emit log to web")
-      socket.emit('Log2Web', info.log);
+    socket.on("History2Web", async (data) => {
+      console.log("emit log to web")
+      socket.emit('History2Web', info.log);
     })
 
     //로직 4. 환경 이벤트

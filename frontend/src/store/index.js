@@ -73,7 +73,7 @@ export default new Vuex.Store({
                     socket.emit("Robot2Web")
                 }, 700)
                 setInterval(() => {
-                    socket.emit("Log2Web")
+                    socket.emit("History2Web")
                 }, 1000)
                 setInterval(() => {
                     socket.emit("Environment2Web")
@@ -110,7 +110,7 @@ export default new Vuex.Store({
                     console.log("Robot : No Data from server")
                 }
             })
-            socket.on("Log2Web", (data) => {
+            socket.on("History2Web", (data) => {
                 if (data) {
                     dispatch("setLog", data)
                 } else {
