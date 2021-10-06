@@ -1,11 +1,11 @@
 <template>
-  <el-card id="WeatherCont" shadow="always" :body-style="{ padding: '20px' }">
+  <el-card id="WeatherCont" shadow="always" style="padding-left:120px; padding-right:120px">
     <div slot="header">
-      <span>Weather</span>
+      <span>날씨</span>
     </div>
     <!-- card body -->
-    <div id="weatherWrap" style="">
-      <h1>{{ temperature }}</h1>
+    <div id="weatherWrap" style="text-align: center">
+      <h1>{{ temperature }}℃</h1>
       <div>
         <h1>{{ weather }}</h1>
       </div>

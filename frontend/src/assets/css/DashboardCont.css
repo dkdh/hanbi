@@ -27,12 +27,24 @@
   height: 100%;
 }
 #DashboardCont #DashboardWrap > #c2 {
-  display: flex;
+  display: column;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
 }
-#DashboardCont #DashboardWrap > #c2 > * {
+#DashboardCont #DashboardWrap > #c2 > #c3 {
   flex: 1;
+  display: flex;
 }
+#DashboardCont #DashboardWrap > #c2 > #c4 {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+#DashboardCont #DashboardWrap > #c2 > #c5 {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
 
 /*# sourceMappingURL=DashboardCont.css.map */

@@ -1,18 +1,13 @@
 <template>
   <div id="app">
-    <div
-      id="nav"
-      v-if="$route.fullPath == '/home' || $route.fullPath == '/about'"
-    >
-      <router-link to="/">한비</router-link> |
-      <router-link to="/about">홧팅</router-link>
-    </div>
-    <router-view />
+    <router-view/>
   </div>
 </template>
 <script>
-import "./assets/css/App.css";
-export default {};
+import "./assets/scss/App.scss";
+
+export default {
+};
 </script>
 
 <style>
