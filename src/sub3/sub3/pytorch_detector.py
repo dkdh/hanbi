@@ -99,14 +99,14 @@ def main(args=None):
         
         global_detect = DetectionList()
 
-        for _ in range(len(results.pandas().xyxy[0])):
+        for i in range(len(results.pandas().xyxy[0])):
             local_detect = Detection()
 
-            if results.pandas().xyxy[0].confidence[0] >= 0.7:
-                local_detect.confidence = results.pandas().xyxy[0].confidence[0]
+            if results.pandas().xyxy[0].confidence[i] >= 0.7:
+                local_detect.confidence = results.pandas().xyxy[0].confidence[i]
                 local_detect.x = float(0)
                 local_detect.y = float(0)
-                local_detect.name = results.pandas().xyxy[0].name[0]
+                local_detect.name = results.pandas().xyxy[0].name[i]
             else:
                 local_detect.confidence = float(0)
                 local_detect.x = float(0)
