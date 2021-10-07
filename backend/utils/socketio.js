@@ -45,7 +45,7 @@ for (let y = 0; y < info.map.dSizeY; y++) {
 module.exports.createSocket = function (http_server) {
   const io = require("socket.io")(http_server, {
     cors: {
-      origin: "http://j5a102.p.ssafy.io:8080",
+      origin: "http://j5a102.p.ssafy.io",
       methods: ["GET", "POST"],
       transports: ["websocket", "polling"],
       credentials: true,
