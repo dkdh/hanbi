@@ -46,7 +46,7 @@ class IMGParser(Node):
         # turtlebot의 위치를 받기 위한 subscriber
         self.pos_sub = self.create_subscription(
             Odometry,
-            'odom',
+            '/odom',
             self.odom_callback,
             10)
 
