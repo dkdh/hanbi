@@ -114,7 +114,7 @@ class IMGParser(Node):
         r = dis / math.sqrt(500)
 
         rad = math.atan2((cur_x -x), (cur_y - y)) + self.bot_theta
-        print('rad: ',rad)
+        # print('rad: ',rad)
         if rad > math.pi:
             diff = rad - math.pi
             rad = math.pi * -1 + diff
@@ -122,12 +122,11 @@ class IMGParser(Node):
             diff = rad + math.pi
             rad = math.pi + diff
 
-        print('bot_theta', self.bot_theta)
-        print('ground', ground)
-        print('point', point)
-        print('dis', dis)
-        print('r', r)
-        print('nnrad:', rad)
+        # print('bot_theta', self.bot_theta)
+        # print('point', point)
+        # print('dis', dis)
+        # print('r', r)
+        # print('nnrad:', rad)
 
         x_ = self.pos_x + r*math.cos(rad)
         y_ = self.pos_y + r*math.sin(rad)
@@ -211,7 +210,7 @@ class IMGParser(Node):
                 object_point = self.estimate_point(img_bgr.shape, transformed_downoids[i])
                 self.people_msg.put_distance = object_point[0]
                 self.people_msg.put_height = object_point[1]
-                print(object_point)
+                # print(object_point)
                 break
 
         # 위반 사례 존재 시 visualize
@@ -234,8 +233,8 @@ class IMGParser(Node):
             self.detect_social_distancing(self.img_bgr)
 
             # msg publish
-            # self.people_msg.put_distance = -16.0
-            # self.people_msg.put_height = -19.168
+            self.people_msg.put_distance = -16.0
+            self.people_msg.put_height = -19.168
             self.num_pub_.publish(self.people_msg)
 
         else:
