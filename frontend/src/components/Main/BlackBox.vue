@@ -1,7 +1,7 @@
 <template>
     <el-card id="LostCont" shadow="always" :body-style="{ padding: '20px' }">
         <el-row>
-            <el-col :span="6" v-for="(video, idx) in test" :key="idx" style="margin-right:110px">
+            <el-col :span="6" v-for="(video, idx) in videos" :key="idx" style="margin-right:110px">
                 <video  width="320" height="240" :src="video.fileUrl" class="image" controls>
                 </video>
                 <div style="padding: 15px">
@@ -20,13 +20,6 @@ export default {
   data: function() {
     return {
       videos : [],
-      test : [
-              {fileUrl: "https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/8501760.webm", createdAt: "aaaaaaaaaaaaaaaaa"},
-              {fileUrl: "https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/8501760.webm", createdAt: "aaaaaaaaaaaaaaaaa"},
-              {fileUrl: "https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/8501760.webm", createdAt: "aaaaaaaaaaaaaaaaa"},
-              {fileUrl: "https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/8501760.webm", createdAt: "aaaaaaaaaaaaaaaaa"},
-              {fileUrl: "https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/8501760.webm", createdAt: "aaaaaaaaaaaaaaaaa"},
-              ]
     }
   },
   methods: {

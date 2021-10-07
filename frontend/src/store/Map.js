@@ -30,6 +30,7 @@ export default {
             }
 
             let mapImg = document.querySelector(".mappingImg")
+            if (!mapImg) return
             var ctx = mapImg.getContext('2d')
 
             //draw canvas
