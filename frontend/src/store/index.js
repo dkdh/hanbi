@@ -37,7 +37,9 @@ export default new Vuex.Store({
             temperature: 23,
             weather: "Cloud"
         },
-        a: 0
+        a: 0,
+        streaming: null,
+        url: null,
     },
     mutations: {
         setCategory(state, a) {
@@ -50,7 +52,7 @@ export default new Vuex.Store({
         setLosts(state, lost) {
             // console.log(lost)
             state.losts = lost
-        }
+        },
     },
     actions: {
         setSockets({ state, dispatch, commit }) {
@@ -77,6 +79,16 @@ export default new Vuex.Store({
                 }, 1000)
                 setInterval(() => {
                     socket.emit("Environment2Web")
+                }, 1000)
+                
+                setInterval( () => {
+                    socket.emit('request_stream_from_vue')
+                }, 10)
+                setInterval(() => {
+                    if (state.url) {
+                      socket.emit("uploadVideo", state.url)
+                      state.url = null
+                    }
                 }, 1000)
             });
 
@@ -125,6 +137,11 @@ export default new Vuex.Store({
                     console.log("Environment : No Environment from werver")
                 }
             })
+            socket.on("stream_from_nodejs", (arrayBuffer) => {
+                if (arrayBuffer) {
+                    dispatch("setStreaming", arrayBuffer)
+                }
+            })
         },
 
         setRobot({ state, commit }, data) {
@@ -147,6 +164,15 @@ export default new Vuex.Store({
             state.log = data
             // console.log("log : ", data)
         },
+
+        setStreaming({state}, arrayBuffer){
+            state.streaming = arrayBuffer
+        },
+
+        stopRecord({state}, url){
+            state.url = url
+        }
+
     },
     getters: {},
     modules: {

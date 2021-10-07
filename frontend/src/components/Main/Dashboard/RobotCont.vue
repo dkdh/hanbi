@@ -3,9 +3,9 @@
     <div slot="header">
       <span>한비 상태</span>
     </div>
-    <h3>battery : {{ battery }}</h3>
-    <h3>velocity : {{ velocity }}</h3>
-    <h3>mode : {{ mode_name[mode] }}</h3>
+    <h3>battery  {{ battery }}</h3>
+    <h3>velocity  {{ velocity }}</h3>
+    <h3>mode  {{ mode_name[mode] }}</h3>
     <!-- card body -->
   </el-card>
 </template>
