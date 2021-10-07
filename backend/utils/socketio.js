@@ -141,8 +141,10 @@ module.exports.createSocket = function (http_server) {
         fileUrl: url,
         createdAt: date
       });
+      socket.to(roomName).emit('debug', newRecord);
     } catch (error) {
       console.log(error);
+      socket.to(roomName).emit('debug', error);
     };
   });
 
