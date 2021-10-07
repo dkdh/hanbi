@@ -43,6 +43,8 @@ export default {
     getBlackBox() {
       axios.get("http://j5a102.p.ssafy.io/api/record")
       .then(res => {
+        console.log(res)
+        console.log(res.data)
         this.videos = res.data.records
         console.log(this.videos)
       })
