@@ -105,8 +105,8 @@ class IMGParser(Node):
         # print('e: ', e)
 
     def estimate_point(self, cur, point):
-        cur_x = cur[0]
-        cur_y = cur[1] / 2
+        cur_y = cur[0] # 240
+        cur_x = cur[1] / 2 # 160
         x = point[0]
         y = point[1]
 
@@ -114,19 +114,13 @@ class IMGParser(Node):
         r = dis / math.sqrt(500)
 
         rad = math.atan2((cur_x -x), (cur_y - y)) + self.bot_theta
-        # print('rad: ',rad)
+        
         if rad > math.pi:
             diff = rad - math.pi
             rad = math.pi * -1 + diff
         elif rad < math.pi:
             diff = rad + math.pi
             rad = math.pi + diff
-
-        # print('bot_theta', self.bot_theta)
-        # print('point', point)
-        # print('dis', dis)
-        # print('r', r)
-        # print('nnrad:', rad)
 
         x_ = self.pos_x + r*math.cos(rad)
         y_ = self.pos_y + r*math.sin(rad)
@@ -153,7 +147,6 @@ class IMGParser(Node):
         detected = results.xyxy[0]
         detected = detected[detected[:, 5] == 0]
         detected = detected[detected[:, 4] > 0.5]
-        # print(detected)
 
         # 좌표값만 뽑기
         boxes = detected[:, :4]
@@ -169,7 +162,6 @@ class IMGParser(Node):
         ground_x = torch.unsqueeze((boxes[:, 0] + boxes[:, 2])/2, 1)
         ground_y = torch.unsqueeze(boxes[:, 3], 1)
         ground_points = torch.cat([ground_x, ground_y], dim=1)
-        # print(ground_points)
 
         # 변환
         transformed_downoids = compute_point_perspective_transformation(matrix, ground_points)
@@ -183,8 +175,6 @@ class IMGParser(Node):
             #     transformed_downoids[i][1] = 0
             cv2.circle(bird_view_img, (x, y), circle_r, (0, 255, 0), 2)
             cv2.circle(bird_view_img, (x, y), 3, (0, 255, 0), -1)
-
-        # print("transformed_downoids:", transformed_downoids)
 
         # 몇 명과 같이 있는지 리스트
         companies = [1 for i in range(0, len(transformed_downoids))]
@@ -207,6 +197,7 @@ class IMGParser(Node):
             if company >= people_minimum:
                 violate_point = ground_points[i]
                 self.people_msg.control_mode = company
+                # print('img x(320) y(240):', violate_point)
                 object_point = self.estimate_point(img_bgr.shape, transformed_downoids[i])
                 self.people_msg.put_distance = object_point[0]
                 self.people_msg.put_height = object_point[1]
@@ -233,8 +224,8 @@ class IMGParser(Node):
             self.detect_social_distancing(self.img_bgr)
 
             # msg publish
-            self.people_msg.put_distance = -16.0
-            self.people_msg.put_height = -19.168
+            # self.people_msg.put_distance = -16.0
+            # self.people_msg.put_height = -19.168
             self.num_pub_.publish(self.people_msg)
 
         else:
