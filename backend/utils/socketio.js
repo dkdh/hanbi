@@ -149,7 +149,7 @@ module.exports.createSocket = function (http_server) {
   });
   
   // 분실물 사진 저장
-  socket.on('uploadLost', async (url) => {
+  socket.on('uploadImage', async (url) => {
     const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
     try {
       const newLost = await Lost.create({
@@ -160,20 +160,5 @@ module.exports.createSocket = function (http_server) {
       console.log(error);
     };
   });
-  
-  // 사진 저장
-  socket.on('uploadPicture', async (url, caseString) => {
-    const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
-    try {
-      const newPicture = await Picture.create({
-        fileUrl: url,
-        createdAt: date,
-        caseString: caseString
-      });
-    } catch (error) {
-      console.log(error);
-    };
-  });
-
   });
 };

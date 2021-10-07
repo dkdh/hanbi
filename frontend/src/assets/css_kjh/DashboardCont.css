@@ -27,30 +27,12 @@
   height: 100%;
 }
 #DashboardCont #DashboardWrap > #c2 {
-  display: column;
+  display: flex;
   flex-direction: column;
-  flex: 2;
-}
-#DashboardCont #DashboardWrap > #c2 > #c3 {
+  width: 200px;
   flex: 1;
-  display: flex;
 }
-#DashboardCont #DashboardWrap > #c2 > #c4 {
-  flex: 1;
-  height: 100%;
-  width: 100%;
-}
-#DashboardCont #DashboardWrap > #c2 > #c5 {
-  flex: 1;
-  height: 100%;
-  width: 100%;
-}
-
-#DashboardCont #DashboardWrap > #c3 {
-  display: flex;
-}
-
-#DashboardCont #DashboardWrap > #c3 > #div {
+#DashboardCont #DashboardWrap > #c2 > * {
   flex: 1;
 }
 
