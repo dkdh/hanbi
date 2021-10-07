@@ -2,16 +2,8 @@
   width: 100%;
   display: flex;
 }
-#LostCont #lostWrap > div {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  padding-left: 80px;
-  padding-top: 25px;
-}
-#LostCont #lostWrap > div > * {
-  margin-right: 80px;
-  margin-bottom: 25px;
+#LostCont #lostWrap .el-card {
+  width: 250px;
 }
 
 /*# sourceMappingURL=BlackboxCont.css.map */
