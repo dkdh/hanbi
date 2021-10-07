@@ -122,33 +122,9 @@ export default new Vuex.Store({
                     console.log("Robot : No Data from server")
                 }
             })
-            socket.on("History2Web", async (data) => {
+            socket.on("History2Web", (data) => {
                 if (data) {
                     dispatch("setLog", data)
-                    
-                    // let bytes = new Uint8Array(state.streaming)
-                    // let blob = new Blob( [ bytes ], { type: "image/jpeg" } )
-                    
-                    // const API_ENDPOINT = 'https://w1e35j0kmd.execute-api.ap-northeast-2.amazonaws.com/default/getUrl'
-                    // const response = await axios({
-                    //     method: 'GET',
-                    //     url: API_ENDPOINT
-                    //   })
-                    //   console.log('Response: ', response)
-                      // Put request for upload to S3
-                    //   const result = await fetch(response.data.uploadURL, {
-                        // method: 'PUT',
-                        // lambda에 적어준 내용과 일치해야 한다.
-                        // headers: {
-                        //   'Content-type': 'image/jpeg'
-                        // },
-                        // body: blob
-                    //   })
-                    //   console.log('Result: ', result)
-                      
-                    //   let fileKey = response.data.Key
-                    //   let url = 'https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/' + fileKey
-                    //   socket.emit("uploadImage", url)
                 } else {
                     console.log("Log : No Log from server")
                 }
