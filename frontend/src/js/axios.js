@@ -1,7 +1,7 @@
 const axios = require("axios")
 
 const request = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "http://j5a102.p.ssafy.io:3000",
     timeout: 3000
 })
 

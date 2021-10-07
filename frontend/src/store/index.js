@@ -58,7 +58,7 @@ export default new Vuex.Store({
             let { socket } = state
             //로직 1. 소켓 생성
             // //socket 등록
-            socket = io("http://localhost:3000", {
+            socket = io("http://j5a102.p.ssafy.io:3000", {
                 withCredentials: true,
             })
 
