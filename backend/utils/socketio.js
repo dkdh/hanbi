@@ -1,6 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-const params = require("../config")
 const fd = fs.openSync(path + 'map.txt', 'w+')
 var outF = fs.createWriteStream(null, { flags: 'w', fd });
 const { Mutex } = require('async-mutex');
@@ -46,7 +45,7 @@ for (let y = 0; y < info.map.dSizeY; y++) {
 module.exports.createSocket = function (http_server) {
   const io = require("socket.io")(http_server, {
     cors: {
-      origin: params["origin"],
+      origin: "http://localhost:8080",
       methods: ["GET", "POST"],
       transports: ["websocket", "polling"],
       credentials: true,

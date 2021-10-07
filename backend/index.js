@@ -7,11 +7,10 @@ const io = require("./utils/socketio").createSocket(server)
 const cors = require("cors")
 const bodyParser = require("body-parser")
 
-const params = require("./config")
 app.use(cors({
 
   //cors 이슈 핸들링 : 서버에 접근할 도메인을 명시
-  origin: params["origin"]
+  origin: "http://localhost:8080",
 }))
 
 app.use(bodyParser.json())

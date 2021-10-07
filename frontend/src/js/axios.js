@@ -1,8 +1,7 @@
 const axios = require("axios")
-const params = require("./../config")
 
 const request = axios.create({
-    baseURL: params["ip_server"],
+    baseURL: "http://localhost:3000",
     timeout: 3000
 })
 

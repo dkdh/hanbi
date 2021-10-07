@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { io } from "socket.io-client";
-import params from "../config"
 import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
 import Map from "@/store/Map.js"
@@ -59,7 +58,7 @@ export default new Vuex.Store({
             let { socket } = state
             //로직 1. 소켓 생성
             // //socket 등록
-            socket = io(params["ip_server"], {
+            socket = io("http://localhost:3000", {
                 withCredentials: true,
             })
 
