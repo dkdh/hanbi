@@ -135,14 +135,14 @@ export default new Vuex.Store({
                     //     url: API_ENDPOINT
                     //   })
                     //   console.log('Response: ', response)
-                    //   // Put request for upload to S3
+                      // Put request for upload to S3
                     //   const result = await fetch(response.data.uploadURL, {
-                    //     method: 'PUT',
-                    //     // lambda에 적어준 내용과 일치해야 한다.
-                    //     // headers: {
-                    //     //   'Content-type': 'image/jpeg'
-                    //     // },
-                    //     body: blob
+                        // method: 'PUT',
+                        // lambda에 적어준 내용과 일치해야 한다.
+                        // headers: {
+                        //   'Content-type': 'image/jpeg'
+                        // },
+                        // body: blob
                     //   })
                     //   console.log('Result: ', result)
                       
