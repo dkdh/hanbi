@@ -1,7 +1,7 @@
 const NODE_ENV = process.env.NODE_ENV || "development"
 const params = {
     "development": {
-        "ip_server": "http://localhost:3000"
+        "ip_server": "http://j5a102.p.ssafy.io:3000"
     },
 }
 console.log(params[NODE_ENV])
