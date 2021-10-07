@@ -109,17 +109,17 @@ def main(args=None):
                 local_detect.name = results.pandas().xyxy[0].name[i]
                 # 일단 절대 좌표 고정
                 if local_detect.name == 'tent':
-                    local_detect.x = -2.62
-                    local_detect.y = 4.13
+                    local_detect.x = 7.091
+                    local_detect.y = 12.17=674
                 elif local_detect.name == 'fire':
-                    local_detect.x = 8.22
-                    local_detect.y = -2.76
+                    local_detect.x = 19.712
+                    local_detect.y = 4.398
                 elif local_detect.name == 'kickboard':
-                    local_detect.x = 7.79
-                    local_detect.y = -9.52
+                    local_detect.x = 18.486
+                    local_detect.y = -2.688
                 elif local_detect.name == 'bottle':
-                    local_detect.x = 6.0
-                    local_detect.y = -18.48
+                    local_detect.x = 15.424
+                    local_detect.y = -12.580
             else:
                 local_detect.confidence = float(0)
                 local_detect.x = float(0)
