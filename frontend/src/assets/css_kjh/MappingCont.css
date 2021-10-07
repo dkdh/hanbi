@@ -1,0 +1,27 @@
+#MappingCont .el-card__body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#MappingCont .el-card__body .mapWrap {
+  margin-top: 5rem;
+}
+#MappingCont .el-card__body .mapWrap .map {
+  position: relative;
+}
+#MappingCont .el-card__body .mapWrap .map {
+  height: 500px;
+  width: 500px;
+}
+#MappingCont .el-card__body .mapWrap .map .mappingImg {
+  border: 1px solid black;
+  position: relative;
+}
+#MappingCont .el-card__body .mapWrap .map .robot {
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+}
+
+/*# sourceMappingURL=MappingCont.css.map */

@@ -1,7 +1,19 @@
 #BlackboxCont {
-  #camView {
-    height: 300px;
-    width: 400px;
-    border: 1px solid black;
+  width: 100%;
+  display: flex;
+  #blackboxWrap {
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      padding-left: 80px;
+      padding-top: 25px;
+      > * {
+        margin-right: 80px;
+        margin-bottom: 25px;
+      }
+    }
   }
+  // .video {
+  // }
 }

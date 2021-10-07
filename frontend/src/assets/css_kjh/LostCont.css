@@ -1,0 +1,36 @@
+#LostCont {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+}
+#LostCont #lostWrap {
+  margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 70%;
+  margin-left: 80px;
+}
+#LostCont #lostWrap > * {
+  margin-right: 80px;
+}
+#LostCont #lostWrap > * .time {
+  font-size: 13px;
+  color: #999;
+}
+#LostCont #lostWrap > * .image {
+  width: 100%;
+  display: block;
+}
+#LostCont #lostWrap > * .clearfix:before,
+#LostCont #lostWrap > * .clearfix:after {
+  display: table;
+  content: "";
+}
+#LostCont #lostWrap > * .clearfix:after {
+  clear: both;
+}
+
+/*# sourceMappingURL=LostCont.css.map */

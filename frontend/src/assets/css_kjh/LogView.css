@@ -1,0 +1,17 @@
+#LogCont {
+  height: 100%;
+  width: 100%;
+}
+#LogCont > .el-card__body {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+#LogCont > .el-card__body > #history {
+  margin-top: 15px;
+}
+#LogCont > .el-card__body > #history > .radio {
+  margin: 25px;
+}
+
+/*# sourceMappingURL=LogView.css.map */
