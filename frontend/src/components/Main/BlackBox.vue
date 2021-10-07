@@ -45,8 +45,7 @@ export default {
       .then(res => {
         console.log(res)
         console.log(res.data)
-        this.videos = res.data.records
-        console.log(this.videos)
+        this.videos = res.data
       })
       .catch(err => {
         console.log(err)
