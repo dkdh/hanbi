@@ -25,9 +25,3 @@ app.use("/api", router)
 server.listen(port, () => {
   console.log(`Example app listening at ${port}`)
 })
-
-
-// // for (i = 0; i < 10; i++) {
-// //   fs.writeFileSync(fd, String(i))
-// //   fs.of
-// // }

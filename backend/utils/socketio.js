@@ -9,6 +9,7 @@ const mutex = new Mutex()
 const db = require("./db.js");
 const Record = require("./models/Record.js");
 const Lost = require("./models/Lost.js");
+const Picture = require("./models/Picture.js");
 
 const moment = require('moment')
 require('moment-timezone')
@@ -140,6 +141,33 @@ module.exports.createSocket = function (http_server) {
       const newRecord = await Record.create({
         fileUrl: url,
         createdAt: date
+      });
+    } catch (error) {
+      console.log(error);
+    };
+  });
+  
+  // 분실물 사진 저장
+  socket.on('uploadLost', async (url) => {
+    const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
+    try {
+      const newLost = await Lost.create({
+        fileUrl: url,
+        createdAt: date
+      });
+    } catch (error) {
+      console.log(error);
+    };
+  });
+  
+  // 사진 저장
+  socket.on('uploadPicture', async (url, caseString) => {
+    const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
+    try {
+      const newPicture = await Picture.create({
+        fileUrl: url,
+        createdAt: date,
+        caseString: caseString
       });
     } catch (error) {
       console.log(error);

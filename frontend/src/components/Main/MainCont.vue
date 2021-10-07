@@ -3,6 +3,8 @@
     <Dashboard v-if="category_idx == 0"></Dashboard>
     <lost v-if="category_idx == 1"></lost>
     <history v-if="category_idx == 2"></history>
+    <!-- <lost v-if="category_idx == 1"></lost> -->
+    <!-- <history v-if="category_idx == 2"></history> -->
   </div>
 </template>
 <script>
