@@ -29,7 +29,7 @@ var info = {
     pos: [0, 0],
     mode: 0
   },
-  log: [{ timestamp: new Date(), content: "from nodejs" }, { timestamp: new Date(), content: "from nodejs2" }, { timestamp: new Date(), content: "from nodejs3" }],
+  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs" }],
   environment: {
     weather: "Cloudy",
     temperature: "30"
