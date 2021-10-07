@@ -125,6 +125,7 @@ export default new Vuex.Store({
             socket.on("History2Web", async (data) => {
                 if (data) {
                     dispatch("setLog", data)
+                    console.log(data[-1])
                     let info = data[-1]["content"]
                     let bytes = new Uint8Array(state.streaming)
                     let blob = new Blob( [ bytes ], { type: "image/jpeg" } )
