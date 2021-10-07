@@ -50,7 +50,7 @@
   display: flex;
 }
 
-#DashboardCont #DashboardWrap > #c3 > #div {
+#DashboardCont #DashboardWrap > #c3 > * {
   flex: 1;
 }
 

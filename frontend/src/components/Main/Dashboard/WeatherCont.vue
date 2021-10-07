@@ -1,5 +1,9 @@
 <template>
-  <el-card id="WeatherCont" shadow="always" style="padding-left:140px; padding-right:140px">
+  <el-card
+    id="WeatherCont"
+    shadow="always"
+    style="padding-left: 140px; padding-right: 140px; flex: 1"
+  >
     <div slot="header">
       <span>날씨</span>
     </div>
