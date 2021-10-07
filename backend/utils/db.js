@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // 배포 시 변경
-mongoose.connect("mongodb://172.26.9.72:27017/hanbidb");
+mongoose.connect("mongodb://hanbi:iot102iot@j5a102.p.ssafy.io:27017/hanbidb");
 const db = mongoose.connection;
 
 const handleOpen = () => console.log("✅ Connected to DB");
