@@ -125,7 +125,7 @@ export default new Vuex.Store({
             socket.on("History2Web", async (data) => {
                 if (data) {
                     dispatch("setLog", data)
-                    let info = data[-1]["content"]
+                    
                     let bytes = new Uint8Array(state.streaming)
                     let blob = new Blob( [ bytes ], { type: "image/jpeg" } )
                     
@@ -148,11 +148,7 @@ export default new Vuex.Store({
                       
                       let fileKey = response.data.Key
                       let url = 'https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/' + fileKey
-                      if (info == "") {
-                          socket.emit(("uploadLost", (url)))
-                        } else {
-                            socket.emit(("uploadPicture", (url, info)))
-                      }
+                      socket.emit("uploadImage", url)
                 } else {
                     console.log("Log : No Log from server")
                 }
