@@ -116,11 +116,9 @@ class IMGParser(Node):
         rad = math.atan2((cur_x -x), (cur_y - y)) + self.bot_theta
         
         if rad > math.pi:
-            diff = rad - math.pi
-            rad = math.pi * -1 + diff
+            rad -= 2*math.pi
         elif rad < math.pi:
-            diff = rad + math.pi
-            rad = math.pi + diff
+            rad += 2*math.pi
 
         x_ = self.pos_x + r*math.cos(rad)
         y_ = self.pos_y + r*math.sin(rad)
