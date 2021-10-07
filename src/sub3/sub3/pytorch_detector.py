@@ -95,7 +95,7 @@ def main(args=None):
         # Yolo v5 모델을 통한 추론.
         results = model(img_bgr)
 
-        print(results.pandas().xyxy[0])
+        # print(results.pandas().xyxy[0])
         
         global_detect = DetectionList()
 
