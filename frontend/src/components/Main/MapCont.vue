@@ -2,7 +2,7 @@
   <!-- <div> -->
   <el-card id="MapCont" shadow="always" :body-style="{ margin: '20px' }">
     <div slot="header">
-      <span>지도 및 현재 위치</span>
+      <span>지도 및 위치</span>
     </div>
     <div class="mapWrap">
       <div class="map">
