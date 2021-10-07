@@ -8,11 +8,7 @@ from sensor_msgs.msg import CompressedImage, LaserScan
 from ssafy_msgs.msg import BBox
 from hanvi_interfaces.msg import DetectionList, Detection
 
-from nav_msgs.msg import Odometry
-from sub1.transform import *
-from squaternion import Quaternion
 
-import math
 import torch
 
 params_lidar = {
@@ -73,53 +69,18 @@ def scan_callback(msg):
         z.reshape([-1, 1])
     ], axis=1)
 
-# odom 콜백함수
-def odom_callback(msg):
-    global pos_x, pos_y, bot_theta
-
-    pos_x = msg.pose.pose.position.x
-    pos_y = msg.pose.pose.position.y
-    # print('x, y:', pos_x, pos_y)
-
-    q = msg.pose.pose.orientation
-    e = Quaternion.to_euler(q)
-    bot_theta = e[2]
-    # print('bot_theta:', bot_theta)
-
-def estimate_point(cur, point):
-    cur_y = cur[0] # 240
-    # 물체 뜨는 것 보정
-    cur_y += 20
-    cur_x = cur[1] / 2 # 160
-    x = point[0]
-    y = point[1]
-
-    dis = math.sqrt((cur_x - x)**2 + (cur_y - y)**2)
-    r = (dis / math.sqrt(500)) / 2
-
-    rad = math.atan2((cur_x -x), (cur_y - y)) + bot_theta
-    
-    if rad > math.pi:
-        rad -= 2*math.pi
-    elif rad < math.pi:
-        rad += 2*math.pi
-
-    x_ = pos_x + r*math.cos(rad)
-    y_ = pos_y + r*math.sin(rad)
-
-    return (x_, y_)
-
 def main(args=None):
     # Pytorch Hub를 통한 Yolo v5 이용. weight로 학습시킨 hanvi_detection_weight.pt 이용.
     # model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:\\Users\\multicampus\\Desktop\\catkin_ws\\src\\ros2_smart_home\\sub3\\models\\hanvi_detection_weight.pt')  # 절대 경로 예시
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='..\\models\\hanvi_detection_weight.pt')  # 상대 경로
+    full_path = os.path.abspath(__file__)
+    full_path = full_path.replace('install\\sub3\\Lib\\site-packages\\sub3\\pytorch_detector.py', 'src\\sub3\\models\\hanvi_detection_weight.pt')
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path=full_path)  # 상대 경로
     global g_node
 
     rclpy.init(args=args)
 
     g_node = rclpy.create_node('pytorch_detector')
 
-    subscription_odom = g_node.create_subscription(Odometry, '/odom', odom_callback, 10)
     subscription_img = g_node.create_subscription(CompressedImage, '/image_jpeg/compressed', img_callback, 3)
     subscription_scan = g_node.create_subscription(LaserScan, '/scan', scan_callback, 3)
     
@@ -140,47 +101,46 @@ def main(args=None):
         
         global_detect = DetectionList()
 
-        # transform
-        corner_points = ((0, 125), (320, 125), (0, 240), (320, 240))
-        matrix, _ = compute_perspective_transform(corner_points, img_bgr.shape[1], img_bgr.shape[0], img_bgr)
-        boxes = results.xyxy[0][:, :4]
-
-        # 바닥 중심점 찾기
-        ground_x = torch.unsqueeze((boxes[:, 0] + boxes[:, 2])/2, 1)
-        ground_y = torch.unsqueeze(boxes[:, 3], 1)
-        ground_points = torch.cat([ground_x, ground_y], dim=1)
-
-        # 변환
-        transformed_downoids = compute_point_perspective_transformation(matrix, ground_points)
-
         for i in range(len(results.pandas().xyxy[0])):
             local_detect = Detection()
 
-            if results.pandas().xyxy[0].confidence[i] >= 0.7:
-                local_detect.confidence = results.pandas().xyxy[0].confidence[i]
-                local_detect.x = float(0)
-                local_detect.y = float(0)
-                local_detect.x, local_detect.y = estimate_point(img_bgr.shape, transformed_downoids[i])
-                local_detect.name = results.pandas().xyxy[0].name[i]
-                # print('name:', local_detect.name, 'x, y:', local_detect.x, local_detect.y)
-                # 일단 절대 좌표 고정
-                # if local_detect.name == 'tent':
-                #     local_detect.x = 7.091
-                #     local_detect.y = 12.1674
-                # elif local_detect.name == 'fire':
-                #     local_detect.x = 19.712
-                #     local_detect.y = 4.398
-                # elif local_detect.name == 'kickboard':
-                #     local_detect.x = 18.486
-                #     local_detect.y = -2.688
-                # elif local_detect.name == 'bottle':
-                #     local_detect.x = 15.424
-                #     local_detect.y = -12.580
+            if results.pandas().xyxy[0].name[i] == 'fire':
+                if results.pandas().xyxy[0].confidence[i] >= 0.45:
+                    local_detect.confidence = results.pandas().xyxy[0].confidence[i]
+                    local_detect.x = float(0)
+                    local_detect.y = float(0)
+                    local_detect.name = results.pandas().xyxy[0].name[i]
+                    # 일단 절대 좌표 고정
+                    if local_detect.name == 'fire':
+                        local_detect.x = 19.712
+                        local_detect.y = 4.398
+                    elif local_detect.name == 'kickboard':
+                        local_detect.x = 18.486
+                        local_detect.y = -2.688
+                else:
+                    local_detect.confidence = float(0)
+                    local_detect.x = float(0)
+                    local_detect.y = float(0)
+                    local_detect.name = 'None'
             else:
-                local_detect.confidence = float(0)
-                local_detect.x = float(0)
-                local_detect.y = float(0)
-                local_detect.name = 'None'
+                if results.pandas().xyxy[0].confidence[i] >= 0.7:
+                    local_detect.confidence = results.pandas().xyxy[0].confidence[i]
+                    local_detect.x = float(0)
+                    local_detect.y = float(0)
+                    local_detect.name = results.pandas().xyxy[0].name[i]
+                    # 일단 절대 좌표 고정
+                    if local_detect.name == 'tent':
+                        local_detect.x = 7.091
+                        local_detect.y = 12.167
+                    elif local_detect.name == 'bottle':
+                        local_detect.x = 13.49
+                        local_detect.y = -12.75
+                else:
+                    local_detect.confidence = float(0)
+                    local_detect.x = float(0)
+                    local_detect.y = float(0)
+                    local_detect.name = 'None'
+            
             
             global_detect.detections.append(local_detect)
         
