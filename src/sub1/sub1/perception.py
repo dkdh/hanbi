@@ -201,7 +201,7 @@ class IMGParser(Node):
                 object_point = self.estimate_point(img_bgr.shape, transformed_downoids[i])
                 self.people_msg.put_distance = object_point[0]
                 self.people_msg.put_height = object_point[1]
-                # print(object_point)
+                print(object_point)
                 break
 
         # 위반 사례 존재 시 visualize
