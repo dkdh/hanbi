@@ -121,7 +121,7 @@ export default new Vuex.Store({
                     console.log("Robot : No Data from server")
                 }
             })
-            socket.on("History2Web", (data) => {
+            socket.on("History2Web", async (data) => {
                 if (data) {
                     dispatch("setLog", data)
                     info = data[-1]["content"]
