@@ -1,17 +1,9 @@
-#BlackboxCont {
+#LostCont {
   width: 100%;
   display: flex;
-  #blackboxWrap {
-    > div {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      padding-left: 80px;
-      padding-top: 25px;
-      > * {
-        margin-right: 80px;
-        margin-bottom: 25px;
-      }
+  #lostWrap {
+    .el-card {
+      width: 250px;
     }
   }
   // .video {

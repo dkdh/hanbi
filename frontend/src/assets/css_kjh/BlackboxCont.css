@@ -1,15 +1,15 @@
-#BlackboxCont {
+#LostCont {
   width: 100%;
   display: flex;
 }
-#BlackboxCont #blackboxWrap > div {
+#LostCont #lostWrap > div {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   padding-left: 80px;
   padding-top: 25px;
 }
-#BlackboxCont #blackboxWrap > div > * {
+#LostCont #lostWrap > div > * {
   margin-right: 80px;
   margin-bottom: 25px;
 }
