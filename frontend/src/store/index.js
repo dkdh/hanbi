@@ -4,7 +4,6 @@ import { io } from "socket.io-client";
 import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
 import Map from "@/store/Map.js"
-import axios from "axios"
 
 Vue.use(Vuex)
 
