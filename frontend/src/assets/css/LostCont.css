@@ -10,8 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  width: 70%;
-  margin-left: 80px;
+  width: 100%;
 }
 #LostCont #lostWrap > * {
   margin-right: 80px;
