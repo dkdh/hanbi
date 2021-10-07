@@ -1,6 +1,6 @@
 <template>
-  <el-aside id="Sidebar">
-    <el-card>
+  <el-aside id="Sidebar" style="width: 150px; font-size: 12px; text-align: center">
+    <el-card style="width: 150px;">
       <a v-for="(e, idx) in category" :key="e" @click="onClick(idx)">
         <h1>{{ e }}</h1></a
       >
@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      category: { 0: "status", 1: "lost and found", 2: "history" },
+      category: { 0: "상황판", 1: "분실물 수거", 2: "로그", 3: "로그 사진", 4: "블랙박스 영상" },
     };
   },
   methods: {

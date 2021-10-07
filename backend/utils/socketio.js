@@ -6,6 +6,15 @@ var outF = fs.createWriteStream(null, { flags: 'w', fd });
 const { Mutex } = require('async-mutex');
 const mutex = new Mutex()
 
+// db
+const db = require("./db.js");
+const Record = require("./models/Record.js");
+const Lost = require("./models/Lost.js");
+
+const moment = require('moment')
+require('moment-timezone')
+moment.tz.setDefault("Asia/Seoul")
+
 var info = {
   mapq: [],
   map: {
@@ -112,6 +121,31 @@ module.exports.createSocket = function (http_server) {
       // console.log("emit Environment to web")
       socket.emit('Environment2Web', info.environment);
     })
+
+    // 실시간 화면 요청
+  socket.on('request_stream_from_vue', () => {
+    socket.to(roomName).emit('request_stream_from_node');
+    console.log("요청")
+  });
+  
+  // 실시간 화면 응답
+  socket.on('stream_from_python', (message) => {
+    socket.to(roomName).emit('stream_from_nodejs', message);
+    console.log("응답")
+  });
+
+  // 블랙박스 저장
+  socket.on('uploadVideo', async (url) => {
+    const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
+    try {
+      const newRecord = await Record.create({
+        fileUrl: url,
+        createdAt: date
+      });
+    } catch (error) {
+      console.log(error);
+    };
+  });
 
   });
 };

@@ -4,16 +4,14 @@
     :default-active="activeIndex"
     class="el-menu-demo"
     mode="horizontal"
+    style="background-color: #f5f5dc;"
   >
-    <el-menu-item id="img" style="margin-left: 50px">
+    <el-menu-item id="img" style="margin-left: 30px; margin-right: auto; color:black; background-color: #f5f5dc;">
       <h1>한비</h1>
     </el-menu-item>
-    <!-- <el-menu-item index="1">Hello, {{ email }}</el-menu-item> -->
 
-    <el-button type="primary" size="default" style="margin: 5px 15px 5px auto">
-      btn</el-button
-    >
-    <!-- <el-menu-item index="2" key=""> </el-menu-item> -->
+    <div></div>
+
   </el-menu>
 </template>
 

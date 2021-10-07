@@ -4,5 +4,9 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #909399;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+#app {
+    font-family: 'Gowun Dodum', sans-serif !important;
 }

@@ -1,11 +1,11 @@
 <template>
-  <el-card shadow="always" :body-style="{ padding: '20px' }">
+  <el-card shadow="always" style="padding-left:120px; padding-right:120px">
     <div slot="header">
-      <span>Status</span>
+      <span>한비 상태</span>
     </div>
-    <h3>battery : {{ battery }}</h3>
-    <h3>velocity : {{ velocity }}</h3>
-    <h3>mode : {{ mode_name[mode] }}</h3>
+    <h3>battery  {{ battery }}</h3>
+    <h3>velocity  {{ velocity }}</h3>
+    <h3>mode  {{ mode_name[mode] }}</h3>
     <!-- card body -->
   </el-card>
 </template>

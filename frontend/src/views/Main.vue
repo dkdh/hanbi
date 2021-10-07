@@ -2,14 +2,14 @@
   <div id="Main" class="bc" style="height: 100%">
     <Nav></Nav>
     <div id="mainView">
-      <side-bar></side-bar>
-      <Main></Main>
+      <SideBar></SideBar>
+      <MainCont></MainCont>
     </div>
   </div>
 </template>
 <script>
 import Nav from "../components/Nav.vue";
-import Main from "../components/Main/MainCont.vue";
+import MainCont from "../components/Main/MainCont.vue";
 import SideBar from "../components/Sidebar.vue";
 import { mapActions } from "vuex";
 import "../assets/css/Main.css";
@@ -18,7 +18,7 @@ export default {
   components: {
     SideBar,
     Nav,
-    Main,
+    MainCont,
   },
   methods: {
     ...mapActions(["setSockets"]),
