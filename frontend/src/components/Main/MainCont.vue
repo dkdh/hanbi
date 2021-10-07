@@ -14,7 +14,7 @@ import Dashboard from "./DashboardCont.vue";
 import Lost from "./LostCont.vue";
 import History from "./HistoryCont.vue";
 import Picture from "./HistoryPicture.vue";
-import Blackbox from "./BlackBox.vue";
+import Blackbox from "./BlackboxCont.vue";
 export default {
   computed: {
     ...mapState(["category_idx"]),
@@ -24,7 +24,7 @@ export default {
     Dashboard,
     History,
     Picture,
-    Blackbox
+    Blackbox,
   },
 };
 </script>

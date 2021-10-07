@@ -1,0 +1,20 @@
+#HistoryCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+#HistoryCont #historyWrap {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+#HistoryCont #historyWrap > #MappingCont {
+  flex: 2;
+}
+#HistoryCont #historyWrap > #LogCont {
+  flex: 1;
+}
+
+/*# sourceMappingURL=HistoryCont.css.map */

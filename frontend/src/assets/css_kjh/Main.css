@@ -1,0 +1,8 @@
+#mainView {
+  display: flex;
+  background-color: blue;
+  padding-top: 60px;
+  height: -webkit-calc(100% - 60px);
+}
+
+/*# sourceMappingURL=Main.css.map */

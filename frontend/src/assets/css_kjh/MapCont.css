@@ -1,0 +1,24 @@
+#MapCont .el-card__body {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+#MapCont .el-card__body .mapWrap {
+  margin-top: 5rem;
+}
+#MapCont .el-card__body .map {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+#MapCont .el-card__body .mapImg {
+  height: 500px;
+  width: 500px;
+  border: 1px solid black;
+}
+#MapCont .el-card__body .robot {
+  position: absolute;
+  bottom: 0;
+}
+
+/*# sourceMappingURL=MapCont.css.map */
