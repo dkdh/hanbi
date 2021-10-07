@@ -39,7 +39,7 @@ class Client(Node):
             1
         )
 
-        self.timer_period = 0.5
+        self.timer_period = 0.3
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
 
         self.event_list = {'tent': '닫힌 텐트 감지', 'fire': '화재 발생', 'bottle': '심야 음주 감지', 'kickboard': '도로변 킥보드 발견', 'bag': '분실물 발견', 'trash': '쓰레기 발견'}
