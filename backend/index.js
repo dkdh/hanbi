@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 app.use("/api", router)
 
 server.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at ${port}`)
 })
 
 
