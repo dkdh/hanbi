@@ -17,7 +17,7 @@
           <weather-cont id="c4"></weather-cont>
           <robot-cont id="c5"></robot-cont>
         </div>
-          <monitoring-cont id="c6"></monitoring-cont>
+        <monitoring-cont id="c6"></monitoring-cont>
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@ export default {
     MapCont,
     WeatherCont,
     RobotCont,
-    MonitoringCont
+    MonitoringCont,
   },
 };
 </script>

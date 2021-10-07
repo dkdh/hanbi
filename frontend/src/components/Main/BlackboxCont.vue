@@ -2,13 +2,9 @@
   <el-card id="BlackboxCont" shadow="always" :body-style="{ padding: '20px' }">
     <div id="blackboxWrap" style="width: 100%">
       <div>
-        <div
+        <video
           v-for="(video, idx) in videos"
           :key="idx"
-          class="video"
-          style="width: 320px; height: 240px; border: 1px solid black"
-        ></div>
-        <video
           width="320"
           height="240"
           :src="video.fileUrl"

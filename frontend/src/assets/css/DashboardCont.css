@@ -46,5 +46,12 @@
   width: 100%;
 }
 
+#DashboardCont #DashboardWrap > #c3 {
+  display: flex;
+}
+
+#DashboardCont #DashboardWrap > #c3 > #div {
+  flex: 1;
+}
 
 /*# sourceMappingURL=DashboardCont.css.map */
