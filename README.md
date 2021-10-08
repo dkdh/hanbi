@@ -21,7 +21,8 @@
 
 웹
 
-![KakaoTalk_20211007_110023807.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1f98ba5d-d91b-4c3b-a496-91342b17b0f4/KakaoTalk_20211007_110023807.png)
+![KakaoTalk_20211007_110023807](/uploads/23167c7e0d569dda11b411c2c8c4bcea/KakaoTalk_20211007_110023807.png)
+
 
 ## 기술 스택
 
@@ -30,4 +31,4 @@
 - 커스텀 맵: Unity
 - 웹: Node.js
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e62ffa6-d005-4da3-9c1e-6815a5aa0a9e/Untitled.png)
+![Untitled](/uploads/9b1b8dc6acdefed96a30ebc09eea9ea7/Untitled.png)
