@@ -26,7 +26,7 @@
 // import LogCont from "./LogCont.vue";
 // import MappingCont from "./MappingCont.vue";
 import MapCont from "./MapCont.vue";
-import "@/assets/css/DashboardCont.css";
+import "@/assets/css_kjh/DashboardCont.css";
 // import BlackboxCont from "./BlackboxCont.vue";
 import WeatherCont from "./Dashboard/WeatherCont.vue";
 import RobotCont from "./Dashboard/RobotCont.vue";

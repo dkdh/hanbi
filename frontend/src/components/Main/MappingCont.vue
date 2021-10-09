@@ -2,7 +2,7 @@
   <!-- <div> -->
   <el-card id="MappingCont" shadow="always" :body-style="{ margin: '20px' }">
     <div slot="header">
-      <span>Mapping</span>
+      <h2>맵 감지 현황</h2>
     </div>
     <div class="mapWrap">
       <div class="map">
@@ -11,7 +11,6 @@
         <!-- ! Canvas 안에 들어가야하는데 안됨 -->
         <div class="robot"></div>
       </div>
-      <el-button type="primary" size="default" @click="poseRobot"></el-button>
     </div>
     <!-- card body -->
   </el-card>

@@ -2,7 +2,7 @@
   <!-- <div> -->
   <el-card id="MapCont" shadow="always" :body-style="{ margin: '20px' }">
     <div slot="header">
-      <span>지도 및 위치</span>
+      <h2>지도 및 위치</h2>
     </div>
     <div class="mapWrap">
       <div class="map">
@@ -12,7 +12,9 @@
           width="500px"
           height="500px"
           z-index="5"
+          v-on:click="clickFunc"
         />
+
         <div
           class="robot"
           style="width: 10px; height: 10px; background-color: red"
@@ -25,15 +27,20 @@
 </template>
 
 <script>
-import "@/assets/css/MapCont.css";
+import "@/assets/css_kjh/MapCont.css";
+import store from "@/store";
 export default {
-  computed: {},
-  date() {
+  data() {
     return {
       robot: [0, 0],
     };
   },
-  methods: {},
+  methods: {
+    clickFunc: (e) => {
+      // console.log(e.offsetX, e.offsetY);
+      store.dispatch("Map/convertCoords", [e.offsetX, e.offsetY]);
+    },
+  },
   mounted() {},
 };
 </script>

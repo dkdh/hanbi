@@ -1,7 +1,7 @@
 const axios = require("axios")
-
+const params = require("./config")
 const request = axios.create({
-    baseURL: "http://j5a102.p.ssafy.io:3000",
+    baseURL: params.host,
     timeout: 3000
 })
 

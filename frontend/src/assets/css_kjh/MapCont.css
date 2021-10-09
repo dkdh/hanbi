@@ -11,6 +11,12 @@
   width: 500px;
   height: 500px;
 }
+#MapCont .el-card__body .map img {
+  transition: all 0.2s linear;
+}
+#MapCont .el-card__body .map:hover img {
+  transform: scale(1.4);
+}
 #MapCont .el-card__body .mapImg {
   height: 500px;
   width: 500px;

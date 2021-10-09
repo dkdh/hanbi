@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
 import Map from "@/store/Map.js"
-
+import params from "@/js/config"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -55,57 +55,57 @@ export default new Vuex.Store({
     },
     actions: {
         setSockets({ state, dispatch, commit }) {
-            let { socket } = state
+            // let { socket } = state
             //로직 1. 소켓 생성
             // //socket 등록
-            socket = io("http://j5a102.p.ssafy.io:3000", {
+            state.socket = io(params.host, {
                 withCredentials: true,
             })
 
             //로직 2. 소켓 이벤트 정의
-            socket.on("connect", async () => {
+            state.socket.on("connect", async () => {
                 console.log('connected')
                 //로직 2-1. 연결되면 주기적으로 데이터를 받아옴
                 setInterval(() => {
-                    socket.emit("Map2Web")
+                    state.socket.emit("Map2Web")
                 }, 300)
 
                 setInterval(() => {
-                    socket.emit("Robot2Web")
+                    state.socket.emit("Robot2Web")
                 }, 700)
                 setInterval(() => {
-                    socket.emit("History2Web")
+                    state.socket.emit("History2Web")
                 }, 1000)
                 setInterval(() => {
-                    socket.emit("Environment2Web")
+                    state.socket.emit("Environment2Web")
                 }, 1000)
-                
-                setInterval( () => {
-                    socket.emit('request_stream_from_vue')
+
+                setInterval(() => {
+                    state.socket.emit('request_stream_from_vue')
                 }, 10)
                 setInterval(() => {
                     if (state.url) {
-                      socket.emit("uploadVideo", state.url)
-                      state.url = null
+                        state.socket.emit("uploadVideo", state.url)
+                        state.url = null
                     }
                 }, 1000)
             });
 
-            socket.on('disconnect', function () {
+            state.socket.on('disconnect', function () {
                 console.log('disconnected form` server_client.');
             });
-            socket.on("connect_error", () => {
-                // socket.auth.token = "abcd";
+            state.socket.on("connect_error", () => {
+                // state.socket.auth.token = "abcd";
                 setTimeout(() => {
                     try {
-                        socket.connect();
+                        state.socket.connect();
                     } catch {
                         console.log("세션 연결에 실패했습니다")
                     }
                 }, 1000);
 
             })
-            socket.on("Map2Web", (data) => {
+            state.socket.on("Map2Web", (data) => {
                 if (data) {
                     console.log("Map : Get map data from server", data.length)
                     dispatch("Map/setMapping", data)
@@ -113,7 +113,7 @@ export default new Vuex.Store({
                     console.log("Map : No Data from server")
                 }
             })
-            socket.on("Robot2Web", (data) => {
+            state.socket.on("Robot2Web", (data) => {
                 if (data) {
                     // console.log("Robot : ", data)
                     dispatch("setRobot", data)
@@ -121,14 +121,14 @@ export default new Vuex.Store({
                     console.log("Robot : No Data from server")
                 }
             })
-            socket.on("History2Web", (data) => {
+            state.socket.on("History2Web", (data) => {
                 if (data) {
                     dispatch("setLog", data)
                 } else {
                     console.log("Log : No Log from server")
                 }
             })
-            socket.on("Environment2Web", (data) => {
+            state.socket.on("Environment2Web", (data) => {
                 if (data) {
                     // console.log("setEnvironment")
                     commit("Environment/setEnvironment", data)
@@ -136,7 +136,7 @@ export default new Vuex.Store({
                     console.log("Environment : No Environment from werver")
                 }
             })
-            socket.on("stream_from_nodejs", (arrayBuffer) => {
+            state.socket.on("stream_from_nodejs", (arrayBuffer) => {
                 if (arrayBuffer) {
                     dispatch("setStreaming", arrayBuffer)
                 }
@@ -164,14 +164,13 @@ export default new Vuex.Store({
             // console.log("log : ", data)
         },
 
-        setStreaming({state}, arrayBuffer){
+        setStreaming({ state }, arrayBuffer) {
             state.streaming = arrayBuffer
         },
 
-        stopRecord({state}, url){
+        stopRecord({ state }, url) {
             state.url = url
-        }
-
+        },
     },
     getters: {},
     modules: {

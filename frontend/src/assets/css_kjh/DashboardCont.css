@@ -29,11 +29,15 @@
 #DashboardCont #DashboardWrap > #c2 {
   display: flex;
   flex-direction: column;
-  width: 200px;
-  flex: 1;
+  flex: 2;
 }
-#DashboardCont #DashboardWrap > #c2 > * {
+#DashboardCont #DashboardWrap > #c2 > #c3 {
   flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+#DashboardCont #DashboardWrap > #c2 > #c6 {
+  flex: 2;
 }
 
 /*# sourceMappingURL=DashboardCont.css.map */
