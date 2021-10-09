@@ -12,10 +12,18 @@
   height: 500px;
   transform: scale(1.2);
 }
-#MapCont .el-card__body .map > .robot {
+#MapCont .el-card__body .map > * {
+  transition: all 0.2s linear;
+}
+#MapCont .el-card__body .map > .onTheMap {
   position: absolute;
   transform-origin: 250px, -250px;
   bottom: 0;
+}
+#MapCont .el-card__body .map > .robot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
 }
 
 /*# sourceMappingURL=MapCont.css.map */

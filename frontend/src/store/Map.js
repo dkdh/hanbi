@@ -17,8 +17,9 @@ export default {
             state.weather = weather
         },
         drawMapping(state) {
-            console.log("drawMapping")
-            const { dSizeY, dSizeX, data, colors } = state
+            console.log("drawMapping : ", state)
+            
+            const { dSizeY, dSizeX, data, colors } = state.Map
 
             if (!state.data.length) {
                 for (let y = 0; y < dSizeY; y++) {

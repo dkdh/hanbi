@@ -29,11 +29,13 @@ var info = {
     pos: [0, 0],
     mode: 0
   },
-  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 1 }],
-  environment: {
-    weather: "Cloudy",
+  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs_emergency", emergency: 1, pose : { x: 0, y: 0 }   },
+  { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose : { x: 20, y: 20 } }
+    ],
+environment: {
+  weather: "Cloudy",
     temperature: "30"
-  }
+}
 }
 //* map
 for (let y = 0; y < info.map.dSizeY; y++) {

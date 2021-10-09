@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
 import Map from "@/store/Map.js"
+import Log from "@/store/Log.js"
 import params from "@/js/config"
 Vue.use(Vuex)
 
@@ -17,29 +18,18 @@ export default new Vuex.Store({
             bg: "#65AC52",
             robot: "#D60707",
             obstacle: "#525252",
-            map: {
-                robot: "#D60707",
-                event: ["#FDEED7", "FDEED7"]
-            }
+            event: "#FDEED7",
+            emergency: "FDEED7"
         },
         losts: [
             { name: "열쇠", img: 0, date: new Date() },
             { name: "지갑", img: 0, date: new Date() },
             { name: "갈비찜덮밥", img: 0, date: new Date() },
         ],
-        map: {
-            dsizeY: 500,
-            dsizeX: 500
-        },
-        log: [
-            { timestamp: String(new Date()), content: "vuex" },
-            { timestamp: String(new Date()), content: "vuex2" },
-            { timestamp: String(new Date()), content: "vuex3" }
-        ],
-        env: {
-            temperature: 23,
-            weather: "Cloud"
-        },
+        // map: {
+        //     dsizeY: 500,
+        //     dsizeX: 500
+        // },
         a: 0,
         streaming: null,
         url: null,
@@ -58,7 +48,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        setSockets({ state, dispatch, commit }) {
+        setSockets({ state, dispatch }) {
             // let { socket } = state
             //로직 1. 소켓 생성
             // //socket 등록
@@ -127,7 +117,7 @@ export default new Vuex.Store({
             })
             state.socket.on("History2Web", (data) => {
                 if (data) {
-                    dispatch("setLog", data)
+                    dispatch("Log/setLog", data)
                 } else {
                     console.log("Log : No Log from server")
                 }
@@ -135,7 +125,7 @@ export default new Vuex.Store({
             state.socket.on("Environment2Web", (data) => {
                 if (data) {
                     // console.log("setEnvironment")
-                    commit("Environment/setEnvironment", data)
+                    dispatch("Environment/setEnvironment", data)
                 } else {
                     console.log("Environment : No Environment from werver")
                 }
@@ -145,11 +135,6 @@ export default new Vuex.Store({
                     dispatch("setStreaming", arrayBuffer)
                 }
             })
-        },
-        setLog({ state }, data) {
-            state, data
-            state.log = data
-            // console.log("log : ", data)
         },
 
         setStreaming({ state }, arrayBuffer) {
@@ -164,6 +149,7 @@ export default new Vuex.Store({
     modules: {
         Environment,
         Robot,
-        Map
+        Map,
+        Log
     },
 });

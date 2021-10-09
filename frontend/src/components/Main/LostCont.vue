@@ -1,5 +1,10 @@
 <template>
-  <el-card id="LostCont" shadow="always" :body-style="{ padding: '20px' }">
+  <el-card
+    id="LostCont"
+    shadow="always"
+    :body-style="{ padding: '20px' }"
+    style="overflow-y: auto"
+  >
     <div id="lostWrap" style="width: 100%">
       <div>
         <el-card

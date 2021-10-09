@@ -13,5 +13,8 @@
 #LogCont > .el-card__body > #history > .radio {
   margin: 25px;
 }
+#LogCont > .el-card__body > #history .emergency {
+  color: red;
+}
 
 /*# sourceMappingURL=LogView.css.map */

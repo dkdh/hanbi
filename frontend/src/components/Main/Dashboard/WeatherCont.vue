@@ -9,21 +9,31 @@
     </div>
     <!-- card body -->
     <div id="weatherWrap" style="text-align: center">
-      <h1>{{ temperature }}℃</h1>
-      <div>
-        <h1>{{ weather }}</h1>
-      </div>
+      <el-image :src="weatherSrc" fit="fill" :lazy="true"></el-image>
+      <h3>{{ temperature }}℃ / {{ weather }}</h3>
+        
     </div>
   </el-card>
 </template>
 
 <script>
 import "@/assets/css/Dashboard/WeatherCont.css";
-import { mapState } from "vuex";
+import { mapState,mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapState("Environment", ["weather", "temperature"]),
+    ...mapState("Environment", ["weather","weatherSrc", "temperature"]),
   },
+  methods: {
+    ...mapMutations("Environment", ["matchIcon"])
+  },
+  data() {
+    return {
+      // w : "@/assets/images/weather/039-sun.png"
+      // w : require("./039-sun.png")
+      // w : require("./039-sun.png")
+      w : this.matchIcon("ㄹㄹ")
+    }
+  }
 };
 </script>
 

@@ -16,15 +16,18 @@ $map_size_x: 700px;
       position: relative;
       width: 500px;
       height: 500px;
-      // > * {
-      // transition: all 0.2s linear;
-      // }
+      > * {
+        transition: all 0.2s linear;
+      }
       transform: scale(1.2);
 
-      > .robot {
+      > .onTheMap {
         position: absolute;
         transform-origin: (250px, -250px);
         bottom: 0;
+      }
+      > .robot {
+        width: 10px; height: 10px; background-color: red
       }
     }
     // .map:hover {

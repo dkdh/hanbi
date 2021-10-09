@@ -13,32 +13,34 @@
           <el-radio :label="false">내림차순</el-radio>
         </el-radio-group>
       </div>
-      <!-- {{ actions }} -->
       <el-timeline :reverse="reverse">
         <el-timeline-item
           v-for="(activity, index) in log"
           :key="index"
           :timestamp="activity.timestamp"
         >
-          {{ activity.content }}
+          <!-- normal event -->
+          <div v-if="activity.emergency == 0">
+            {{ activity.content }}
+          </div>
+          <!-- emergency event -->
+          <div class="emergency" v-if="activity.emergency == 1">
+            {{ activity.content }}
+          </div>
         </el-timeline-item>
       </el-timeline>
     </div>
   </el-card>
-
-  <!-- {{ actions }} -->
   <!-- </div> -->
 </template>
 
 <script>
-import "@/assets/css/LogView.css";
+import "@/assets/css_kjh/LogView.css";
 import { mapState } from "vuex";
 export default {
-  // props: ["actions"],
   computed: {
-    ...mapState(["log"]),
-    ...mapState("Map", {
-      data: (state) => state.data,
+    ...mapState("Log", {
+      log: (state) => state.log,
     }),
   },
   data() {
