@@ -1,31 +1,34 @@
-# Git Convention
+# 특화 프로젝트
 
-[접미사] : \[파일]\[동사]
+- 팀장: 박성철, 임아연
+- 팀원: 김지환, 류한길, 신기호, 오승철
+- 기간: 2021.08.30 - 2021.10.08 (6주)
+- 역할
+  - 김지환: mapping, automative driving, ros-nodejs 소켓 연동, 웹-서버 소켓연동, vue.js FE 개발
+  - 류한길: 인지, 다수 사람 체크, 인지 좌표 추정 및 시뮬레이션 좌표 연동
+  - 박성철: 데이터 수집 및 전처리, Yolo 모델 학습 및 인지 결과 송출, 발표자.
+  - 신기호: 시뮬레이션 맵 제작, UCC 및 발표자료 제작.
+  - 오승철: 판단제어 로직 작성, 웹소켓 통신, 데이터베이스, CI/CD
+  - 임아연: TF Object Detection API를 이용한 객체 인식.
 
-깃 푸쉬 전에 [issue num] 추가
+---
 
-| 접두사   | 내용                     |
-| -------- | ------------------------ |
-| feat     | 코드를 수정한 경우       |
-| fix      | 버그 발생시 고쳣을 경우  |
-| docs     | 문서 수정                |
-| refactor | 코드 구조 변경           |
-| _FE_     |                          |
-| design   | 프론트 UI 설계 관한 내용 |
-| BE       |                          |
-| deploy   | 배포, CI/CD              |
+## 프로젝트 기획배경
 
-Yolo v5 사전작업.
+코로나 시국을 맞이하여 사람들이 한강 공원에 밀집해 있는 상황과, 각종 위험 요소 혹은 단속 요소를 인지하여 이를 관리자에게 알리면 업무 능률을 높이고 한강 공원 방문자 분들에게 보다 안전함을 제공드릴 것이라 생각하여 기획하게 되었습니다.
 
-Yolo v5 GitHub (https://github.com/ultralytics/yolov5)
+## 프로젝트 설계
 
-$ git clone https://github.com/ultralytics/yolov5
-$ cd yolov5
-$ pip install -r requirements.txt
+웹
 
-ROS2 Custom massage type을 사용하기 위해
-colcon build로 전체 빌드.
-또는, colcon build --packages-select hanvi_interfaces 필요.
+![KakaoTalk_20211007_110023807](/uploads/23167c7e0d569dda11b411c2c8c4bcea/KakaoTalk_20211007_110023807.png)
 
-Yolo object detect class
-fire, kickboard, bottle, bag, tent, trash
+
+## 기술 스택
+
+- 판단/제어: ROS2
+- 인지: PyTorch, Yolo
+- 커스텀 맵: Unity
+- 웹: Node.js
+
+![Untitled](/uploads/9b1b8dc6acdefed96a30ebc09eea9ea7/Untitled.png)
