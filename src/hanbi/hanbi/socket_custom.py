@@ -77,7 +77,7 @@ class SocketClass(Node):
 
         @self.sio.on("Click2Ros")
         def listen_node(data):
-            print("clicked : ", data['x'], data['y'])
+            print("clicked : ", data['x '], data['y'])
             goal_pose_msg = PoseStamped()
             goal_pose_msg.pose.position.x = float(data['x'])
             goal_pose_msg.pose.position.y = float(data['y'])
@@ -92,7 +92,7 @@ class SocketClass(Node):
         x = msg.twist.angular.x
         y = msg.twist.angular.y
         ret = pose2grid([x, y])
-        print(ret)
+        # print(ret)
         info["robot"]["pos"] =ret
     def map_callback(self, msg):
         pass

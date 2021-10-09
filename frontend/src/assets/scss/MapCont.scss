@@ -16,21 +16,24 @@ $map_size_x: 700px;
       position: relative;
       width: 500px;
       height: 500px;
+      // > * {
+      // transition: all 0.2s linear;
+      // }
+      transform: scale(1.2);
+
+      > .robot {
+        position: absolute;
+        transform-origin: (250px, -250px);
+        bottom: 0;
+      }
     }
-    // .map img {
-    //   transition: all 0.2s linear;s
+    // .map:hover {
+    // transform: scale(1.4);
     // }
-    // .map:hover img {
-    //   transform: scale(1.4);
+    // .mapImg {
+    //   height: 500px;
+    //   width: 500px;
+    //   border: 1px solid black;
     // }
-    .mapImg {
-      height: 500px;
-      width: 500px;
-      border: 1px solid black;
-    }
-    .robot {
-      position: absolute;
-      bottom: 0;
-    }
   }
 }

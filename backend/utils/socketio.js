@@ -29,7 +29,7 @@ var info = {
     pos: [0, 0],
     mode: 0
   },
-  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs" }],
+  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 1 }],
   environment: {
     weather: "Cloudy",
     temperature: "30"
@@ -68,6 +68,7 @@ module.exports.createSocket = function (http_server) {
       const { robot, environment } = data
 
       info.robot = robot
+      console.log(info.robot)
       info.environment = environment
 
     })

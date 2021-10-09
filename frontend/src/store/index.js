@@ -16,7 +16,11 @@ export default new Vuex.Store({
         colors: {
             bg: "#65AC52",
             robot: "#D60707",
-            obstacle: "#525252"
+            obstacle: "#525252",
+            map: {
+                robot: "#D60707",
+                event: ["#FDEED7", "FDEED7"]
+            }
         },
         losts: [
             { name: "열쇠", img: 0, date: new Date() },
@@ -115,8 +119,8 @@ export default new Vuex.Store({
             })
             state.socket.on("Robot2Web", (data) => {
                 if (data) {
-                    // console.log("Robot : ", data)
-                    dispatch("setRobot", data)
+                    console.log("Robot : ", data)
+                    dispatch("Robot/setRobot", data)
                 } else {
                     console.log("Robot : No Data from server")
                 }
@@ -141,22 +145,6 @@ export default new Vuex.Store({
                     dispatch("setStreaming", arrayBuffer)
                 }
             })
-        },
-
-        setRobot({ state, commit }, data) {
-            state
-
-            const { pos } = data
-            const [x, y] = pos
-            let robotDiv = document.querySelectorAll(".robot")
-            // console.log("set Robot : ", state.map.dsizeY - y, x)
-            for (let i = 0; i < robotDiv.length; i++) {
-                robotDiv[i].style.top = (state.map.dsizeY - y) + "px";
-                robotDiv[i].style.left = x + "px";
-                robotDiv[i].style.backgroundColor = state.colors.robot
-            }
-            commit("Robot/setRobot", data)
-
         },
         setLog({ state }, data) {
             state, data

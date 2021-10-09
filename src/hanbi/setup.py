@@ -31,7 +31,7 @@ setup(
             'perception = perception:main',
             'pytorch_detector = pytorch_detector:main',
             'transform = transform:main',
-            'socket_custom = socket_custom:main'
+            'socket_custom = hanbi.socket_custom:main'
         ],
     },
 )

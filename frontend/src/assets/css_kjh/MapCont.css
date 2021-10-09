@@ -10,20 +10,11 @@
   position: relative;
   width: 500px;
   height: 500px;
+  transform: scale(1.2);
 }
-#MapCont .el-card__body .map img {
-  transition: all 0.2s linear;
-}
-#MapCont .el-card__body .map:hover img {
-  transform: scale(1.4);
-}
-#MapCont .el-card__body .mapImg {
-  height: 500px;
-  width: 500px;
-  border: 1px solid black;
-}
-#MapCont .el-card__body .robot {
+#MapCont .el-card__body .map > .robot {
   position: absolute;
+  transform-origin: 250px, -250px;
   bottom: 0;
 }
 
