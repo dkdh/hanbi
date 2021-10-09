@@ -30,7 +30,8 @@ setup(
             'path_tracking_patrol = path_tracking_patrol:main',
             'perception = perception:main',
             'pytorch_detector = pytorch_detector:main',
-            'transform = transform:main'
+            'transform = transform:main',
+            'socket_custom = socket_custom:main'
         ],
     },
 )
