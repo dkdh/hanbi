@@ -2,22 +2,18 @@
   <div id="DashboardCont">
     <div id="DashboardWrap">
       <div id="c1">
-        <!-- <div id="r1">
-        <div></div>
-        <blackbox-cont></blackbox-cont>
-      </div> -->
-        <div id="r2">
+        <!-- <div id="r2"> -->
           <map-cont></map-cont>
           <!-- <mapping-cont></mapping-cont> -->
           <!-- <log-cont></log-cont> -->
-        </div>
+        <!-- </div> -->
       </div>
       <div id="c2">
-        <div id="c3">
+        <div id="r1">
           <weather-cont id="c4"></weather-cont>
           <robot-cont id="c5"></robot-cont>
         </div>
-        <monitoring-cont id="c6"></monitoring-cont>
+        <monitoring-cont id="r2"></monitoring-cont>
       </div>
     </div>
   </div>

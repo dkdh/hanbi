@@ -2,14 +2,13 @@
   <el-card
     id="WeatherCont"
     shadow="always"
-    style="padding-left: 140px; padding-right: 140px; flex: 1"
   >
     <div slot="header">
       <span>날씨</span>
     </div>
     <!-- card body -->
     <div id="weatherWrap" style="text-align: center">
-      <el-image :src="weatherSrc" fit="fill" :lazy="true"></el-image>
+      <el-image :src="weatherSrc" fit="contain" :lazy="true"></el-image>
       <h3>{{ temperature }}℃ / {{ weather }}</h3>
         
     </div>
@@ -17,7 +16,7 @@
 </template>
 
 <script>
-import "@/assets/css/Dashboard/WeatherCont.css";
+import "@/assets/css_kjh/Dashboard/WeatherCont.css";
 import { mapState,mapMutations } from "vuex";
 export default {
   computed: {

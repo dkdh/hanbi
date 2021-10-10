@@ -2,7 +2,7 @@
   <!-- <div> -->
   <el-card id="MapCont" shadow="always" :body-style="{ margin: '20px' }">
     <div slot="header">
-      <h2>지도 및 위치 {{log}}</h2>
+      <h2>지도 및 위치 </h2>
     </div>
 
     <div class="mapWrap">
@@ -21,9 +21,9 @@
           class="onTheMap robot"
         >
         </div>
-        <!-- <div class="onTheMap event" v-for="e in log" :key="e">
+        <div class="onTheMap event" :id="e.name" v-for="e in log" :key="e.name">
 
-        </div> -->
+        </div>
       </div>
       
     </div>
@@ -46,9 +46,7 @@ export default {
   },
   computed: {
     ...mapState(["colors"]),
-    ...mapState("Log", {
-      log: (state) => {state.log}
-    })
+    ...mapState("Log", ["log"])
   },
   methods: {
     clickFunc: (e) => {
@@ -63,6 +61,9 @@ export default {
       let name = colorlist[e];
       this.list.push({ name: name, value: this.colors[name] });
     }
+  },
+  updated() {
+    store.dispatch("Log/renderLog")
   },
 };
 </script>

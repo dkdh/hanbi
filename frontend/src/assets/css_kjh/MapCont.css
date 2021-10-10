@@ -25,5 +25,10 @@
   height: 10px;
   background-color: red;
 }
+#MapCont .el-card__body .map > .event {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+}
 
 /*# sourceMappingURL=MapCont.css.map */

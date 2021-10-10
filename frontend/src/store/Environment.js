@@ -7,7 +7,6 @@ export default {
     },
     mutations: {
         matchIcon(state, weatherData) {
-            console.log("ff:", weatherData)
             if (weatherData === "Sunny") state.weatherSrc= require('@/assets/images/weather/039-sun.png');
             if (weatherData === "Cloudy") state.weatherSrc= require("@/assets/images/weather/001-cloud.png");
             if (weatherData === "Foggy") state.weatherSrc= require("@/assets/images/weather/017-foog.png");

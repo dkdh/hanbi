@@ -3,6 +3,7 @@ export default {
     state: {
         dSizeY: 500,
         dSizeX: 500,
+        resol: 0.1,
         data: [],
         colors: {
             bg: "#5F5F5F",

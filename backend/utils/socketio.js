@@ -30,7 +30,8 @@ var info = {
     mode: 0
   },
   log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs_emergency", emergency: 1, pose : { x: 0, y: 0 }   },
-  { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose : { x: 20, y: 20 } }
+  { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose : { x: 20, y: 20 } },
+  // {timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs3", emergency: 0, pose : { x: 25, y: 25 } }
     ],
 environment: {
   weather: "Cloudy",

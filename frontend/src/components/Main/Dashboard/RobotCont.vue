@@ -1,7 +1,6 @@
 <template>
   <el-card
     shadow="always"
-    style="padding-left: 140px; padding-right: 140px; flex: 1"
   >
     <div slot="header">
       <span>한비 상태</span>
