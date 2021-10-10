@@ -82,12 +82,12 @@ export default {
         convertCoords({ state, rootState }, data) {
             //ROS에서 사용하는 좌표 정의
             const [x, y] = data
-            const { dSizeX, dSizeY } = state
-            const [rosSizeX, rosSizeY] = [350, 350]
+            const { dSizeX, dSizeY,resol } = state
+            // const [rosSizeX, rosSizeY] = [350, 350]
 
             //변환
-            const cvtX = (x - (dSizeX / 2)) / dSizeX * rosSizeX
-            const cvtY = ((dSizeY / 2) - y) / dSizeY * rosSizeY
+            const cvtX = (x - (dSizeX/ 2) * resol) 
+            const cvtY = ((dSizeY / 2) * resol - y) 
 
             console.log(cvtX, cvtY)
 
