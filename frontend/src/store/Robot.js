@@ -13,5 +13,19 @@ export default {
         }
     },
     actions: {
+        setRobot({ state, commit, rootState }, data) {
+            state
+
+            const { pos } = data
+            const [x, y] = pos
+            let robotDiv = document.querySelectorAll(".robot")
+            // console.log("set Robot : ", rootState.map.dsizeY - y, x)
+            for (let i = 0; i < robotDiv.length; i++) {
+                robotDiv[i].style.top = (rootState.map.dsizeY - y) + "px";
+                robotDiv[i].style.left = x + "px";
+                robotDiv[i].style.backgroundColor = rootState.colors.robot
+            }
+            commit("setRobot", data)
+        }
     }
 }

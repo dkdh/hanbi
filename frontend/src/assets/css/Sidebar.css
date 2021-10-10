@@ -1,5 +1,5 @@
 #Sidebar {
-  background-color:#f5f5dc;
+  background-color: #f5f5dc;
   height: 100%;
   width: 150px;
   display: flex;
@@ -11,12 +11,12 @@
 #Sidebar > .el-card {
   height: 100%;
   width: 100%;
-  background-color:#f5f5dc;
+  background-color: #f5f5dc;
 }
 #Sidebar > .el-card > .el-card__body {
   height: 100%;
   width: 100%;
-  background-color:#f5f5dc;
+  background-color: #f5f5dc;
   padding: 0px;
   padding-top: 20px;
 }

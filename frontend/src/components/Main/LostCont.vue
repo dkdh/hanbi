@@ -43,6 +43,36 @@ export default {
           date: new Date(),
           imgSrc: require("@/assets/images/bag.png"),
         },
+        {
+          header: "Bag",
+          date: new Date(),
+          imgSrc: require("@/assets/images/bag.png"),
+        },
+        {
+          header: "Bag",
+          date: new Date(),
+          imgSrc: require("@/assets/images/bag.png"),
+        },
+        {
+          header: "Wallet",
+          date: new Date(),
+          imgSrc: require("@/assets/images/wallet.png"),
+        },
+        {
+          header: "Bag",
+          date: new Date(),
+          imgSrc: require("@/assets/images/bag.png"),
+        },
+        {
+          header: "Bag",
+          date: new Date(),
+          imgSrc: require("@/assets/images/bag.png"),
+        },
+        {
+          header: "Bag",
+          date: new Date(),
+          imgSrc: require("@/assets/images/bag.png"),
+        },
       ],
     };
   },

@@ -2,15 +2,15 @@
   <!-- <div id="LogView" class="block"> -->
   <el-card id="LogCont" shadow="always" :body-style="{ padding: '20px' }">
     <div slot="header">
-      <span>Action logs</span>
+      <h2>로그</h2>
     </div>
     <!-- card body -->
     <div id="history">
       <div class="radio">
-        Order:
+        정렬:
         <el-radio-group v-model="reverse">
-          <el-radio :label="true">descending</el-radio>
-          <el-radio :label="false">ascending</el-radio>
+          <el-radio :label="true">오름차순</el-radio>
+          <el-radio :label="false">내림차순</el-radio>
         </el-radio-group>
       </div>
       <!-- {{ actions }} -->

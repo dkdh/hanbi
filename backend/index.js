@@ -10,7 +10,7 @@ const bodyParser = require("body-parser")
 app.use(cors({
 
   //cors 이슈 핸들링 : 서버에 접근할 도메인을 명시
-  origin: "http://j5a102.p.ssafy.io",
+  origin: ["http://j5a102.p.ssafy.io", "http://localhost:8080", "http://localhost:8079"]
 }))
 
 app.use(bodyParser.json())

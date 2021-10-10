@@ -2,16 +2,17 @@
   <!-- <div> -->
   <el-card id="MapCont" shadow="always" :body-style="{ margin: '20px' }">
     <div slot="header">
-      <span>지도 및 위치</span>
+      <h2>지도 및 위치</h2>
     </div>
+
     <div class="mapWrap">
       <div class="map">
-        <!-- !이미지 렌더링이 안됨 -->
         <img
           :src="require(`@/assets/map.png`)"
           width="500px"
           height="500px"
           z-index="5"
+          v-on:click="clickFunc"
         />
         <div
           class="robot"
@@ -25,15 +26,24 @@
 </template>
 
 <script>
-import "@/assets/css/MapCont.css";
+import "@/assets/css_kjh/MapCont.css";
+import store from "@/store";
+import { mapState } from "vuex";
 export default {
-  computed: {},
-  date() {
+  data() {
     return {
       robot: [0, 0],
     };
   },
-  methods: {},
+  computed: {
+    ...mapState(["colors"]),
+  },
+  methods: {
+    clickFunc: (e) => {
+      // console.log(e.offsetX, e.offsetY);
+      store.dispatch("Map/convertCoords", [e.offsetX, e.offsetY]);
+    },
+  },
   mounted() {},
 };
 </script>

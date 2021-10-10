@@ -29,7 +29,7 @@ var info = {
     pos: [0, 0],
     mode: 0
   },
-  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs" }],
+  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 1 }],
   environment: {
     weather: "Cloudy",
     temperature: "30"
@@ -46,7 +46,7 @@ for (let y = 0; y < info.map.dSizeY; y++) {
 module.exports.createSocket = function (http_server) {
   const io = require("socket.io")(http_server, {
     cors: {
-      origin: "http://j5a102.p.ssafy.io",
+      origin: ["http://j5a102.p.ssafy.io", "http://localhost:8080", "http://localhost:8079"],
       methods: ["GET", "POST"],
       transports: ["websocket", "polling"],
       credentials: true,
@@ -68,6 +68,7 @@ module.exports.createSocket = function (http_server) {
       const { robot, environment } = data
 
       info.robot = robot
+      console.log(info.robot)
       info.environment = environment
 
     })
@@ -105,7 +106,7 @@ module.exports.createSocket = function (http_server) {
 
     //로직 2. 로그 이벤트
     socket.on("History2Server", async (data) => {
-      console.log("get Log from ROS")
+      // console.log("get Log from ROS")
       const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
       const { content } = data
       if (!content) return
@@ -113,7 +114,7 @@ module.exports.createSocket = function (http_server) {
     });
 
     socket.on("History2Web", async (data) => {
-      console.log("emit log to web")
+      // console.log("emit log to web")
       socket.emit('History2Web', info.log);
     })
 
@@ -124,41 +125,47 @@ module.exports.createSocket = function (http_server) {
     })
 
     // 실시간 화면 요청
-  socket.on('request_stream_from_vue', () => {
-    socket.to(roomName).emit('request_stream_from_node');
-    console.log("요청")
-  });
-  
-  // 실시간 화면 응답
-  socket.on('stream_from_python', (message) => {
-    socket.to(roomName).emit('stream_from_nodejs', message);
-    console.log("응답")
-  });
+    socket.on('request_stream_from_vue', () => {
+      socket.to(roomName).emit('request_stream_from_node');
+      // console.log("요청")
+    });
 
-  // 블랙박스 저장
-  socket.on('uploadVideo', async (url) => {
-    const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
-    try {
-      const newRecord = await Record.create({
-        fileUrl: url,
-        createdAt: date
-      });
-    } catch (error) {
-      console.log(error);
-    };
-  });
-  
-  // 분실물 사진 저장
-  socket.on('uploadImage', async (url) => {
-    const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
-    try {
-      const newLost = await Lost.create({
-        fileUrl: url,
-        createdAt: date
-      });
-    } catch (error) {
-      console.log(error);
-    };
-  });
+    // 실시간 화면 응답
+    socket.on('stream_from_python', (message) => {
+      socket.to(roomName).emit('stream_from_nodejs', message);
+      // console.log("응답")
+    });
+
+    // 블랙박스 저장
+    socket.on('uploadVideo', async (url) => {
+      const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
+      try {
+        const newRecord = await Record.create({
+          fileUrl: url,
+          createdAt: date
+        });
+      } catch (error) {
+        console.log(error);
+      };
+    });
+
+    // 분실물 사진 저장
+    socket.on('uploadImage', async (url) => {
+      const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
+      try {
+        const newLost = await Lost.create({
+          fileUrl: url,
+          createdAt: date
+        });
+      } catch (error) {
+        console.log(error);
+      };
+    });
+
+    // 웹 맵 클릭 좌표 수신
+    socket.on('Click2Server', async (data) => {
+      console.log("Click2Server")
+      socket.to(roomName).emit('Click2Ros', data);
+    });
   });
 };

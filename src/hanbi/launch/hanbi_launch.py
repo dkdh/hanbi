@@ -52,6 +52,11 @@ def generate_launch_description():
             package='hanbi',
             node_executable='pytorch_detector',
             node_name='pytorch_detector'
+        ),
+        Node(
+            package='hanbi',
+            node_executable='socket_custom',
+            node_name='socket_custom'
         )
     ])
 

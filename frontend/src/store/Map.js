@@ -77,5 +77,23 @@ export default {
                 console.log("no mapImg", e)
             }
         },
+        convertCoords({ state, rootState }, data) {
+            //ROS에서 사용하는 좌표 정의
+            const [x, y] = data
+            const { dSizeX, dSizeY } = state
+            const [rosSizeX, rosSizeY] = [350, 350]
+
+            //변환
+            const cvtX = (x - (dSizeX / 2)) / dSizeX * rosSizeX
+            const cvtY = ((dSizeY / 2) - y) / dSizeY * rosSizeY
+
+            console.log(cvtX, cvtY)
+
+            console.log(rootState.losts)
+            const { socket } = rootState
+            if (socket == null) throw Error("No socket In convertCoords")
+
+            socket.emit("Click2Server", { x: cvtX, y: cvtY })
+        }
     }
 }

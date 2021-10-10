@@ -30,6 +30,7 @@ setup(
             'path_tracking_patrol = hanbi.path_tracking_patrol:main',
             'perception = hanbi.perception:main',
             'pytorch_detector = hanbi.pytorch_detector:main',
+            'socket_custom = hanbi.socket_custom:main',
         ],
     },
 )

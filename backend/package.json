@@ -15,7 +15,7 @@
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
-    "mongoose": "^6.0.9",
+    "mongoose": "^6.0.10",
     "pm2": "^5.1.2",
     "socket.io": "^4.2.0"
   }

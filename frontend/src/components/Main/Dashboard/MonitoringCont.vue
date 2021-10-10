@@ -1,10 +1,12 @@
 <template>
-  <div style="background-color: white">
-    <h1>실시간 화면</h1>
+  <el-card style="background-color: white; height: 100%">
+    <div slot="header">
+      <span>실시간 화면</span>
+    </div>
     <canvas id="streamingCanvas" width="320" height="240"></canvas>
     <br />
     <el-button type="danger" @click="clickRecordBtn">{{ btnText }}</el-button>
-  </div>
+  </el-card>
 </template>
 
 <script>
