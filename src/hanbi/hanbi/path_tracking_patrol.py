@@ -19,6 +19,7 @@ class followTheCarrot(Node):
     def __init__(self):
         super().__init__('path_tracking')
         self.cmd_pub = self.create_publisher(Twist, 'cmd_vel', 10)
+        self.hand_control = self.create_publisher(HandControl, '/hand_control', 10)
 
         self.subscription = self.create_subscription(Odometry,'/odom',self.odom_callback,10)
         self.status_sub = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.status_callback,10)
@@ -26,7 +27,6 @@ class followTheCarrot(Node):
         # 추가
         self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback,10)
         self.goal_pub = self.create_publisher(PoseStamped,'/goal_pose',10)
-        self.tts_pub = self.create_publisher(PoseStamped,'/tts_signal',10)
         self.a_star_local_sub = self.create_subscription(Path, '/a_star_local_path', self.a_star_local_callback,10)
 
         self.hanvi_sub = self.create_subscription(DetectionList, '/hanvi_detection', self.hanvi_callback,10)
@@ -43,7 +43,6 @@ class followTheCarrot(Node):
         self.collision = False
         
         self.is_a_star = False
-        self.stop_flag = False
         self.a_star_flag = False
         self.is_people_check = False
 
@@ -58,9 +57,8 @@ class followTheCarrot(Node):
         self.max_lfd = 3.0
 
         # 제어 메시지 변수 생성 
+        self.hand_control_msg = HandControl()  
         self.goal_pose_msg = PoseStamped()
-        self.tts_msg = PoseStamped()
-
         self.hanvi_msg = DetectionList()
         self.people_check_msg = HandControl()
 
@@ -71,15 +69,19 @@ class followTheCarrot(Node):
         self.thread_flag_1 = False
         self.thread_flag_2 = False
 
-        self.through_flag = False
-    
+        self.violation_flag = False
+
+        self.previous_object = ""
+
     def timer_callback(self):
         if self.is_status and self.is_odom ==True and self.is_path==True and self.is_lidar==True:
             # 순찰 경로보다 쓰레기통에 다녀오는 경로가 우선하기 때문에 앞에 적겠다.
             if self.is_a_star == True and self.a_star_flag == True:
                 # 복귀할 때 자연스럽게 합류하도록
+                print("A STAR 경로")
                 print(len(self.a_star_msg.poses))
                 if len(self.a_star_msg.poses) > 1:
+                    print(11111111)
                     self.is_look_forward_point= False
                     
                     robot_pose_x=self.odom_msg.pose.pose.position.x
@@ -103,8 +105,12 @@ class followTheCarrot(Node):
                             min_dis=abs(dis-self.lfd)
                             self.forward_point=self.current_point
                             self.is_look_forward_point=True
+
+                    # 원상 복귀
+                    self.stop_flag = False
                     
                     if self.is_look_forward_point :
+                        print(22222)
                         
                         global_forward_point=[self.forward_point.x ,self.forward_point.y,1]
 
@@ -119,72 +125,80 @@ class followTheCarrot(Node):
                         theta=-atan2(local_forward_point[1],local_forward_point[0])
                         
                         out_vel = 0.8
-                        out_rad_vel = 0.6*theta
+                        out_rad_vel = 0.8*theta
 
                         self.cmd_msg.linear.x=out_vel
                         self.cmd_msg.angular.z=out_rad_vel
                         self.cmd_pub.publish(self.cmd_msg)
-                        self.through_flag = True
                         return
-                # 갔다가 돌아오는 시기
-                elif self.return_position != [0,0] and self.through_flag == True:
-                    print("돌아가자")
-                    if self.thread_flag_2 == False:
-                        self.thread_flag_2 = True
 
-                        self.goal_pose_msg.header.frame_id = 'map'
-                        self.goal_pose_msg.pose.position.x = self.return_position[0]
-                        self.goal_pose_msg.pose.position.y = self.return_position[1]
-                        self.goal_pub.publish(self.goal_pose_msg)
+                        print(2.5)
+                
+                # 밑으로는 못 내려간다.
+                elif self.stop_flag == True:
+                    return
+                
+                elif self.return_position != [0, 0]:
+                    print(3333)
+                    if self.previous_object == "trash" or self.previous_object == "bag": 
+                        print(4444)
+                        
+                        if self.thread_flag_2 == False:
+                            self.thread_flag_2 = True
 
-                        self.tts_msg.header.frame_id = 'map'
-                        self.tts_msg.pose.position.x = 1
-                        self.tts_msg.pose.position.y = 1
-                        self.tts_pub.publish(self.tts_msg)
+                            self.hand_control_msg.control_mode = 3
+                            
+                            print("내려놓기")
+                            for i in range(1000):
+                                self.hand_control.publish(self.hand_control_msg)
+                            # time.sleep(0.5)
+                            self.thread_flag_2 == False
 
-                        # 멈추기
-                        self.stop_flag = True
 
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.linear.x = 0.0
                             self.cmd_msg.angular.z=0.0
                             self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        self.through_flag = False
+                            self.return_position = [0,0]
+                    
+                    elif self.previous_object == "violation":
+                        if self.thread_flag_2 == False:
+                            self.thread_flag_2 = True
 
-                        self.return_position = [0,0]
-                        self.stop_flag = False
-                        self.thread_flag_1 = False
-                        self.thread_flag_2 = False
+                            self.hand_control_msg.control_mode = 3
+                            
+                            if self.violation_flag == True:
+                                for i in range(100):
+                                    self.cmd_msg.linear.x = 0.0
+                                    self.cmd_msg.angular.z=0.0
+                                    self.cmd_pub.publish(self.cmd_msg)
+                                time.sleep(0.5)
+                                for i in range(100):
+                                    self.cmd_msg.linear.x = 0.0
+                                    self.cmd_msg.angular.z=0.0
+                                    self.cmd_pub.publish(self.cmd_msg)
+                                time.sleep(0.5)
+                                for i in range(100):
+                                    self.cmd_msg.linear.x = 0.0
+                                    self.cmd_msg.angular.z=0.0
+                                    self.cmd_pub.publish(self.cmd_msg)
+                                self.violation_flag = False
+                                time.sleep(2.5)
+
+                            self.thread_flag_2 == False
+
+                            self.cmd_msg.linear.x = 0.0
+                            self.cmd_msg.angular.z=0.0
+                            self.cmd_pub.publish(self.cmd_msg)
+                            self.return_position = [0,0]
 
                 else:
                     self.a_star_flag = False
                     print("경로 복귀")
                     return
-            
-            # 밑으로 못 내려간다.
-            if self.stop_flag == True:
-                self.a_star_flag = True
-                return
 
             # path_msg에는 local_path 정보가 담긴다.
             if len(self.path_msg.poses)> 1:
-                print("재진입")
+                # print("기본 경로")
                 self.is_look_forward_point= False
                 
                 # 로봇의 현재 위치를 나타내는 변수
@@ -216,7 +230,6 @@ class followTheCarrot(Node):
                         # 경로점을 넣어준다
                         self.forward_point=self.current_point
                         self.is_look_forward_point=True
-                
                 if self.is_look_forward_point :
                     global_forward_point=[self.forward_point.x ,self.forward_point.y,1]
 
@@ -246,98 +259,121 @@ class followTheCarrot(Node):
 
                     # theta가 제어할 각 속도에 들어간다.
                     # 2를 곱했다. 클수록 더 빠르게 경로에 수렴한다.
-                    out_vel = 0.85
-                    out_rad_vel = theta * 0.8
+                    out_vel = 0.9
+                    out_rad_vel = theta
 
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel
+                    
+                    if self.collision == True:
+                        print("무언가 감지")
+                        if self.hanvi_msg.detections:
+                            if self.previous_object != self.hanvi_msg.detections[0].name:
+                                self.previous_object = self.hanvi_msg.detections[0].name
+                                self.thread_flag_1 = False
+                                self.thread_flag_2 = False
 
-                # 방역 수칙 위반
-                if self.is_people_check == True and self.people_check_msg.control_mode == 3:
-                    if self.thread_flag_1 == False:
-                        self.thread_flag_1 = True
-                        self.goal_pose_msg.header.frame_id = 'map'
-                        self.goal_pose_msg.pose.position.x = (2.5*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 3.5
-                        self.goal_pose_msg.pose.position.y = (2.5*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 3.5
-                        self.goal_pub.publish(self.goal_pose_msg)
-                        self.a_star_flag = True
-                        self.stop_flag  = True
+                            # 쓰레기 버리기
+                            if self.hanvi_msg.detections[0].name == "trash":
+                                print("쓰레기 감지")
+                                if self.thread_flag_1 == False:
+                                    self.thread_flag_1 = True
+                                    
+                                    # 멈추기
+                                    self.cmd_msg.linear.x = 0.0
+                                    self.cmd_msg.angular.z=0.0
+                                    self.cmd_pub.publish(self.cmd_msg)
 
-                        self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
+                                    # 경로 만들기
+                                    self.goal_pose_msg.header.frame_id = 'map'
+                                    # 쓰레기통 위치
+                                    self.goal_pose_msg.pose.position.x = -6.89
+                                    self.goal_pose_msg.pose.position.y = 6.23
+                                    self.goal_pub.publish(self.goal_pose_msg)
+                                    # 돌아올 곳
+                                    self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
+
+                                    self.hand_control_msg.control_mode = 2
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    time.sleep(0.5)
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    time.sleep(0.5)
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    # 바로 preview
+                                    self.hand_control_msg.control_mode = 1
+                                    self.hand_control_msg.put_distance = 1.7
+                                    self.hand_control_msg.put_height = -2.0
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    print("픽업 함수 완료")
+                                    print("스톱 플래그 온")
+                                    self.stop_flag = True
+                                    self.a_star_flag = True
+
+                                else:
+                                    return
+                            # 분실물
+                            elif self.hanvi_msg.detections[0].name == "bag":
+                                print("가방 감지")
+                                if self.thread_flag_1 == False:
+                                    self.thread_flag_1 = True
+                                    
+                                    # 멈추기
+                                    self.cmd_msg.linear.x = 0.0
+                                    self.cmd_msg.angular.z=0.0
+                                    self.cmd_pub.publish(self.cmd_msg)
+
+                                    # 경로 만들기
+                                    self.goal_pose_msg.header.frame_id = 'map'
+                                    # 쓰레기통 위치
+                                    self.goal_pose_msg.pose.position.x = 4.28
+                                    self.goal_pose_msg.pose.position.y = -17.94
+                                    self.goal_pub.publish(self.goal_pose_msg)
+                                    # 돌아올 곳
+                                    self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
+
+                                    self.hand_control_msg.control_mode = 2
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    time.sleep(0.5)
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    time.sleep(0.5)
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    # 바로 preview
+                                    self.hand_control_msg.control_mode = 1
+                                    self.hand_control_msg.put_distance = 1.7
+                                    self.hand_control_msg.put_height = 0.0
+                                    for i in range(1000):
+                                        self.hand_control.publish(self.hand_control_msg)
+                                    print("픽업 함수 완료")
+                                    print("스톱 플래그 온")
+                                    self.stop_flag = True
+                                    self.a_star_flag = True
+                        else:
+                            return
 
 
-                # 잘 가다가 무언가 인식한 상황
-                if self.hanvi_msg.detections:
-                    if self.hanvi_msg.detections[0].name == "tent":
-                        # 한 번만
-                        time.sleep(1.0)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
+                    elif self.is_people_check == True and self.people_check_msg.control_mode == 3:
+                        print("인원제한 위반")
+                        if self.previous_object != "violation":
+                            self.previous_object = "violation"
+                            
+                            # 경로 만들기
+                            self.goal_pose_msg.header.frame_id = 'map'
+                            self.goal_pose_msg.pose.position.x = (1.5*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 2.5
+                            self.goal_pose_msg.pose.position.y = (1.5*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 2.5
+                            self.goal_pub.publish(self.goal_pose_msg)
+                            # 돌아올 곳
+                            self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
 
-
-                    elif self.hanvi_msg.detections[0].name == "bottle":
-                        time.sleep(1.0)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-
-                    elif self.hanvi_msg.detections[0].name == "kickboard":
-                        pass
-
-                    elif self.hanvi_msg.detections[0].name == "fire":
-                        time.sleep(1.0)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-                            self.cmd_pub.publish(self.cmd_msg)
-                        time.sleep(0.5)
-                        for i in range(10):
-                            self.cmd_msg.linear.x=0.0
-                            self.cmd_msg.angular.z=0.0
-
+                            self.violation_flag = True
+                            self.a_star_flag = True
+            
             else :
                 print("no found forward point")
                 self.cmd_msg.linear.x=0.0
@@ -408,7 +444,7 @@ class followTheCarrot(Node):
                 for lidar_point in pcd_msg.points:
                     distance = sqrt(pow(waypoint.pose.position.x-lidar_point.x, 2)+pow(waypoint.pose.position.y-lidar_point.y, 2))
                     # 0.1m
-                    if distance < 0.25:
+                    if distance < 0.15:
                         self.collision = True
 
             self.is_lidar = True
@@ -420,7 +456,7 @@ class followTheCarrot(Node):
     def hanvi_callback(self,msg):
         self.is_hanvi = True
         self.hanvi_msg = msg
-    
+
     def people_check_callback(self, msg):
         self.is_people_check = True
         self.people_check_msg = msg
