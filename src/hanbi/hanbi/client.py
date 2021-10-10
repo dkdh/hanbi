@@ -45,8 +45,9 @@ class Client(Node):
         self.event_list = {'tent': '닫힌 텐트 감지', 'fire': '화재 발생', 'bottle': '심야 음주 감지', 'kickboard': '도로변 킥보드 발견', 'bag': '분실물 발견', 'trash': '쓰레기 발견'}
         self.people_msg = None
         self.detect_msg = None
-        self.event_ed = {'tent': False, 'fire': False, 'bottle': False, 'kickboard': False, 'people': False}
-        self.event_em = {'tent': 0, 'fire': 1, 'bottle': 0, 'kickboard': 0, 'people': 0}
+        self.event_ed = {'tent': False, 'fire': False, 'bottle': False, 'kickboard': False, 'bag': False, 'trash': False, 'people': False}
+        self.event_em = {'tent': 0, 'fire': 1, 'bottle': 0, 'kickboard': 0, 'bag': 0, 'trash': 0, 'people': 0}
+        self.detected = None
 
         self.turtlebot_status_msg = TurtlebotStatus()
         self.is_turtlebot_status = False
@@ -68,7 +69,6 @@ class Client(Node):
         self.detect_msg = msg
 
     def timer_callback(self):
-
         emergency = 0
         pose = (0, 0)
 
@@ -90,25 +90,22 @@ class Client(Node):
             elif self.people_msg.control_mode == 0:
                 self.event_ed['people'] = False
 
-
         if self.detect_msg is not None:
             content = ''
             for detection in self.detect_msg.detections:
                 if detection.name in self.event_list:
                     content = self.event_list[detection.name]
-                    self.event_ed[detection.name] = True
                     emergency = self.event_em[detection.name]
-                    # print(content)
+                    self.detected = detection.name
                     break
-            if content != '':
-                # print(content)
-                sio.emit('History2Server', {'content': content, 'emergency': emergency, 'pose': pose})
-            else:
-                for key in self.event_ed.keys():
-                    self.event_ed[key] = False
 
-        else:
-            pass
+            if content != '':
+                if not self.event_ed[self.detected]:
+                    self.event_ed[detection.name] = True
+                    sio.emit('History2Server', {'content': content, 'emergency': emergency, 'pose': pose})
+            elif self.detected in self.event_list:
+                self.event_ed[self.detected] = False
+                print(self.detected, self.event_ed[self.detected])
 
 def main_logic(client_node):
     rclpy.spin(client_node)
