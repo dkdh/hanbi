@@ -46,6 +46,7 @@ class Client(Node):
         self.people_msg = None
         self.detect_msg = None
         self.event_ed = {'tent': False, 'fire': False, 'bottle': False, 'kickboard': False, 'people': False}
+        self.event_em = {'tent': 0, 'fire': 1, 'bottle': 0, 'kickboard': 0, 'people': 0}
 
         self.turtlebot_status_msg = TurtlebotStatus()
         self.is_turtlebot_status = False
@@ -68,18 +69,27 @@ class Client(Node):
 
     def timer_callback(self):
 
+        emergency = 0
+        pose = (0, 0)
+
+        if self.is_turtlebot_status:
+            x = self.turtlebot_status_msg.twist.angular.x
+            y = self.turtlebot_status_msg.twist.angular.y
+            pose = (x, y)
+
         # boolean 배열 같은 거 만들고 이전에 온 신호는 받지 말기
         # detect_msg에서 None이 오거나 people_msg에서 0으로 올 때마다 초기화
         # 위 방법으로 같은 종류의 서로 다른 상황도 감지 가능 기대
 
         if self.people_msg is not None:
-
             if self.people_msg.control_mode >= people_minimum and not self.event_ed['people']:
                 sd = '사회적 거리두기 위반: {}명'.format(self.people_msg.control_mode)
-                sio.emit('History2Server', {'content': sd})
+                emergency = self.event_em['people']
+                sio.emit('History2Server', {'content': sd, 'emergency': emergency, 'pose': pose})
                 self.event_ed['people'] = True
             elif self.people_msg.control_mode == 0:
                 self.event_ed['people'] = False
+
 
         if self.detect_msg is not None:
             content = ''
@@ -87,11 +97,12 @@ class Client(Node):
                 if detection.name in self.event_list:
                     content = self.event_list[detection.name]
                     self.event_ed[detection.name] = True
+                    emergency = self.event_em[detection.name]
                     # print(content)
                     break
             if content != '':
                 # print(content)
-                sio.emit('History2Server', {'content': content})
+                sio.emit('History2Server', {'content': content, 'emergency': emergency, 'pose': pose})
             else:
                 for key in self.event_ed.keys():
                     self.event_ed[key] = False
