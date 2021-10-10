@@ -12,15 +12,10 @@ export default {
         }
     },
     mutations: {
-        setEnvironment(state, data) {
-            const { temperature, weather } = data
-            state.temperature = temperature
-            state.weather = weather
-        },
         drawMapping(state) {
             console.log("drawMapping : ", state)
             
-            const { dSizeY, dSizeX, data, colors } = state.Map
+            const { dSizeY, dSizeX, data, colors } = state
 
             if (!state.data.length) {
                 for (let y = 0; y < dSizeY; y++) {
@@ -60,11 +55,7 @@ export default {
                 const { colors, dSizeY } = state
                 dSizeY
 
-                // let mapImg = document.querySelector(".mappingImg")
-                // var ctx = mapImg.getContext('2d')
-
                 for (let i = 0; i < data.length; i++) {
-                    // console.log("setMapping : ", data[i])
                     if (data[i].length != 3) continue
                     const [y, x, v] = data[i]
                     const next = colors.find_pre + v.toString(16) + colors.find_suf
@@ -72,14 +63,11 @@ export default {
                     state.data[y][x] = next
                 }
 
-                // state.data[50][state.a] = 0
-                // state.a = state.a + 1
-                // data
             } catch (e) {
                 console.log("no mapImg", e)
             }
         },
-        convertCoords({ state, rootState }, data) {
+        click({ state, rootState }, data) {
             //ROS에서 사용하는 좌표 정의
             const [x, y] = data
             const { dSizeX, dSizeY,resol } = state
@@ -96,6 +84,27 @@ export default {
             if (socket == null) throw Error("No socket In convertCoords")
 
             socket.emit("Click2Server", { x: cvtX, y: cvtY })
+        },
+        renderLog({state, rootState},data) {
+            //map에 log 기록을 남기는 함수
+            state, data, rootState
+            const {dSizeY, dSizeX,resol} = state
+            const {log} = rootState.Log
+
+            let logDOM = document.querySelectorAll('.event');
+
+            // 이벤트 개수 세기, 객체 설정
+            for(let i=0; i <  logDOM.length;i++) {
+                const {y,x} = log[i].pose
+                y,x,dSizeY, dSizeX,resol
+                logDOM[i].style.top = (y/resol + dSizeY/2 ) +"px"
+                logDOM[i].style.left = (x/resol + dSizeX/2)+"px"
+                if(log[i].emergency===1){
+                    logDOM[i].style.backgroundColor = rootState.colors["emergency"]
+                }else {
+                    logDOM[i].style.backgroundColor = rootState.colors["event"]
+                }
+            }
         }
     }
 }

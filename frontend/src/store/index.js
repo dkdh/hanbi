@@ -16,10 +16,10 @@ export default new Vuex.Store({
 
         colors: {
             bg: "#65AC52",
-            robot: "#D60707",
+            robot: "#5D6D7E",
             obstacle: "#525252",
-            event: "#FDEED7",
-            emergency: "FDEED7"
+            event: "#FFC300",
+            emergency: "#FF5733"
         },
         losts: [
             { name: "열쇠", img: 0, date: new Date() },
