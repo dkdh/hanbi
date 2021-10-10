@@ -74,7 +74,8 @@ class loadMap(Node):
         # C:\Users\multicampus\Desktop\catkin_ws\install\sub2\Lib\site-packages\sub2\load_map.py
 
         # 상대경로로 작성
-        full_path = full_path.replace('install\\sub2\\Lib\\site-packages\\sub2\\load_map.py', 'src\\sub2\\path\\map.txt')
+        # full_path = full_path.replace('install\\sub2\\Lib\\site-packages\\sub2\\load_map.py', 'src\\sub2\\path\\map.txt')
+        full_path = '.\\..\\map\\map.txt'
         # 읽기 모드로 열기
         self.f = open(full_path, 'r')
 

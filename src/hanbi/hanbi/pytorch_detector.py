@@ -86,7 +86,7 @@ def main(args=None):
     
     publisher_detect = g_node.create_publisher(DetectionList, '/hanvi_detection', 3)
 
-    time.sleep(1)
+    time.sleep(2)
 
     while rclpy.ok():
         time.sleep(0.05)
