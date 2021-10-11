@@ -109,20 +109,20 @@ export default {
             console.log("renderLog")
             state, data, rootState
             const { dSizeY, dSizeX, resol } = state
-            const { log } = rootState.Log
+            // const { log } = rootState.Log
 
             let logDOM = document.querySelectorAll('.event');
             console.log("renderLog:logDom", logDOM)
             // 이벤트 개수 세기, 객체 설정
             for (let i = 0; i < logDOM.length; i++) {
-                // console.log("log : ", log[i])
-                const pose = log[i].pose
+                console.log("log : ", rootState.Log.log[i]) 
+                const pose = rootState.Log.log[i].pose
                 const x = pose[0]
                 const y = pose[1]
 
-                logDOM[i].style.top = (y / resol  + dSizeY / 2) + "px"
+                logDOM[i].style.top = (dSizeY / 2 - (y / resol)) + "px"
                 logDOM[i].style.left = (x / resol + dSizeX / 2)  + "px"
-                if (log[i].emergency === 1) {
+                if (rootState.Log.log[i].emergency === 1) {
                     logDOM[i].classList.add("emergency")
                     logDOM[i].style.backgroundColor = rootState.colors["emergency"]
                 } else {
