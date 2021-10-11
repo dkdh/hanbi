@@ -12,6 +12,7 @@
   margin-top: 15px;
   width: 80%;
   padding-right: 10px;
+  overflow-y: auto;
 }
 #LogCont > .el-card__body > #history > .radio {
   margin: 25px;
