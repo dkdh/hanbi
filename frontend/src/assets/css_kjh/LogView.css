@@ -26,5 +26,12 @@
 #LogCont > .el-card__body > #history .el-card {
   margin-left: 25px;
 }
+#LogCont > .el-card__body > #history .el-timeline {
+  padding-bottom: 200px;
+}
+#LogCont > .el-card__body #history::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera*/
+}
 
 /*# sourceMappingURL=LogView.css.map */

@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["../scss/LogView.scss"],"names":[],"mappings":"AAAA;EACE;EACA;;AAEA;EACE;EACA;EACA;EACA;;AACA;EACE;EACA;EACA;EACA;;AACA;EACE;;AACA;EACE;;AAGJ;EACE;;AAEF;EACE","file":"LogView.css"}
+{"version":3,"sourceRoot":"","sources":["../scss/LogView.scss"],"names":[],"mappings":"AAAA;EACE;EACA;;AAEA;EACE;EACA;EACA;EACA;;AAEA;EACE;EACA;EACA;EACA;;AAGA;EACE;;AACA;EACE;;AAGJ;EACE;;AAEF;EACE;;AAEF;EACE;;AAGJ;EACE;AAAe","file":"LogView.css"}
