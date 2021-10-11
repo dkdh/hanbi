@@ -32,6 +32,8 @@ class followTheCarrot(Node):
         self.hanvi_sub = self.create_subscription(DetectionList, '/hanvi_detection', self.hanvi_callback,10)
         self.people_check_sub = self.create_subscription(HandControl, '/people_check', self.people_check_callback, 10)
 
+        self.tts_pub = self.create_publisher(PoseStamped,'/tts_signal',10)
+
         time_period=0.05 
         self.timer = self.create_timer(time_period, self.timer_callback)
 
@@ -61,6 +63,7 @@ class followTheCarrot(Node):
         self.goal_pose_msg = PoseStamped()
         self.hanvi_msg = DetectionList()
         self.people_check_msg = HandControl()
+        self.tts_msg = PoseStamped()
 
         self.is_hanvi = False
 
@@ -171,6 +174,8 @@ class followTheCarrot(Node):
                                     self.cmd_msg.linear.x = 0.0
                                     self.cmd_msg.angular.z=0.0
                                     self.cmd_pub.publish(self.cmd_msg)
+                                self.tts_msg.header.frame_id = 'map'
+                                self.tts_pub.publish(self.tts_msg)
                                 time.sleep(0.5)
                                 for i in range(100):
                                     self.cmd_msg.linear.x = 0.0
@@ -354,6 +359,14 @@ class followTheCarrot(Node):
                                     print("스톱 플래그 온")
                                     self.stop_flag = True
                                     self.a_star_flag = True
+                                
+                            elif self.hanvi_msg.detections[0].name == "tent":
+                                self.tts_msg.header.frame_id = 'tent'
+                                self.tts_pub.publish(self.tts_msg)
+
+                            elif self.hanvi_msg.detections[0].name == "bottle":
+                                self.tts_msg.header.frame_id = 'bottle'
+                                self.tts_pub.publish(self.tts_msg)
                         else:
                             return
 
