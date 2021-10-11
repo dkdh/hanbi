@@ -14,21 +14,20 @@
         </el-radio-group>
       </div>
       <el-timeline :reverse="reverse">
-        <el-timeline-item
-          v-for="(activity, index) in log"
-          :key="index"
-        >
+        <el-timeline-item v-for="(activity, index) in log" :key="index">
           <!-- normal event -->
           <el-card v-if="activity.emergency == 0">
             <h4>{{ activity.content }}</h4>
-        <p>{{activity.timestamp}}</p>
-      </el-card>
+            <p>{{ activity.timestamp }}</p>
+          </el-card>
           <!-- normal event -->
-              <el-card v-if="activity.emergency == 1" style="background-color:#F56C6C">
+          <el-card
+            v-if="activity.emergency == 1"
+            style="background-color: #f56c6c"
+          >
             <h4>{{ activity.content }}</h4>
-        <p>{{activity.timestamp}}</p>
-      </el-card>
-           
+            <p>{{ activity.timestamp }}</p>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </div>
