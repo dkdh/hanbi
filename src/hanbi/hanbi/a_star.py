@@ -39,7 +39,7 @@ class a_star(Node):
         self.map_sub = self.create_subscription(OccupancyGrid,'map',self.map_callback,1)
         self.odom_sub = self.create_subscription(Odometry,'odom',self.odom_callback,1)
         self.goal_sub = self.create_subscription(PoseStamped,'goal_pose',self.goal_callback,1)
-        self.a_star_pub= self.create_publisher(Path, 'global_path', 1)
+        self.a_star_pub= self.create_publisher(Path, 'a_star_path', 1)
         
         self.map_msg=OccupancyGrid()
         self.odom_msg=Odometry()
@@ -51,12 +51,12 @@ class a_star(Node):
         # 로직 2. 파라미터 설정
 
         # default는 거실에 있는 에어컨 앞
-        self.goal = [184,224] 
+        self.goal = [184,224]
         self.map_size_x=350
         self.map_size_y=350
-        self.map_resolution=0.05
-        self.map_offset_x=-8-8.75
-        self.map_offset_y=-4-8.75
+        self.map_resolution = 0.1428571428571429
+        self.map_offset_x= -25.0
+        self.map_offset_y= -25.0
     
         self.GRIDSIZE=350
 
@@ -90,8 +90,8 @@ class a_star(Node):
         # 명세서를 보니까 self.map_resolution=0.05 self.map_offset_x=-8-8.75 self.map_offset_y=-4-8.75
         # 이 값들을 이용하라고 되어있어서 숫자 대신에 변수를 써도 좋을 것 같다.
 
-        map_point_x = int((x+16.75)*175/8.75)
-        map_point_y = int((y+12.75)*175/8.75)
+        map_point_x = int((x-self.map_offset_x)/self.map_resolution)
+        map_point_y = int((y-self.map_offset_y)/self.map_resolution)
         
         return map_point_x, map_point_y
 
@@ -107,8 +107,8 @@ class a_star(Node):
         # 최단 경로 탐색 결과는 grid_cell로 나오고
         # 전역 경로로 만들 때는 절대 위치로 변환해서 사용해야 한다.
 
-        x = grid_cell[0]/20-16.75
-        y = grid_cell[1]/20-12.75
+        x = grid_cell[0]*self.map_resolution+self.map_offset_x
+        y = grid_cell[1]*self.map_resolution+self.map_offset_y
 
         return [x,y]
 
@@ -182,57 +182,6 @@ class a_star(Node):
                 if len(self.final_path)!=0 :
                     self.a_star_pub.publish(self.global_path_msg)
 
-    def dijkstra(self,start):
-        # deque는 양쪽에서 삽입 삭제가 가능하다.
-        Q = deque()
-        Q.append(start)
-        self.cost[start[0]][start[1]] = 1
-        found = False
-
-        # 로직 7. grid 기반 최단경로 탐색
-        while Q:
-            # popleft를 통해서 한 쪽 방향으로만 뺀다.
-            # 파장이 퍼지듯이 경로를 찾기 때문에
-            # 가장 먼저 도착하면 그게 최단경로다.
-            if current == self.goal:
-                found = True
-                break
-
-            current = Q.popleft()
-
-            # 시작점을 기준으로 8방향을 의미하는 것 같다.
-            for i in range(8):
-
-                next = [current[0]+self.dx[i], current[1]+self.dy[i]]
-                
-                # 범위를 벗어나지 않는 좌표 중에서
-                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
-                    # 이동가능한 영역이라는 의미인 것 같다.
-                    if self.grid[next[0]][next[1]] < 50:
-
-                        # cost 비교
-                        if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next[0]][next[1]]:
-                            
-                            # 넥스트를 넣어준다.
-                            Q.append(next)
-                            # 명세서 : path를 역으로 추적해서 최종 경로를 얻는다.
-                            # 이 노드가 어디서 왔는지를 적어주어야 하는 것 같다.
-                            self.path[next[0]][next[1]] = current
-                            self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
-
-        # path를 역으로 추적하는 코드
-        # 나중에 reversed로 list 순서 바꿔준다.
-        node = self.goal
-        # 도착지 넣어주고
-        self.final_path.append(node)
-
-        while node != start:
-            # node는 nextNode에서 왔다
-            nextNode = self.path[node[0]][node[1]]
-            # nextNode 넣어주고
-            self.final_path.append(nextNode)
-            node = nextNode
-    
     # Manhattan distance와 Euclidean distance 중 Manhattan distance을 선택함
     # 방식은 크게 중요하지 않다고 생각했음. 다만 Euclidean distance는 계산하는데 더 시간이 오래 걸릴 것 같아서
     # Manhattan distance를 선택함
@@ -249,7 +198,9 @@ class a_star(Node):
         self.cost[start[0]][start[1]] = 1
         found = False
 
+
         while not Q.empty():
+            
             if found:
                 break
 
@@ -266,7 +217,7 @@ class a_star(Node):
                     # 대단히 중요한 부분이다. [next[0]][next[1]]이 아닌 점에 주목하기
                     # if self.grid[next[0]][next[1]] < 50:
                     if self.grid[next[1]][next[0]] < 50:
-                    
+                        
                         # f = g+h
                         g = self.cost[current[0]][current[1]] + self.dCost[i]
                         f = g + self.heuristic(next, self.goal)
@@ -279,14 +230,13 @@ class a_star(Node):
 
         node = self.goal
         self.final_path.append(node)
-        print(self.final_path)
+
 
         while node != start:
             nextNode = self.path[node[0]][node[1]]
             self.final_path.append(nextNode)
             node = nextNode
             
-        print(self.final_path)
 
 
 def main(args=None):

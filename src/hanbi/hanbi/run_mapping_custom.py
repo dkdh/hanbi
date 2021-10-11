@@ -12,7 +12,7 @@ from nav_msgs.msg import Odometry,Path,OccupancyGrid,MapMetaData
 from math import pi,cos,sin,sqrt
 import tf2_ros
 import os
-import sub3.utils as utils
+import hanbi.utils as utils
 import numpy as np
 import cv2
 import time
@@ -393,10 +393,7 @@ def main(args=None):
     def listen_node():
         global md
         print(md)
-        md = np.zeros((500,500))
-            
-
-    
+        md = np.zeros((500,500))    
 
     print("connect ", ip_server)
     sio.connect(ip_server)

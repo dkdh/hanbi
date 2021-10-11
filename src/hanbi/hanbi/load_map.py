@@ -41,9 +41,15 @@ class loadMap(Node):
         self.map_msg=OccupancyGrid()
         self.map_size_x=350 
         self.map_size_y=350
-        self.map_resolution=0.05
-        self.map_offset_x=-8-8.75
-        self.map_offset_y=-4-8.75
+        # 1번 맵
+        # self.map_resolution=0.05
+        # self.map_offset_x=-8-8.75
+        # self.map_offset_y=-4-8.75
+        
+        # 커스텀 맵
+        self.map_resolution= 0.1428571428571429
+        self.map_offset_x = -25.0
+        self.map_offset_y = -25.0
         self.map_data = [0 for i in range(self.map_size_x*self.map_size_y)]
         
         # 2차원 행렬로 만드는 과정인 것 같다.
@@ -74,7 +80,6 @@ class loadMap(Node):
         # C:\Users\multicampus\Desktop\catkin_ws\install\sub2\Lib\site-packages\sub2\load_map.py
 
         # 상대경로로 작성
-        # full_path = full_path.replace('install\\sub2\\Lib\\site-packages\\sub2\\load_map.py', 'src\\sub2\\path\\map.txt')
         full_path = '.\\..\\map\\map.txt'
         # 읽기 모드로 열기
         self.f = open(full_path, 'r')
