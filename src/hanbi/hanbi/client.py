@@ -7,6 +7,7 @@ import cv2
 import base64
 
 from ssafy_msgs.msg import TurtlebotStatus, HandControl
+from nav_msgs.msg import Odometry
 from sensor_msgs.msg import CompressedImage
 from hanvi_interfaces.msg import DetectionList, Detection
 
@@ -24,6 +25,13 @@ class Client(Node):
         super().__init__('client')
         self.status_subscription = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.turtlebot_status_cb,10)
         self.img_subscription = self.create_subscription(CompressedImage,'/image_jpeg/compressed',self.img_callback,10)
+
+        self.odom_sub = self.create_subscription(
+            Odometry,
+            '/odom',
+            self.odom_callback,
+            1
+        )
 
         self.sd_detect_sub = self.create_subscription(
             HandControl,
@@ -43,11 +51,12 @@ class Client(Node):
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
 
         self.event_list = {'tent': '닫힌 텐트 감지', 'fire': '화재 발생', 'bottle': '심야 음주 감지', 'kickboard': '도로변 킥보드 발견', 'bag': '분실물 발견', 'trash': '쓰레기 발견'}
-        self.people_msg = None
-        self.detect_msg = None
+        self.people_msg = HandControl()
+        self.detect_msg = DetectionList()
         self.event_ed = {'tent': False, 'fire': False, 'bottle': False, 'kickboard': False, 'bag': False, 'trash': False, 'people': False}
         self.event_em = {'tent': 0, 'fire': 1, 'bottle': 0, 'kickboard': 0, 'bag': 0, 'trash': 0, 'people': 0}
         self.detected = None
+        self.odom_msg = Odometry()
 
         self.turtlebot_status_msg = TurtlebotStatus()
         self.is_turtlebot_status = False
@@ -67,15 +76,15 @@ class Client(Node):
     
     def detect_callback(self, msg):
         self.detect_msg = msg
+    
+    def odom_callback(self, msg):
+        self.odom_msg = msg
 
     def timer_callback(self):
         emergency = 0
-        pose = (0, 0)
-
-        if self.is_turtlebot_status:
-            x = self.turtlebot_status_msg.twist.angular.x
-            y = self.turtlebot_status_msg.twist.angular.y
-            pose = (x, y)
+        x = self.odom_msg.pose.pose.position.x
+        y = self.odom_msg.pose.pose.position.x
+        pose = (x, y)
 
         # boolean 배열 같은 거 만들고 이전에 온 신호는 받지 말기
         # detect_msg에서 None이 오거나 people_msg에서 0으로 올 때마다 초기화
