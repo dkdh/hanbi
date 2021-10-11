@@ -23,8 +23,6 @@ class TTS(Node):
     
     def signal_callback(self,msg):
         event = msg.header.frame_id
-        if event == 'map':
-            event = 'people'
         fileName = '..\\sound\\' + event + '.mp3'
 
         pygame.mixer.init()

@@ -3,7 +3,7 @@ export default {
     state: {
         dSizeY: 500,
         dSizeX: 500,
-        dSize: 500*500,
+        dSize: 500 * 500,
         resol: 0.1,
         data: [],
         colors: {
@@ -11,8 +11,8 @@ export default {
             find_pre: "#F6",
             find_suf: "0C"
         },
-        percentage : 0,
-        isVisited:[],
+        percentage: 0,
+        isVisited: [],
     },
     mutations: {
         drawMapping(state) {
@@ -61,7 +61,7 @@ export default {
             try {
                 if (!state.data.length) return
 
-                const { dSizeY} = state
+                const { dSizeY } = state
                 dSizeY
 
                 for (let i = 0; i < data.length; i++) {
@@ -72,9 +72,9 @@ export default {
                     // const next = state.colors.find_pre + value + state.colors.find_suf
                     const next = "#" + value + value + value
                     // console.log(next, data[i])
-                    if(!state.isVisited[y][x]) {
+                    if (!state.isVisited[y][x]) {
                         state.isVisited[y][x] = true
-                        state.percentage+=1
+                        state.percentage += 1
 
                     }
                     state.data[y][x] = next
@@ -89,14 +89,14 @@ export default {
 
 
             const [x, y] = data
-            const { dSizeX, dSizeY,resol } = state
+            const { dSizeX, dSizeY, resol } = state
             // const [rosSizeX, rosSizeY] = [350, 350]
 
             //변환
-            const cvtX = (x* resol - (dSizeX*resol/ 2) ) 
-            const cvtY = ((dSizeY*resol / 2) - y* resol) 
+            const cvtX = (x * resol - (dSizeX * resol / 2))
+            const cvtY = ((dSizeY * resol / 2) - y * resol)
 
-            console.log(x,y, cvtX, cvtY)
+            console.log(x, y, cvtX, cvtY)
 
             console.log(rootState.losts)
             const { socket } = rootState
@@ -104,24 +104,27 @@ export default {
 
             socket.emit("Click2Server", { x: cvtX, y: cvtY })
         },
-        renderLog({state, rootState},data) {
+        renderLog({ state, rootState }, data) {
             //map에 log 기록을 남기는 함수
             state, data, rootState
-            const {dSizeY, dSizeX,resol} = state
-            const {log} = rootState.Log
+            const { dSizeY, dSizeX, resol } = state
+            const { log } = rootState.Log
 
             let logDOM = document.querySelectorAll('.event');
 
             // 이벤트 개수 세기, 객체 설정
-            for(let i=0; i <  logDOM.length;i++) {
-                const {y,x} = log[i].pose
-                y,x,dSizeY, dSizeX,resol
-                logDOM[i].style.top = (y/resol + dSizeY/2 ) +"px"
-                logDOM[i].style.left = (x/resol + dSizeX/2)+"px"
-                if(log[i].emergency===1){
+            for (let i = 0; i < logDOM.length; i++) {
+                console.log("log : ", log[i])
+                const pose = log[i].pose
+                const x = pose[0]
+                const y = pose[1]
+
+                logDOM[i].style.top = (y / resol + dSizeY / 2) + "px"
+                logDOM[i].style.left = (x / resol + dSizeX / 2) + "px"
+                if (log[i].emergency === 1) {
                     logDOM[i].classList.add("emergency")
                     logDOM[i].style.backgroundColor = rootState.colors["emergency"]
-                }else {
+                } else {
                     logDOM[i].style.backgroundColor = rootState.colors["event"]
                     logDOM[i].style.icon = "el-icon-warning-outline"
                 }
