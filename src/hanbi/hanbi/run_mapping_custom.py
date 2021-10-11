@@ -36,6 +36,7 @@ import json
 # 11. 업데이트 중인 map publish
 # 12. 맵 저장
 
+full_path = '.\\..\\map\\map_final5.txt'
 sio = socketio.Client(reconnection_delay=1, reconnection_delay_max=4)
 
 params_map = {
@@ -268,7 +269,6 @@ class Mapping:
         # 로직 12. 종료 시 map 저장
         ## Ros2의 노드가 종료될 때 만들어진 맵을 저장하도록 def __del__과 save_map이 정의되어 있습니다
         # self.save_map(())
-        full_path = os.path.dirname(os.path.abspath(__file__))+'\\..\\map\\map_final5.txt'
         open(full_path, "w")
 
     # def save_map(self):
@@ -284,7 +284,6 @@ class Mapper(Node):
     def __init__(self):
         # print(os.path.realpath(__file__))
         print(os.path.dirname(os.path.abspath(__file__))+'../map/map_final5.txt')
-        full_path = os.path.dirname(os.path.abspath(__file__))+'\\..\\map\\map_final5.txt'
         # print(os.path.dirname(os.path.abspath('.')))
         super().__init__('Mapper')
         # full_path = '../map/map_final5.txt'
@@ -358,7 +357,6 @@ class Mapper(Node):
 
     def save_callback(self):
         
-        full_path = os.path.dirname(os.path.abspath(__file__))+'\\..\\map\\map_final5.txt'
         f=open(full_path,'w')
 
         for idx,pixel in enumerate(self.map_msg.data) :
