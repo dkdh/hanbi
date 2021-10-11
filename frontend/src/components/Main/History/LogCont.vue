@@ -20,6 +20,7 @@
             <h4>{{ activity.content }}</h4>
             <p>{{ activity.timestamp }}</p>
           </el-card>
+
           <!-- normal event -->
           <el-card
             v-if="activity.emergency == 1"
