@@ -114,7 +114,7 @@ module.exports.createSocket = function (http_server) {
     socket.on("History2Server", async (data) => {
       // console.log("get Log from ROS")
       const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
-      const { content, pose } = data
+      const { content, pose,emergency } = data
       if (!content) return
       info.log.push({ timestamp: date, content, pose, emergency })
     });
