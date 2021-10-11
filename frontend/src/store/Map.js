@@ -16,7 +16,7 @@ export default {
     },
     mutations: {
         drawMapping(state) {
-            console.log("drawMapping : ")
+            // console.log("drawMapping : ")
             //mappingImg에 맵을 그리는 뮤테이션
 
             const { dSizeY, dSizeX, data, colors } = state
@@ -96,9 +96,9 @@ export default {
             const cvtX = (x * resol - (dSizeX * resol / 2))
             const cvtY = ((dSizeY * resol / 2) - y * resol)
 
-            console.log(x, y, cvtX, cvtY)
+            // console.log(x, y, cvtX, cvtY)
 
-            console.log(rootState.losts)
+            // console.log(rootState.losts)
             const { socket } = rootState
             if (socket == null) throw Error("No socket In convertCoords")
 
@@ -106,16 +106,16 @@ export default {
         },
         renderLog({ state, rootState }, data) {
             //map에 log 기록을 남기는 함수
-            console.log("renderLog")
+            // console.log("renderLog")
             state, data, rootState
             const { dSizeY, dSizeX, resol } = state
             // const { log } = rootState.Log
 
             let logDOM = document.querySelectorAll('.event');
-            console.log("renderLog:logDom", logDOM)
+            // console.log("renderLog:logDom", logDOM)
             // 이벤트 개수 세기, 객체 설정
             for (let i = 0; i < logDOM.length; i++) {
-                console.log("log : ", rootState.Log.log[i]) 
+                // console.log("log : ", rootState.Log.log[i]) 
                 const pose = rootState.Log.log[i].pose
                 const x = pose[0]
                 const y = pose[1]

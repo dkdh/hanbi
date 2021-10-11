@@ -65,7 +65,7 @@ module.exports.createSocket = function (http_server) {
     //(issue) socket.to(roomName) 하면 ROS 요청을 수신 못함
 
     socket.join(roomName)
-    console.log("Connect from Client: ");
+    // console.log("Connect from Client: ");
 
     socket.on("SocketNode2Server", (data) => {
       const { robot, environment } = data
@@ -100,7 +100,7 @@ module.exports.createSocket = function (http_server) {
       // release()
     });
     socket.on("MapInit", async () => {
-      console.log("MapInit")
+      // console.log("MapInit")
       socket.to(roomName).emit("MapInit")
     })
 
