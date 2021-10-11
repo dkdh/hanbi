@@ -8,7 +8,7 @@ export default {
             //Main에 로봇 상태를 나타내는 뮤테이션
             const { battery, velocity, pos, mode } = data
             state.battery = battery
-            state.velocity = velocity*25
+            state.velocity = Math.abs(velocity*100)
             state.pos = pos
             state.mode = mode
         }
