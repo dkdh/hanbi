@@ -80,7 +80,9 @@ export default new Vuex.Store({
                     state.socket.emit('request_stream_from_vue')
                 }, 10)
                 setInterval(() => {
+                    console.log(111111111111111111)
                     if (state.url) {
+                        console.log(1111111111111111112222222222222222222)
                         state.socket.emit("uploadVideo", state.url)
                         state.url = null
                     }

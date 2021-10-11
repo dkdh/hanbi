@@ -67,8 +67,13 @@ export default {
     },
   },
   mounted() {
+    if(store.socket == null) return
+    store.socket.emit("History2Web")
     store.dispatch("Map/renderLog")
     //event 개수 새기
+  },
+  updated() {
+    store.dispatch("Map/renderLog")
   },
 };
 </script>
