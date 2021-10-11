@@ -103,14 +103,14 @@ export default new Vuex.Store({
                 }, 1000);
 
             })
-            state.socket.on("Map2Web", (data) => {
-                if (data.length) {
-                    // console.log("Map : Get map data from server", data.length)
-                    dispatch("Map/setMapping", data)
-                } else {
-                    console.log("Map : No Data from server")
-                }
-            })
+            // state.socket.on("Map2Web", (data) => {
+            //     if (data.length) {
+            //         // console.log("Map : Get map data from server", data.length)
+            //         dispatch("Map/setMapping", data)
+            //     } else {
+            //         console.log("Map : No Data from server")
+            //     }
+            // })
             state.socket.on("Robot2Web", (data) => {
                 if (data) {
                     // console.log("Robot : ", data)
