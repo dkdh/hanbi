@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 7rem;
+  padding-top: 4rem;
 }
 #LostCont #lostWrap > div {
   display: flex;
@@ -14,7 +14,7 @@
 #LostCont #lostWrap > div > .el-card {
   width: 270px;
   margin-right: 80px;
-  margin-bottom: 25px;
+  margin-bottom: 45px;
 }
 
 /*# sourceMappingURL=LostCont.css.map */

@@ -17,16 +17,18 @@
         <el-timeline-item
           v-for="(activity, index) in log"
           :key="index"
-          :timestamp="activity.timestamp"
         >
           <!-- normal event -->
-          <div v-if="activity.emergency == 0">
-            {{ activity.content }}
-          </div>
-          <!-- emergency event -->
-          <div class="emergency" v-if="activity.emergency == 1">
-            {{ activity.content }}
-          </div>
+          <el-card v-if="activity.emergency == 0">
+            <h4>{{ activity.content }}</h4>
+        <p>{{activity.timestamp}}</p>
+      </el-card>
+          <!-- normal event -->
+              <el-card v-if="activity.emergency == 1" style="background-color:#F56C6C">
+            <h4>{{ activity.content }}</h4>
+        <p>{{activity.timestamp}}</p>
+      </el-card>
+           
         </el-timeline-item>
       </el-timeline>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div id="MainWrapper">
+  <div id="MainWrapper" >
     <Dashboard v-if="category_idx == 0"></Dashboard>
     <lost v-if="category_idx == 1"></lost>
     <history v-if="category_idx == 2"></history>
@@ -26,5 +26,6 @@ export default {
     Picture,
     Blackbox,
   },
+  
 };
 </script>

@@ -1,14 +1,11 @@
 <template>
   <!-- <div> -->
-  <el-card id="MapCont" shadow="always" :body-style="{ margin: '20px' }">
+  <el-card  id="MapCont" shadow="always" :body-style="{ margin: '20px' }">
     <div slot="header">
       <h2>지도 및 위치 </h2>
     </div>
 
     <div class="mapWrap">
-      <!-- <el-checkbox v-for="e in list" :key="e.name" :fill="e.value">{{
-        e.name
-      }}</el-checkbox> -->
       <div class="map">
         <img
           :src="require(`@/assets/map.png`)"
@@ -17,23 +14,27 @@
           z-index="5"
           v-on:click="clickFunc"
         />
-        <div
-          class="onTheMap robot"
-        >
-        </div>
-        <div class="onTheMap event" :id="e.name" v-for="e in log" :key="e.name">
 
-        </div>
+        <!-- 로봇 -->
+        <el-button class="onTheMap robot" type="primary" icon="el-icon-user" circle></el-button>
+        
+        <!-- 이벤트 -->
+        <el-button class="onTheMap event" :id="e.name" v-for="e in log" :key="e.name" circle>
+          <i class="el-icon-circle-check"></i>
+        </el-button>
+
+        <!-- 범례 -->
         <div class="legend">
-          <!-- <el-badge v-for="e in Object.keys(num)" :key="e.name" :value="1" class="item"> -->
-          <el-badge id = "bdg_robot" :value='num["robot"]' class='item'>
-            robot
-          </el-badge>
           <el-badge id = "bdg_event" :value='num["event"]' class='item'>
-            event
+             <el-button size="small">
+             event
+             </el-button>
           </el-badge>
+          
           <el-badge id = "bdg_emergency" :value='num["emergency"]' class='item'>
+             <el-button size="small">
             emergency
+            </el-button>
           </el-badge>
         </div>
       </div>
@@ -66,16 +67,8 @@ export default {
     },
   },
   mounted() {
-    const colorlist = ["robot", "event", "emergency"];
-    console.log(this.colors);
-    for (let e in colorlist) {
-      let name = colorlist[e];
-      this.list.push({ name: name, value: this.colors[name]});
-    }
+    store.dispatch("Map/renderLog")
     //event 개수 새기
-  },
-  updated() {
-    store.dispatch("Log/renderLog")
   },
 };
 </script>

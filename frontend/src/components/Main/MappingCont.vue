@@ -6,10 +6,12 @@
     </div>
     <div class="mapWrap">
       <div class="map">
+    <el-progress id="mappingProgressBar" :percentage="Math.floor(percentage/dSize*100)" :color="customColors">
+    </el-progress>
         <!-- <img class="mapImg" src="@/assets/map_before.png" /> -->
         <canvas class="mappingImg" width="500px" height="500px"> </canvas>
-        <!-- ! Canvas 안에 들어가야하는데 안됨 -->
-        <div class="robot"></div>
+        
+        <el-button class="onTheMap robot" type="primary" icon="el-icon-user" circle></el-button>
       </div>
     </div>
     <!-- card body -->
@@ -18,19 +20,30 @@
 </template>
 
 <script>
-import "@/assets/css/MappingCont.css";
-import { mapMutations } from "vuex";
+import "@/assets/css_kjh/MappingCont.css";
+import { mapMutations,mapState } from "vuex";
+import store from "@/store"
 export default {
-  computed: {},
+  computed: {
+    ...mapState("Map", ["percentage", "dSize"])
+  },
   date() {
     return {
       robot: [0, 0],
+      customColors: [
+          {color: '#f56c6c', percentage: 20},
+          {color: '#e6a23c', percentage: 40},
+          {color: '#5cb87a', percentage: 60},
+          {color: '#1989fa', percentage: 80},
+          {color: '#6f7ad3', percentage: 100}
+        ]
     };
   },
   methods: {
     ...mapMutations("Map", ["drawMapping"]),
   },
   mounted() {
+    store.state.socket.emit("MapInit")
     setInterval(() => {
       this.drawMapping();
     }, 1000);

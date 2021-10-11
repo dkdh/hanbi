@@ -63,7 +63,7 @@ class SocketClass(Node):
         self.turtle_sub = self.create_subscription(TurtlebotStatus,
         '/turtlebot_status',self.turtlebot_status_callback,1)
         self.cmd_sub = self.create_subscription(Twist,'cmd_vel',self.cmd_callback,10)
-        self.timer = self.create_timer(1, self.timer_callback)
+        self.timer = self.create_timer(0.2, self.timer_callback)
 
         #소켓 이벤트 등록
         self.sio = socketio.Client()
@@ -77,7 +77,7 @@ class SocketClass(Node):
 
         @self.sio.on("Click2Ros")
         def listen_node(data):
-            print("clicked : ", data['x '], data['y'])
+            print("clicked : ", data['x'], data['y'])
             goal_pose_msg = PoseStamped()
             goal_pose_msg.pose.position.x = float(data['x'])
             goal_pose_msg.pose.position.y = float(data['y'])

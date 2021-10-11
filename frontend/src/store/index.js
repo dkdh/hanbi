@@ -15,7 +15,6 @@ export default new Vuex.Store({
         socket: null,
 
         colors: {
-            bg: "#65AC52",
             robot: "#5D6D7E",
             obstacle: "#525252",
             event: "#FFC300",
@@ -66,13 +65,13 @@ export default new Vuex.Store({
 
                 setInterval(() => {
                     state.socket.emit("Robot2Web")
-                }, 700)
+                }, 200)
                 setInterval(() => {
                     state.socket.emit("History2Web")
                 }, 1000)
                 setInterval(() => {
                     state.socket.emit("Environment2Web")
-                }, 1000)
+                }, 500)
 
                 setInterval(() => {
                     state.socket.emit('request_stream_from_vue')
@@ -100,7 +99,7 @@ export default new Vuex.Store({
 
             })
             state.socket.on("Map2Web", (data) => {
-                if (data) {
+                if (data.length) {
                     console.log("Map : Get map data from server", data.length)
                     dispatch("Map/setMapping", data)
                 } else {

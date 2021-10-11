@@ -3,34 +3,42 @@ export default {
     state: {
         dSizeY: 500,
         dSizeX: 500,
+        dSize: 500*500,
         resol: 0.1,
         data: [],
         colors: {
-            bg: "#5F5F5F",
+            bg: "#333333",
             find_pre: "#F6",
             find_suf: "0C"
-        }
+        },
+        percentage : 0,
+        isVisited:[],
     },
     mutations: {
         drawMapping(state) {
-            console.log("drawMapping : ", state)
-            
+            console.log("drawMapping : ")
+            //mappingImg에 맵을 그리는 뮤테이션
+
             const { dSizeY, dSizeX, data, colors } = state
 
             if (!state.data.length) {
+                //맵 데이터가 비어있을 경우
                 for (let y = 0; y < dSizeY; y++) {
                     state.data.push([])
+                    state.isVisited.push([])
                     for (let x = 0; x < dSizeX; x++) {
                         state.data[y].push(colors.bg)
+                        state.isVisited[y].push(false)
                     }
                 }
             }
 
+            // 랜더링할 맵 객체 지정
             let mapImg = document.querySelector(".mappingImg")
             if (!mapImg) return
             var ctx = mapImg.getContext('2d')
 
-            //draw canvas
+            // 랜더링
             for (let y = 0; y < dSizeY; y++) {
                 for (let x = 0; x < dSizeX; x++) {
                     if (data[y][x]) {
@@ -49,17 +57,26 @@ export default {
 
     actions: {
         setMapping({ state }, data) {
+            // 레이더로 탐지한 결과를 state.data에 갱신
             try {
                 if (!state.data.length) return
 
-                const { colors, dSizeY } = state
+                const { dSizeY} = state
                 dSizeY
 
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].length != 3) continue
                     const [y, x, v] = data[i]
-                    const next = colors.find_pre + v.toString(16) + colors.find_suf
 
+                    const value = Math.floor(v * 255).toString(16)
+                    // const next = state.colors.find_pre + value + state.colors.find_suf
+                    const next = "#" + value + value + value
+                    // console.log(next, data[i])
+                    if(!state.isVisited[y][x]) {
+                        state.isVisited[y][x] = true
+                        state.percentage+=1
+
+                    }
                     state.data[y][x] = next
                 }
 
@@ -68,16 +85,18 @@ export default {
             }
         },
         click({ state, rootState }, data) {
-            //ROS에서 사용하는 좌표 정의
+            // Map 클릭시 좌표를 전송하는 액션
+
+
             const [x, y] = data
             const { dSizeX, dSizeY,resol } = state
             // const [rosSizeX, rosSizeY] = [350, 350]
 
             //변환
-            const cvtX = (x - (dSizeX/ 2) * resol) 
-            const cvtY = ((dSizeY / 2) * resol - y) 
+            const cvtX = (x* resol - (dSizeX*resol/ 2) ) 
+            const cvtY = ((dSizeY*resol / 2) - y* resol) 
 
-            console.log(cvtX, cvtY)
+            console.log(x,y, cvtX, cvtY)
 
             console.log(rootState.losts)
             const { socket } = rootState
@@ -100,9 +119,11 @@ export default {
                 logDOM[i].style.top = (y/resol + dSizeY/2 ) +"px"
                 logDOM[i].style.left = (x/resol + dSizeX/2)+"px"
                 if(log[i].emergency===1){
+                    logDOM[i].classList.add("emergency")
                     logDOM[i].style.backgroundColor = rootState.colors["emergency"]
                 }else {
                     logDOM[i].style.backgroundColor = rootState.colors["event"]
+                    logDOM[i].style.icon = "el-icon-warning-outline"
                 }
             }
         }

@@ -6,13 +6,22 @@
     display: flex;
     justify-content: center;
     height: 100%;
+    width:100%;
     > #history {
       margin-top: 15px;
+      width:80%;
+      padding-right: 10px;
       > .radio {
         margin: 25px;
+        >.el-timeline {
+          padding-left:10px;
+        }
       }
       .emergency {
         color: red;
+      }
+      .el-card {
+        margin-left:25px;
       }
     }
   }

@@ -23,25 +23,42 @@
 #MapCont .el-card__body .map > .robot {
   width: 10px;
   height: 10px;
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 #MapCont .el-card__body .map > .event {
   width: 10px;
   height: 10px;
-  background-color: red;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0px;
 }
 #MapCont .el-card__body .map > .legend {
   position: absolute;
   display: flex;
-  flex-direction: column;
   top: 0px;
   color: white;
   margin: 2px;
-  padding: 15px 30px 15px 15px;
-  border: 2px solid white;
+  padding: 10px 30px 10px 15px;
 }
-#MapCont .el-card__body .map > .legend sup {
-  transform: translateX(200%);
+#MapCont .el-card__body .map > .legend > #bdg_event {
+  flex: 1;
+  margin-right: 10px;
+}
+#MapCont .el-card__body .map > .legend > #bdg_event .el-badge__content {
+  background-color: #FFC300;
+  border: 0px;
+}
+#MapCont .el-card__body .map > .legend > #bdg_emergency {
+  flex: 1;
+  margin-right: 10px;
+}
+#MapCont .el-card__body .map > .legend > #bdg_emergency .el-badge__content {
+  background-color: #FF5733;
+  border: 0px;
 }
 
 /*# sourceMappingURL=MapCont.css.map */

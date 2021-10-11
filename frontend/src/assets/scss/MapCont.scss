@@ -22,29 +22,49 @@ $map_size_x: 700px;
       transform: scale(1.2);
 
       > .onTheMap {
-        position: absolute;
+        position: absolute; 
         transform-origin: (250px, -250px);
         bottom: 0;
       }
       > .robot {
-        width: 10px; height: 10px; background-color: red
+        width: 10px; height: 10px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
       }
       > .event {
-        width: 10px; height: 10px; background-color: red
+        width: 10px; height: 10px; 
+        color:white;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        border:0px
       }
       > .legend {
         position:absolute;
         display:flex;
-        flex-direction:column;
+        // flex-direction:column;
 
         top:0px;
         color:white;
         margin:2px;
         padding:10px 30px 10px 15px;
-        border: 2px solid white;
-        // > * >* {
-          // transfomr : translate()
-        // }
+        > #bdg_event {
+          flex:1;
+          margin-right:10px;
+          .el-badge__content {
+            background-color:#FFC300;
+            border:0px;
+          }
+        }
+        > #bdg_emergency {
+          flex:1;
+          margin-right:10px;
+          .el-badge__content {
+            background-color:#FF5733;
+            border:0px;
+          }
+        }
       }
     }
     // .map:hover {

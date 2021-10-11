@@ -71,34 +71,37 @@ module.exports.createSocket = function (http_server) {
       const { robot, environment } = data
 
       info.robot = robot
-      console.log(info.robot)
+      // console.log(info.robot)
       info.environment = environment
 
     })
 
     //로직 1. 맵 이벤트
-    socket.on("Map2Server", async (data) => {
-      //로직 1-1. get Map data from ROS
-      // const release = await mutex.acquire()
-      // console.log("get map from ROS", data)
-      for (let i = 0; i < data.length; i++) {
-        const [y, x, next_value] = data[i]
-        if (info.map.data[y][x] != next_value) {
-          info.map.data[y][x] = next_value
-          info.map.queue.push([y, x, next_value])
+    socket.on("Map2ServerInit", async (data) => {
+      //로직 1-1. 서버에 연결되기 전에 센싱했던 맵 데이터를 수신
+        info.map.data[data[0]] = []
+        for(i = 1; i<=500; i++) {
+          info.map.data[data[0]].push(data[i])
         }
-      }
-      console.log(info.map.queue.length)
+    });
+
+    socket.on("Map2Server", async (data) => {
+      //로직 1-1. 라이다로 센싱한 값 중 변동이 있는 셀 데이터만 전송
+      // for (let i = 0; i < data.length; i++) {
+        // const [y, x, next_value] = data[i]
+        // if (info.map.data[y][x] != next_value) {
+          // info.map.data[y][x] = next_value
+          // info.map.queue.push([y, x, next_value])
+        // }
+      // }
+      socket.to(roomName).emit('Map2Web', data)
+      // console.log(info.map.queue.length, info.map.queue[info.map.queue.length-1])
+      // console.log(info.map.queue.length)
       // release()
     });
-    socket.on("Map2Web", async () => {
-      // const release = await mutex.acquire()
-      // console.log("emit Map to Web")
-      idx = info.map.queue.length
-      limit = 10000
-      if (idx > limit) idx = limit
-      socket.emit('Map2Web', info.map.queue.splice(0, idx));
-      // release()
+    socket.on("MapInit", async () => {
+      console.log("MapInit")
+      socket.to(roomName).emit("MapInit")
     })
 
     //로직 1. 로봇 이벤트
