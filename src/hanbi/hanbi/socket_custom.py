@@ -62,7 +62,7 @@ class SocketClass(Node):
         self.env_sub = self.create_subscription(EnviromentStatus,'/envir_status',self.env_callback,1)        
         self.turtle_sub = self.create_subscription(TurtlebotStatus,
         '/turtlebot_status',self.turtlebot_status_callback,1)
-        self.cmd_sub = self.create_subscription(Twist,'cmd_vel',self.cmd_callback,10)
+        # self.cmd_sub = self.create_subscription(Twist,'cmd_vel',self.cmd_callback,10)
         self.timer = self.create_timer(0.2, self.timer_callback)
 
         #소켓 이벤트 등록
@@ -94,6 +94,8 @@ class SocketClass(Node):
         ret = pose2grid([x, y])
         # print(ret)
         info["robot"]["pos"] =ret
+        info["robot"]["velocity"] = msg.twist.linear.x
+
     def map_callback(self, msg):
         pass
     def odom_callback(self, msg):
@@ -109,10 +111,10 @@ class SocketClass(Node):
     def timer_callback(self):
         self.sio.emit("SocketNode2Server", info)
 
-    def cmd_callback(self, data):
-        linearVelocity = data.linear.x
-        angularVelocity = data.angular.z
-        info["robot"]["velocity"] = linearVelocity
+    # def cmd_callback(self, data):
+    #     linearVelocity = data.linear.x
+    #     angularVelocity = data.angular.z
+    #     info["robot"]["velocity"] = linearVelocity
         
 
 def main(args=None):    

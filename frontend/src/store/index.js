@@ -80,10 +80,9 @@ export default new Vuex.Store({
                     state.socket.emit('request_stream_from_vue')
                 }, 10)
                 setInterval(() => {
-                    console.log(111111111111111111)
-                                111111111111111100
+                    // console.log(111111111111111111)
                     if (state.url) {
-                        console.log(1111111111111111112222222222222222222)
+                        // console.log(1111111111111111112222222222222222222)
                         state.socket.emit("uploadVideo", state.url)
                         state.url = null
                     }
@@ -142,14 +141,13 @@ export default new Vuex.Store({
             })
         },
         async setLog({ state }, data) {
-            state, data
             state.log = data
             if (data.length != state.logLength) {
-                console.log(state.logLength)
-                console.log(data.length)
+                // console.log(state.logLength)
+                // console.log(data.length)
                 state.logLength = data.length
-                console.log(data[data.length - 1].content)
-                console.log(data[data.length - 1].timestamp)
+                // console.log(data[data.length - 1].content)
+                // console.log(data[data.length - 1].timestamp)
 
                 if (data[data.length - 1].content == "쓰레기 발견" || data[data.length - 1].content == "from nodejs") {
                     console.log("쓰레기 발견")

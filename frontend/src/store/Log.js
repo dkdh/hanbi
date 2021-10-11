@@ -19,7 +19,7 @@ export default {
         setLog({ state, }, data) {
             // vuex log 데이터를 갱신하는 함수
             // 추가된 log가 없으면 반환
-            console.log("setLog on", state.log.length, data.length)
+            // console.log("setLog on", state.log.length, data.length)
             if(state.log.length == data.length) return;
 
             // 이벤트 종류별 개수 세기

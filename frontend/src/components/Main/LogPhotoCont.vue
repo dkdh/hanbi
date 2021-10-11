@@ -12,11 +12,11 @@
           v-for="e in elements"
           :key="e"
         >
-          <img :src="e.imgSrc" class="image" />
+          <img :src="e.fileUrl" class="image" />
           <div style="padding: 14px">
-            <span>{{ e.header }}</span>
+            <span>{{ e.createdAt }}</span>
             <div class="bottom clearfix">
-              <time class="time">{{ e.date }}</time>
+              <time class="time">{{ e.caseString }}</time>
               <!-- <el-button type="text" class="button">Operating</el-button> -->
             </div>
           </div>
@@ -28,61 +28,29 @@
 
 <script>
 import "@/assets/css_kjh/LogPhotoCont.css";
+import axios from "axios";
 
 export default {
   data: function () {
     return {
-      elements: [
-        {
-          header: "Key",
-          date: new Date(),
-          imgSrc: require("@/assets/images/key.png"),
-        },
-        {
-          header: "Wallet",
-          date: new Date(),
-          imgSrc: require("@/assets/images/wallet.png"),
-        },
-        {
-          header: "Bag",
-          date: new Date(),
-          imgSrc: require("@/assets/images/bag.png"),
-        },
-        {
-          header: "Bag",
-          date: new Date(),
-          imgSrc: require("@/assets/images/bag.png"),
-        },
-        {
-          header: "Bag",
-          date: new Date(),
-          imgSrc: require("@/assets/images/bag.png"),
-        },
-        {
-          header: "Wallet",
-          date: new Date(),
-          imgSrc: require("@/assets/images/wallet.png"),
-        },
-        {
-          header: "Bag",
-          date: new Date(),
-          imgSrc: require("@/assets/images/bag.png"),
-        },
-        {
-          header: "Bag",
-          date: new Date(),
-          imgSrc: require("@/assets/images/bag.png"),
-        },
-        {
-          header: "Bag",
-          date: new Date(),
-          imgSrc: require("@/assets/images/bag.png"),
-        },
-      ],
+      elements: [],
     };
   },
-  methods: {},
-  created() {},
+  methods: {
+    getPicture() {
+      axios
+        .get("http://j5a102.p.ssafy.io/api/picture")
+        .then((res) => {
+          this.elements = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+  created() {
+    this.getPicture()
+  },
 };
 </script>
 <style>

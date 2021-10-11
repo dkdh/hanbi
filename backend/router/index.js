@@ -65,7 +65,7 @@ router.get("/record", async (req, res) => {
 })
 
 // 분실물 조회
-router.get("/lost", async (req, res) => {
+router.get("/lostItem", async (req, res) => {
     try {
         const lostItems = await Lost.find({}).sort({ _id: -1 })
         res.send(lostItems)
