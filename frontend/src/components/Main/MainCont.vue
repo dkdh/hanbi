@@ -3,7 +3,7 @@
     <Dashboard v-if="category_idx == 0"></Dashboard>
     <lost v-if="category_idx == 1"></lost>
     <history v-if="category_idx == 2"></history>
-    <Picture v-if="category_idx == 3"></Picture>
+    <LogPhoto v-if="category_idx == 3"></LogPhoto>
     <Blackbox v-if="category_idx == 4"></Blackbox>
   </div>
 </template>
@@ -13,7 +13,7 @@ import "@/assets/css/MainWrapper.css";
 import Dashboard from "./DashboardCont.vue";
 import Lost from "./LostCont.vue";
 import History from "./HistoryCont.vue";
-import Picture from "./HistoryPicture.vue";
+import LogPhoto from "./LogPhotoCont.vue"
 import Blackbox from "./BlackboxCont.vue";
 export default {
   computed: {
@@ -23,7 +23,7 @@ export default {
     Lost,
     Dashboard,
     History,
-    Picture,
+    LogPhoto,
     Blackbox,
   },
   

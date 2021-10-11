@@ -1,0 +1,20 @@
+#LogPhotoCont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+}
+#LogPhotoCont #logPhotoWrap > div {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-left: 80px;
+  padding-top: 25px;
+}
+#LogPhotoCont #logPhotoWrap > div > .el-card {
+  width: 270px;
+  margin-right: 80px;
+  margin-bottom: 45px;
+}
+
+/*# sourceMappingURL=LogPhotoCont.css.map */
