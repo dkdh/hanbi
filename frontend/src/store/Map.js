@@ -112,7 +112,7 @@ export default {
             const { log } = rootState.Log
 
             let logDOM = document.querySelectorAll('.event');
-
+            console.log("renderLog:logDom", logDOM)
             // 이벤트 개수 세기, 객체 설정
             for (let i = 0; i < logDOM.length; i++) {
                 // console.log("log : ", log[i])
@@ -120,8 +120,8 @@ export default {
                 const x = pose[0]
                 const y = pose[1]
 
-                logDOM[i].style.top = (y  + dSizeY / 2)/ resol + "px"
-                logDOM[i].style.left = (x + dSizeX / 2)/ resol  + "px"
+                logDOM[i].style.top = (y / resol  + dSizeY / 2) + "px"
+                logDOM[i].style.left = (x / resol + dSizeX / 2)  + "px"
                 if (log[i].emergency === 1) {
                     logDOM[i].classList.add("emergency")
                     logDOM[i].style.backgroundColor = rootState.colors["emergency"]
