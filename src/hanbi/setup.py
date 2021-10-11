@@ -31,7 +31,8 @@ setup(
             'perception = hanbi.perception:main',
             'pytorch_detector = hanbi.pytorch_detector:main',
             'socket_custom = hanbi.socket_custom:main',
-            'run_mapping_custom = hanbi.run_mapping_custom:main'
+            'run_mapping_custom = hanbi.run_mapping_custom:main',
+            'tts = hanbi.tts:main'
         ],
     },
 )

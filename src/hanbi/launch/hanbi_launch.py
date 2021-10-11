@@ -57,6 +57,16 @@ def generate_launch_description():
             package='hanbi',
             node_executable='socket_custom',
             node_name='socket_custom'
+        ),
+        Node(
+            package='hanbi',
+            node_executable='run_mapping_custom',
+            node_name='run_mapping_custom'
+        ),
+        Node(
+            package='hanbi',
+            node_executable='tts',
+            node_name='tts'
         )
     ])
 

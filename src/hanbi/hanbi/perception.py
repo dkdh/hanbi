@@ -14,7 +14,7 @@ from squaternion import Quaternion
 import torch
 import time
 
-from .transform import *
+from hanbi.transform import *
 import math
 
 # image parser 노드는 이미지를 받아서 opencv 의 imshow로 윈도우창에 띄우는 역할을 합니다.
@@ -160,6 +160,8 @@ class IMGParser(Node):
         ground_x = torch.unsqueeze((boxes[:, 0] + boxes[:, 2])/2, 1)
         ground_y = torch.unsqueeze(boxes[:, 3], 1)
         ground_points = torch.cat([ground_x, ground_y], dim=1)
+        sort_tmp = ground_points[ground_points[:, 1].sort()[1]]
+        ground_points = sort_tmp[sort_tmp[:, 0].sort()[1]]
 
         # 변환
         transformed_downoids = compute_point_perspective_transformation(matrix, ground_points)
@@ -199,7 +201,7 @@ class IMGParser(Node):
                 object_point = self.estimate_point(img_bgr.shape, transformed_downoids[i])
                 self.people_msg.put_distance = object_point[0]
                 self.people_msg.put_height = object_point[1]
-                # print(object_point)
+                print(object_point)
                 break
 
         # 위반 사례 존재 시 visualize

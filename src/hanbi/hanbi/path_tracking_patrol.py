@@ -174,7 +174,7 @@ class followTheCarrot(Node):
                                     self.cmd_msg.linear.x = 0.0
                                     self.cmd_msg.angular.z=0.0
                                     self.cmd_pub.publish(self.cmd_msg)
-                                self.tts_msg.header.frame_id = 'map'
+                                self.tts_msg.header.frame_id = 'people'
                                 self.tts_pub.publish(self.tts_msg)
                                 time.sleep(0.5)
                                 for i in range(100):
@@ -334,8 +334,8 @@ class followTheCarrot(Node):
                                     # 경로 만들기
                                     self.goal_pose_msg.header.frame_id = 'map'
                                     # 쓰레기통 위치
-                                    self.goal_pose_msg.pose.position.x = 4.28
-                                    self.goal_pose_msg.pose.position.y = -17.94
+                                    self.goal_pose_msg.pose.position.x = -3.89
+                                    self.goal_pose_msg.pose.position.y = -26.84
                                     self.goal_pub.publish(self.goal_pose_msg)
                                     # 돌아올 곳
                                     self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
@@ -378,8 +378,8 @@ class followTheCarrot(Node):
                             
                             # 경로 만들기
                             self.goal_pose_msg.header.frame_id = 'map'
-                            self.goal_pose_msg.pose.position.x = (1.5*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 2.5
-                            self.goal_pose_msg.pose.position.y = (1.5*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 2.5
+                            self.goal_pose_msg.pose.position.x = (1.8*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 2.8
+                            self.goal_pose_msg.pose.position.y = (1.8*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 2.8
                             self.goal_pub.publish(self.goal_pose_msg)
                             # 돌아올 곳
                             self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
@@ -391,6 +391,7 @@ class followTheCarrot(Node):
                 print("no found forward point")
                 self.cmd_msg.linear.x=0.0
                 self.cmd_msg.angular.z=0.0
+                self.a_star_flag = True
 
             self.cmd_pub.publish(self.cmd_msg)
 

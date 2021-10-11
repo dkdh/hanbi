@@ -84,7 +84,7 @@ class SocketClass(Node):
             self.goal_pub.publish(goal_pose_msg)
 
         #소켓 연결
-        ip_server = 'http://localhost:3000/'
+        ip_server = 'http://j5a102.p.ssafy.io:3000/'
         self.sio.connect(ip_server)
         
 
