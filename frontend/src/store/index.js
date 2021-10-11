@@ -62,9 +62,9 @@ export default new Vuex.Store({
             state.socket.on("connect", async () => {
                 console.log('connected')
                 //로직 2-1. 연결되면 주기적으로 데이터를 받아옴
-                setInterval(() => {
-                    state.socket.emit("Map2Web")
-                }, 300)
+                // setInterval(() => {
+                //     state.socket.emit("Map2Web")
+                // }, 300)
 
                 setInterval(() => {
                     state.socket.emit("Robot2Web")
