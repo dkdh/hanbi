@@ -5,6 +5,8 @@ import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
 import Map from "@/store/Map.js"
 import params from "@/js/config"
+import axios from "axios"
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,6 +14,7 @@ export default new Vuex.Store({
     state: {
         category_idx: 0,
         socket: null,
+        logLength: 1,
 
         colors: {
             bg: "#65AC52",
@@ -149,7 +152,41 @@ export default new Vuex.Store({
         setLog({ state }, data) {
             state, data
             state.log = data
-            // console.log("log : ", data)
+            if (data.length != state.logLength) {
+                console.log(state.logLength)
+                console.log(data.length)
+                state.logLength = data.length
+                console.log(data[data.length-1].content)
+                console.log(data[data.length-1].timestamp)
+                
+                if (data[data.length-1].content == "쓰레기 발견" || data[data.length-1].content == "from nodejs") {
+                    console.log("쓰레기 발견")
+                } else {
+                    let bytes = new Uint8Array(state.streaming);
+                    let blob = new Blob([bytes], { type: "image/jpeg" });
+                    
+                    const response = await axios({
+                        method: 'GET',
+                        url: "https://5q2pq5cazl.execute-api.ap-northeast-2.amazonaws.com/default/getImageUrl"
+                    })
+                    console.log('Response: ', response)
+                    // Put request for upload to S3
+                    const result = await fetch(response.data.uploadURL, {
+                        method: 'PUT',
+                        body: blob
+                    })
+                    console.log('Result: ', result)
+                    let fileKey = response.data.Key;
+                    let url = "https://iotiothanbi.s3.ap-northeast-2.amazonaws.com/" + fileKey;
+                    console.log(url);
+                    if (data[data.length-1].content == "분실물 발견") {
+                        state.socket.emit("uploadImage", url)
+                    } else {
+                        let arr = [url, data[data.length-1].content]
+                        state.socket.emit("uploadPicture", arr)
+                    }
+                }
+            }
         },
 
         setStreaming({ state }, arrayBuffer) {

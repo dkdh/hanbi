@@ -89,7 +89,7 @@ export default {
       console.log("Result: ", result);
 
       let fileKey = response.data.Key;
-      url = "https://iot-hanbi.s3.ap-northeast-2.amazonaws.com/" + fileKey;
+      url = "https://iotiothanbi.s3.ap-northeast-2.amazonaws.com/" + fileKey;
       console.log(url);
     };
   },

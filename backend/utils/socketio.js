@@ -162,6 +162,21 @@ module.exports.createSocket = function (http_server) {
       };
     });
 
+    // 사진 저장
+    socket.on('uploadPicture', async (arr) => {
+      const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
+      try {
+        const newPicture = await Picture.create({
+          fileUrl: arr[0],
+          createdAt: date,
+          caseString: arr[1]
+        });
+        console.log(newPicture)
+      } catch (error) {
+        console.log(error);
+      };
+    });
+
     // 웹 맵 클릭 좌표 수신
     socket.on('Click2Server', async (data) => {
       console.log("Click2Server")
