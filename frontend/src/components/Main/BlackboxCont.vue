@@ -8,7 +8,7 @@
           :key="idx"
           width="320"
           height="240"
-          :src="zvideo.fileUrl"
+          :src="video.fileUrl"
           class="image"
           controls
         ></video>
