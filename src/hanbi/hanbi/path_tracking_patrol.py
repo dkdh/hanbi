@@ -270,6 +270,14 @@ class followTheCarrot(Node):
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel
                     
+                    if self.hanvi_msg.detections[0].name == "tent":
+                        self.tts_msg.header.frame_id = 'tent'
+                        self.tts_pub.publish(self.tts_msg)
+
+                    if self.hanvi_msg.detections[0].name == "bottle":
+                        self.tts_msg.header.frame_id = 'bottle'
+                        self.tts_pub.publish(self.tts_msg)
+
                     if self.collision == True:
                         print("무언가 감지")
                         if self.hanvi_msg.detections:
@@ -361,13 +369,6 @@ class followTheCarrot(Node):
                                     self.stop_flag = True
                                     self.a_star_flag = True
                                 
-                            elif self.hanvi_msg.detections[0].name == "tent":
-                                self.tts_msg.header.frame_id = 'tent'
-                                self.tts_pub.publish(self.tts_msg)
-
-                            elif self.hanvi_msg.detections[0].name == "bottle":
-                                self.tts_msg.header.frame_id = 'bottle'
-                                self.tts_pub.publish(self.tts_msg)
                         else:
                             return
 
