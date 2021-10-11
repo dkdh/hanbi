@@ -149,7 +149,7 @@ export default new Vuex.Store({
                 }
             })
         },
-        setLog({ state }, data) {
+        async setLog({ state }, data) {
             state, data
             state.log = data
             if (data.length != state.logLength) {
