@@ -13,8 +13,7 @@
 import axios from "axios";
 import { mapState } from "vuex";
 
-const API_ENDPOINT =
-  "https://2b7e7mxwc9.execute-api.ap-northeast-2.amazonaws.com/default/getPresignedUrl";
+const API_ENDPOINT = "https://77lrzjpuy7.execute-api.ap-northeast-2.amazonaws.com/default/getVideoUrl"
 
 let canvas;
 let ctx;
