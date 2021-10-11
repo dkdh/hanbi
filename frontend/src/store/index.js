@@ -81,6 +81,7 @@ export default new Vuex.Store({
                 }, 10)
                 setInterval(() => {
                     console.log(111111111111111111)
+                                111111111111111100
                     if (state.url) {
                         console.log(1111111111111111112222222222222222222)
                         state.socket.emit("uploadVideo", state.url)
@@ -105,7 +106,7 @@ export default new Vuex.Store({
             })
             state.socket.on("Map2Web", (data) => {
                 if (data.length) {
-                    console.log("Map : Get map data from server", data.length)
+                    // console.log("Map : Get map data from server", data.length)
                     dispatch("Map/setMapping", data)
                 } else {
                     console.log("Map : No Data from server")
@@ -113,7 +114,7 @@ export default new Vuex.Store({
             })
             state.socket.on("Robot2Web", (data) => {
                 if (data) {
-                    console.log("Robot : ", data)
+                    // console.log("Robot : ", data)
                     dispatch("Robot/setRobot", data)
                 } else {
                     console.log("Robot : No Data from server")
