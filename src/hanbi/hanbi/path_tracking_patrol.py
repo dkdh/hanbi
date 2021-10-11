@@ -187,7 +187,7 @@ class followTheCarrot(Node):
                                     self.cmd_msg.angular.z=0.0
                                     self.cmd_pub.publish(self.cmd_msg)
                                 self.violation_flag = False
-                                time.sleep(2.5)
+                                time.sleep(5.5)
 
                             self.thread_flag_2 == False
 
@@ -333,9 +333,10 @@ class followTheCarrot(Node):
 
                                     # 경로 만들기
                                     self.goal_pose_msg.header.frame_id = 'map'
-                                    # 쓰레기통 위치
-                                    self.goal_pose_msg.pose.position.x = -3.89
-                                    self.goal_pose_msg.pose.position.y = -26.84
+                                    # 관리소 위치
+                                    # 6.05 -19.73
+                                    self.goal_pose_msg.pose.position.x = 5.62
+                                    self.goal_pose_msg.pose.position.y = -17.95
                                     self.goal_pub.publish(self.goal_pose_msg)
                                     # 돌아올 곳
                                     self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
@@ -352,7 +353,7 @@ class followTheCarrot(Node):
                                     # 바로 preview
                                     self.hand_control_msg.control_mode = 1
                                     self.hand_control_msg.put_distance = 1.7
-                                    self.hand_control_msg.put_height = 0.0
+                                    self.hand_control_msg.put_height = 1.2
                                     for i in range(1000):
                                         self.hand_control.publish(self.hand_control_msg)
                                     print("픽업 함수 완료")
@@ -378,8 +379,8 @@ class followTheCarrot(Node):
                             
                             # 경로 만들기
                             self.goal_pose_msg.header.frame_id = 'map'
-                            self.goal_pose_msg.pose.position.x = (1.8*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 2.8
-                            self.goal_pose_msg.pose.position.y = (1.8*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 2.8
+                            self.goal_pose_msg.pose.position.x = (2.3*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 3.3
+                            self.goal_pose_msg.pose.position.y = (2.3*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 3.3
                             self.goal_pub.publish(self.goal_pose_msg)
                             # 돌아올 곳
                             self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
