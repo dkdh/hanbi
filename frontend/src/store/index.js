@@ -62,9 +62,9 @@ export default new Vuex.Store({
             state.socket.on("connect", async () => {
                 console.log('connected')
                 //로직 2-1. 연결되면 주기적으로 데이터를 받아옴
-                // setInterval(() => {
-                //     state.socket.emit("Map2Web")
-                // }, 300)
+                setInterval(() => {
+                    state.socket.emit("Map2Web")
+                }, 300)
 
                 setInterval(() => {
                     state.socket.emit("Robot2Web")
@@ -103,14 +103,14 @@ export default new Vuex.Store({
                 }, 1000);
 
             })
-            // state.socket.on("Map2Web", (data) => {
-            //     if (data.length) {
-            //         // console.log("Map : Get map data from server", data.length)
-            //         dispatch("Map/setMapping", data)
-            //     } else {
-            //         console.log("Map : No Data from server")
-            //     }
-            // })
+            state.socket.on("Map2Web", (data) => {
+                if (data.length) {
+                    // console.log("Map : Get map data from server", data.length)
+                    dispatch("Map/setMapping", data)
+                } else {
+                    console.log("Map : No Data from server")
+                }
+            })
             state.socket.on("Robot2Web", (data) => {
                 if (data) {
                     // console.log("Robot : ", data)

@@ -67,6 +67,7 @@ export default {
     },
   },
   mounted() {
+    console.log("mounted")
     if(store.socket == null) return
     store.socket.emit("History2Web")
     store.dispatch("Map/renderLog")
@@ -75,6 +76,7 @@ export default {
   updated() {
     store.dispatch("Map/renderLog")
   },
+
 };
 </script>
 <style>
