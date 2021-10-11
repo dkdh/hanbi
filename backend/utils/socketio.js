@@ -29,14 +29,14 @@ var info = {
     pos: [0, 0],
     mode: 0
   },
-  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs_emergency", emergency: 1, pose : { x: 0, y: 0 }   },
-  { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose : { x: 20, y: 20 } },
-  // {timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs3", emergency: 0, pose : { x: 25, y: 25 } }
-    ],
-environment: {
-  weather: "Cloudy",
+  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs_emergency", emergency: 1, pose: [0, 0] },
+  { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose: [20, 20] },
+    // {timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs3", emergency: 0, pose : { x: 25, y: 25 } }
+  ],
+  environment: {
+    weather: "Cloudy",
     temperature: "30"
-}
+  }
 }
 //* map
 for (let y = 0; y < info.map.dSizeY; y++) {
@@ -79,20 +79,20 @@ module.exports.createSocket = function (http_server) {
     //로직 1. 맵 이벤트
     socket.on("Map2ServerInit", async (data) => {
       //로직 1-1. 서버에 연결되기 전에 센싱했던 맵 데이터를 수신
-        info.map.data[data[0]] = []
-        for(i = 1; i<=500; i++) {
-          info.map.data[data[0]].push(data[i])
-        }
+      info.map.data[data[0]] = []
+      for (i = 1; i <= 500; i++) {
+        info.map.data[data[0]].push(data[i])
+      }
     });
 
     socket.on("Map2Server", async (data) => {
       //로직 1-1. 라이다로 센싱한 값 중 변동이 있는 셀 데이터만 전송
       // for (let i = 0; i < data.length; i++) {
-        // const [y, x, next_value] = data[i]
-        // if (info.map.data[y][x] != next_value) {
-          // info.map.data[y][x] = next_value
-          // info.map.queue.push([y, x, next_value])
-        // }
+      // const [y, x, next_value] = data[i]
+      // if (info.map.data[y][x] != next_value) {
+      // info.map.data[y][x] = next_value
+      // info.map.queue.push([y, x, next_value])
+      // }
       // }
       socket.to(roomName).emit('Map2Web', data)
       // console.log(info.map.queue.length, info.map.queue[info.map.queue.length-1])
@@ -114,9 +114,9 @@ module.exports.createSocket = function (http_server) {
     socket.on("History2Server", async (data) => {
       // console.log("get Log from ROS")
       const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
-      const { content } = data
+      const { content, pose } = data
       if (!content) return
-      info.log.push({ timestamp: date, content })
+      info.log.push({ timestamp: date, content, pose, emergency })
     });
 
     socket.on("History2Web", async (data) => {

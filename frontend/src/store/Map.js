@@ -114,7 +114,11 @@ export default {
 
             // 이벤트 개수 세기, 객체 설정
             for (let i = 0; i < logDOM.length; i++) {
-                const [x, y] = log[i].pose
+                console.log("log : ", log[i])
+                const pose = log[i].pose
+                const x = pose[0]
+                const y = pose[1]
+
                 logDOM[i].style.top = (y / resol + dSizeY / 2) + "px"
                 logDOM[i].style.left = (x / resol + dSizeX / 2) + "px"
                 if (log[i].emergency === 1) {
