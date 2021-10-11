@@ -174,7 +174,7 @@ class followTheCarrot(Node):
                                     self.cmd_msg.linear.x = 0.0
                                     self.cmd_msg.angular.z=0.0
                                     self.cmd_pub.publish(self.cmd_msg)
-                                self.tts_msg.header.frame_id = 'map'
+                                self.tts_msg.header.frame_id = 'people'
                                 self.tts_pub.publish(self.tts_msg)
                                 time.sleep(0.5)
                                 for i in range(100):
@@ -391,6 +391,7 @@ class followTheCarrot(Node):
                 print("no found forward point")
                 self.cmd_msg.linear.x=0.0
                 self.cmd_msg.angular.z=0.0
+                self.a_star_flag = True
 
             self.cmd_pub.publish(self.cmd_msg)
 

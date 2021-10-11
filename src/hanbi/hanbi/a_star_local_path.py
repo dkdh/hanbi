@@ -20,9 +20,9 @@ class astarLocalpath(Node):
     def __init__(self):
         super().__init__('a_star_local_path')
         # 로직 1. publisher, subscriber 만들기
-        self.local_path_pub = self.create_publisher(Path, 'local_path', 10)
-        self.subscription = self.create_subscription(Path,'/global_path',self.path_callback,10)
-        self.subscription = self.create_subscription(Odometry,'/odom',self.listener_callback,10)
+        self.local_path_pub = self.create_publisher(Path, 'a_star_local_path', 10)
+        self.subscription = self.create_subscription(Path,'a_star_path',self.path_callback,10)
+        self.subscription = self.create_subscription(Odometry,'odom',self.listener_callback,10)
 
         self.odom_msg=Odometry()
         self.is_odom=False
