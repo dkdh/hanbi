@@ -18,7 +18,7 @@ export default {
     actions: {
         setLog({ state, dispatch}, data) {
             // vuex log 데이터를 갱신하는 함수
-            
+            console.log("setLog")
             // 추가된 log가 없으면 반환
             if(state.log.length == data.length) return;
 
@@ -27,7 +27,7 @@ export default {
             state.num["event"] = 0
 
             for(let i=0; i <  data.length;i++) {
-                if(data[i].emergency == 1) state.num["emergency"] =+1
+                if(data[i].emergency == 1) state.num["emergency"] +=1
                 else state.num["event"]+=1
             }
 
