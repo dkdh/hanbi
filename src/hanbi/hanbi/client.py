@@ -83,7 +83,7 @@ class Client(Node):
     def timer_callback(self):
         emergency = 0
         x = self.odom_msg.pose.pose.position.x
-        y = self.odom_msg.pose.pose.position.x
+        y = self.odom_msg.pose.pose.position.y
         pose = (x, y)
 
         # boolean 배열 같은 거 만들고 이전에 온 신호는 받지 말기
@@ -94,6 +94,7 @@ class Client(Node):
             if self.people_msg.control_mode >= people_minimum and not self.event_ed['people']:
                 sd = '사회적 거리두기 위반: {}명'.format(self.people_msg.control_mode)
                 emergency = self.event_em['people']
+                print('pose', pose)
                 sio.emit('History2Server', {'content': sd, 'emergency': emergency, 'pose': pose})
                 self.event_ed['people'] = True
             elif self.people_msg.control_mode == 0:
@@ -111,10 +112,11 @@ class Client(Node):
             if content != '':
                 if not self.event_ed[self.detected]:
                     self.event_ed[detection.name] = True
+                    print('pose', pose)
                     sio.emit('History2Server', {'content': content, 'emergency': emergency, 'pose': pose})
             elif self.detected in self.event_list:
                 self.event_ed[self.detected] = False
-                print(self.detected, self.event_ed[self.detected])
+                # print(self.detected, self.event_ed[self.detected])
 
 def main_logic(client_node):
     rclpy.spin(client_node)
