@@ -177,7 +177,26 @@ class IMGParser(Node):
             cv2.circle(bird_view_img, (x, y), 3, (0, 255, 0), -1)
 
         # 몇 명과 같이 있는지 리스트
-        companies = [1 for i in range(0, len(transformed_downoids))]
+        companies = [-1 for i in range(0, len(transformed_downoids))]
+
+        def find(index):
+            if companies[index] < 0:
+                return index
+            return find(companies[index])
+
+        def union(x, y):
+            x, y = find(x), find(y)
+            
+            if x == y:
+                return
+            
+            if companies[x] < companies[y]:
+                companies[x] += companies[y]
+                companies[y] = x
+            else:
+                companies[y] += companies[x]
+                companies[x] = y
+            
 
         # 다수 사람 체크
         if len(transformed_downoids) >= people_minimum:
@@ -185,8 +204,9 @@ class IMGParser(Node):
                 for j in range(i+1, len(transformed_downoids)):
                     dis = math.sqrt( (transformed_downoids[i][0] - transformed_downoids[j][0])**2 + (transformed_downoids[i][1] - transformed_downoids[j][1])**2 )
                     if dis < int(distance_minimum):
-                        companies[i] += 1
-                        companies[j] += 1
+                        # companies[i] += 1
+                        # companies[j] += 1
+                        union(i, j)
 
         # 초기화
         violate_point = None
@@ -194,14 +214,14 @@ class IMGParser(Node):
         
         # 위반 사례 확인 - 가장 첫 번째 위반 일행 선택
         for i, company in enumerate(companies):
-            if company >= people_minimum:
+            if company < 0 and (company * -1) >= people_minimum:
                 violate_point = ground_points[i]
-                self.people_msg.control_mode = company
+                self.people_msg.control_mode = company * -1
                 # print('img x(320) y(240):', violate_point)
                 object_point = self.estimate_point(img_bgr.shape, transformed_downoids[i])
                 self.people_msg.put_distance = object_point[0]
                 self.people_msg.put_height = object_point[1]
-                print(object_point)
+                # print(object_point)
                 break
 
         # 위반 사례 존재 시 visualize
