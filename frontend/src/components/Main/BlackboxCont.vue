@@ -1,21 +1,29 @@
 <template>
-  <el-card id="BlackboxCont" shadow="always" :body-style="{ padding: '20px' }">
-    <div id="blackboxWrap" style="width: 100%">
-      <div>
-        <video
-          style="border: 1px solid black"
+  <el-card
+    id="BlackboxCont"
+    shadow="always"
+    :body-style="{ padding: '20px' }"
+  >
+    <div id="BlackboxWrap" style="width: 100%">
+      <div class="card-div">
+        <el-card
+          :body-style="{ padding: '0px' }"
           v-for="(video, idx) in videos"
           :key="idx"
-          width="320"
-          height="240"
-          :src="video.fileUrl"
-          class="image"
-          controls
-        ></video>
-        <div style="padding: 15px">
-          <span>{{ video.createdAt }}</span>
-        </div>
-        <div style="border: 1px solid black; height: 320px; widht: 240px"></div>
+          class="el-card__class"
+        >
+          <video
+            style="border: 1px solid black"
+            width="320"
+            height="240"
+            :src="video.fileUrl"
+            class="eachVideo"
+            controls
+          ></video>
+          <div style="padding: 15px">
+            <span>{{ video.createdAt }}</span>
+          </div>
+        </el-card>
       </div>
     </div>
   </el-card>
