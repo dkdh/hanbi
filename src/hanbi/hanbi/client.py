@@ -94,7 +94,7 @@ class Client(Node):
             if self.people_msg.control_mode >= people_minimum and not self.event_ed['people']:
                 sd = '사회적 거리두기 위반: {}명'.format(self.people_msg.control_mode)
                 emergency = self.event_em['people']
-                print('pose', pose)
+                # print('pose', pose)
                 sio.emit('History2Server', {'content': sd, 'emergency': emergency, 'pose': pose})
                 self.event_ed['people'] = True
             elif self.people_msg.control_mode == 0:
@@ -112,7 +112,7 @@ class Client(Node):
             if content != '':
                 if not self.event_ed[self.detected]:
                     self.event_ed[detection.name] = True
-                    print('pose', pose)
+                    # print('pose', pose)
                     sio.emit('History2Server', {'content': content, 'emergency': emergency, 'pose': pose})
             elif self.detected in self.event_list:
                 self.event_ed[self.detected] = False
