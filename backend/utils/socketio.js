@@ -29,8 +29,9 @@ var info = {
     pos: [0, 0],
     mode: 0
   },
-  log: [{ timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs_emergency", emergency: 1, pose: [0, 0] },
-  { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose: [20, 20] },
+  log: [
+    // { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs_emergency", emergency: 1, pose: [0, 0] },
+    // { timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs", emergency: 0, pose: [20, 20] },
     // {timestamp: moment().format('YYYY년 MM월 DD일 HH:mm:ss'), content: "from nodejs3", emergency: 0, pose : { x: 25, y: 25 } }
   ],
   environment: {

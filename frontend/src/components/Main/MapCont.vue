@@ -6,7 +6,11 @@
     </div>
 
     <div class="mapWrap">
-      <div class="map">
+      <div
+        class="map"
+        v-loading="is_load_mapLog"
+        element-loading-spinner="el-icon-loading"
+      >
         <img
           :src="require(`@/assets/map.png`)"
           width="500px"
@@ -46,10 +50,7 @@
         </div>
       </div>
     </div>
-    <!-- {{log}} -->
-    <!-- card body -->
   </el-card>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -61,16 +62,16 @@ export default {
     return {
       robot: [0, 0],
       list: [],
-      interval3: 0,
+      loading: true,
     };
   },
   computed: {
     ...mapState(["colors"]),
     ...mapState("Log", ["log", "num"]),
+    ...mapState("Loading", ["is_load_map1", "is_load_mapLog"]),
   },
   methods: {
     clickFunc: (e) => {
-      // console.log(e.offsetX, e.offsetY);
       store.dispatch("Map/click", [e.offsetX, e.offsetY]);
     },
   },
@@ -80,8 +81,9 @@ export default {
     store.dispatch("Map/renderLogInterval");
     store.dispatch("Robot/setRobotInterval");
   },
-  updated() {
-    store.dispatch("Map/renderLog");
+
+  beforeUpdate() {
+    console.log(this.is_load_map1, this.is_load_mapLog);
   },
   beforeDestroy() {
     store.dispatch("Log/stopLogInterval");

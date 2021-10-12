@@ -13,12 +13,17 @@ export default {
         },
         percentage: 0,
         isVisited: [],
-        interval1: 0
+        emitInterval: 0,
     },
     mutations: {
-        drawMapping(state) {
-            // console.log("drawMapping : ")
+
+    },
+
+    actions: {
+        drawMapping({ state, rootState }) {
+            rootState.Loading.map2 = true
             //mappingImg에 맵을 그리는 뮤테이션
+            // console.log("drawMapping : ")
 
             const { dSizeY, dSizeX, data, colors } = state
 
@@ -52,18 +57,12 @@ export default {
                     }
                 }
             }
-        }
-
-    },
-
-    actions: {
+            rootState.Loading.is_load_map2 = false
+        },
         setMapping({ state }, data) {
             // 레이더로 탐지한 결과를 state.data에 갱신
             try {
                 if (!state.data.length) return
-
-                const { dSizeY } = state
-                dSizeY
 
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].length != 3) continue
@@ -76,7 +75,6 @@ export default {
                     if (!state.isVisited[y][x]) {
                         state.isVisited[y][x] = true
                         state.percentage += 1
-
                     }
                     state.data[y][x] = next
                 }
@@ -131,24 +129,30 @@ export default {
                     logDOM[i].style.icon = "el-icon-warning-outline"
                 }
             }
+            rootState.Loading.is_load_mapLog = false;
         },
-        getMepInterval({ state }) {
-            state.interval1 = setInterval(() => {
-                state.socket.emit("Map2Web")
+
+        //알고리즘 변경 후 안쓰임
+        getMapInterval({ state, rootState }) {
+            state.emitInterval = setInterval(() => {
+                rootState.socket.emit("Map2Web")
             }, 300)
         },
         stopMapInterval({ state }) {
-            clearInterval(state.interval1)
+            clearInterval(state.emitInterval)
         },
-        drawMapInterval({ state, commit }) {
+
+        //맵감지 함수
+        drawMapInterval({ state, dispatch }) {
             state.interval2 = setInterval(() => {
-                commit("drawMapping")
+                dispatch("drawMapping")
             }, 1000);
         },
         stopDrawMapInterval({ state }) {
             clearInterval(state.interval2)
         },
-        //Log 그리기
+
+        //이벤트 그리는 함수
         renderLogInterval({ state, dispatch }) {
             state.renderLogInterval = setInterval(() => {
                 dispatch("renderLog")

@@ -86,7 +86,7 @@ def main(args=None):
     
     publisher_detect = g_node.create_publisher(DetectionList, '/hanvi_detection', 3)
 
-    time.sleep(2)
+    time.sleep(4)
 
     while rclpy.ok():
         time.sleep(0.05)
@@ -104,8 +104,27 @@ def main(args=None):
         for i in range(len(results.pandas().xyxy[0])):
             local_detect = Detection()
 
-            if results.pandas().xyxy[0].name[i] == 'fire':
-                if results.pandas().xyxy[0].confidence[i] >= 0.45:
+            # if results.pandas().xyxy[0].name[i] == 'fire':
+            #     if results.pandas().xyxy[0].confidence[i] >= 0.45:
+            #         local_detect.confidence = results.pandas().xyxy[0].confidence[i]
+            #         local_detect.x = float(0)
+            #         local_detect.y = float(0)
+            #         local_detect.name = results.pandas().xyxy[0].name[i]
+            #         # 일단 절대 좌표 고정
+            #         if local_detect.name == 'fire':
+            #             local_detect.x = 19.712
+            #             local_detect.y = 4.398
+            #         elif local_detect.name == 'kickboard':
+            #             local_detect.x = 18.486
+            #             local_detect.y = -2.688
+            #     else:
+            #         local_detect.confidence = float(0)
+            #         local_detect.x = float(0)
+            #         local_detect.y = float(0)
+            #         local_detect.name = 'None'
+            # else:
+            if results.pandas().xyxy[0].name[i] == 'bag' or results.pandas().xyxy[0].name[i] == 'tent' or results.pandas().xyxy[0].name[i] == 'kickboard':
+                if results.pandas().xyxy[0].confidence[i] >= 0.90:
                     local_detect.confidence = results.pandas().xyxy[0].confidence[i]
                     local_detect.x = float(0)
                     local_detect.y = float(0)
@@ -116,7 +135,7 @@ def main(args=None):
                     local_detect.y = float(0)
                     local_detect.name = 'None'
             else:
-                if results.pandas().xyxy[0].confidence[i] >= 0.7:
+                if results.pandas().xyxy[0].confidence[i] >= 0.85:
                     local_detect.confidence = results.pandas().xyxy[0].confidence[i]
                     local_detect.x = float(0)
                     local_detect.y = float(0)
@@ -135,7 +154,7 @@ def main(args=None):
 
         results.display(render=True)
         winname = 'hanvi detection'
-        cv2.imshow(winname, results.imgs[0])
+        # cv2.imshow(winname, results.imgs[0])
         cv2.waitKey(1)
 
 
