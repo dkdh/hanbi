@@ -13,7 +13,7 @@ export default {
         },
         percentage: 0,
         isVisited: [],
-        interval1:0
+        interval1: 0
     },
     mutations: {
         drawMapping(state) {
@@ -122,7 +122,7 @@ export default {
                 const y = pose[1]
 
                 logDOM[i].style.top = (dSizeY / 2 - (y / resol)) + "px"
-                logDOM[i].style.left = (x / resol + dSizeX / 2)  + "px"
+                logDOM[i].style.left = (x / resol + dSizeX / 2) + "px"
                 if (rootState.Log.log[i].emergency === 1) {
                     logDOM[i].classList.add("emergency")
                     logDOM[i].style.backgroundColor = rootState.colors["emergency"]
@@ -132,22 +132,30 @@ export default {
                 }
             }
         },
-        getMepInterval({state}) {
+        getMepInterval({ state }) {
             state.interval1 = setInterval(() => {
                 state.socket.emit("Map2Web")
-                console.log("hi")
             }, 300)
         },
-        stopMapInterval({state}) {
+        stopMapInterval({ state }) {
             clearInterval(state.interval1)
         },
-        drawMapInterval({state, commit}) {
+        drawMapInterval({ state, commit }) {
             state.interval2 = setInterval(() => {
-            commit("drawMapping")
+                commit("drawMapping")
             }, 1000);
         },
-        stopDrawMapInterval({state}) {
+        stopDrawMapInterval({ state }) {
             clearInterval(state.interval2)
+        },
+        //Log 그리기
+        renderLogInterval({ state, dispatch }) {
+            state.renderLogInterval = setInterval(() => {
+                dispatch("renderLog")
+            }, 500)
+        },
+        stopRenderLogInterval({ state }) {
+            clearInterval(state.renderLogInterval)
         }
     }
 }
