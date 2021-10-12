@@ -106,7 +106,7 @@ module.exports.createSocket = function (http_server) {
 
     //로직 1. 로봇 이벤트
     socket.on("Robot2Web", async (data) => {
-      // console.log("emit robot to Web", info.robot)
+      console.log("emit robot to Web", info.robot)
       socket.emit('Robot2Web', info.robot);
     })
 
@@ -114,7 +114,7 @@ module.exports.createSocket = function (http_server) {
     socket.on("History2Server", async (data) => {
       // console.log("get Log from ROS")
       const date = moment().format('YYYY년 MM월 DD일 HH:mm:ss')
-      const { content, pose,emergency } = data
+      const { content, pose, emergency } = data
       if (!content) return
       info.log.push({ timestamp: date, content, pose, emergency })
     });

@@ -6,12 +6,21 @@
     </div>
     <div class="mapWrap">
       <div class="map">
-    <el-progress id="mappingProgressBar" :percentage="Math.floor(percentage/dSize*100)" :color="customColors">
-    </el-progress>
+        <el-progress
+          id="mappingProgressBar"
+          :percentage="Math.floor((percentage / dSize) * 100)"
+          :color="customColors"
+        >
+        </el-progress>
         <!-- <img class="mapImg" src="@/assets/map_before.png" /> -->
         <canvas class="mappingImg" width="500px" height="500px"> </canvas>
-        
-        <el-button class="onTheMap robot" type="primary" icon="el-icon-user" circle></el-button>
+
+        <el-button
+          class="onTheMap robot"
+          type="primary"
+          icon="el-icon-user"
+          circle
+        ></el-button>
       </div>
     </div>
     <!-- card body -->
@@ -21,48 +30,42 @@
 
 <script>
 import "@/assets/css_kjh/MappingCont.css";
-import { mapMutations,mapState } from "vuex";
-import store from "@/store"
+import { mapMutations, mapState } from "vuex";
+import store from "@/store";
 export default {
   computed: {
-    ...mapState("Map", ["percentage", "dSize"])
+    ...mapState("Map", ["percentage", "dSize"]),
   },
   date() {
     return {
       robot: [0, 0],
       customColors: [
-          {color: '#f56c6c', percentage: 20},
-          {color: '#e6a23c', percentage: 40},
-          {color: '#5cb87a', percentage: 60},
-          {color: '#1989fa', percentage: 80},
-          {color: '#6f7ad3', percentage: 100}
-        ],
-        interval1 : 0,
-        interval2 : 0,
-        interval3 : 0,
+        { color: "#f56c6c", percentage: 20 },
+        { color: "#e6a23c", percentage: 40 },
+        { color: "#5cb87a", percentage: 60 },
+        { color: "#1989fa", percentage: 80 },
+        { color: "#6f7ad3", percentage: 100 },
+      ],
+      interval1: 0,
+      interval2: 0,
+      interval3: 0,
     };
   },
   methods: {
     ...mapMutations("Map", ["drawMapping"]),
   },
   mounted() {
-    store.state.socket.emit("MapInit")
-    store.dispatch("Map/getMapInterval")
-    store.dispatch("Map/drawMapInterval")
-    this.interval3 = setInterval(() => {
-      store.state.socket.emit("Robot2Web")
-    }, 200)
+    store.state.socket.emit("MapInit");
+    store.dispatch("Map/getMapInterval");
+    store.dispatch("Map/drawMapInterval");
+    store.dispatch("Robot/setRobotInterval");
   },
-  unmounted() {
-    
-  },
+  unmounted() {},
   beforeDestroy() {
-    store.dispatch("Map/stopMapInterval")
-    store.dispatch("Map/stopDrawMapInterval")
-    clearInterval(this.interval3)
+    store.dispatch("Map/stopMapInterval");
+    store.dispatch("Map/stopDrawMapInterval");
+    store.dispatch("Robot/stopSetRobotInterval");
   },
-
-
 };
 </script>
 <style>

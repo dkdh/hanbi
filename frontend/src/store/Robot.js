@@ -1,25 +1,26 @@
 export default {
     namespaced: true,
     state: {
-        pos: [0, 0], battery: 100, velocity: 100, mode: "순찰모드 from"
+        pos: [0, 0], battery: 100, velocity: 100, mode: "순찰모드 from",
+        setRobotInterval: 0
     },
     mutations: {
         setRobot(state, data) {
             //Main에 로봇 상태를 나타내는 뮤테이션
             const { battery, velocity, pos, mode } = data
             state.battery = battery
-            state.velocity = Math.abs(velocity*100)
+            state.velocity = Math.floor(velocity * 100)
             state.pos = pos
             state.mode = mode
         }
     },
     actions: {
-        setRobot({  commit, rootState }, data) {
+        setRobot({ commit, rootState }, data) {
             //Map에 로봇을 그리는 액션
-            
+
             //현재 객체 트리에 로봇이 없으면 반환
             let robotDiv = document.querySelectorAll(".robot")
-            if(!robotDiv) return 
+            if (!robotDiv) return
 
             const { pos } = data
             const [x, y] = pos
@@ -30,6 +31,14 @@ export default {
                 // robotDiv[i].style.backgroundColor = rootState.colors.robot
             }
             commit("setRobot", data)
+        },
+        setRobotInterval({ state, rootState }) {
+            state.setRobotInterval = setInterval(() => {
+                rootState.socket.emit("Robot2Web")
+            }, 200)
+        },
+        stopSetRobotInterval({ state }) {
+            clearInterval(state.setRobotInterval)
         }
     }
 }

@@ -75,20 +75,18 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted");
-    if (store.socket == null) return;
-    store.socket.emit("History2Web");
-    store.dispatch("Map/renderLog");
-    //event 개수 새기
-    this.interval3 = setInterval(() => {
-      store.state.socket.emit("Robot2Web");
-    }, 200);
+    //pulling
+    store.dispatch("Log/getLogInterval");
+    store.dispatch("Map/renderLogInterval");
+    store.dispatch("Robot/setRobotInterval");
   },
   updated() {
     store.dispatch("Map/renderLog");
   },
   beforeDestroy() {
-    clearInterval(this.interval3);
+    store.dispatch("Log/stopLogInterval");
+    store.dispatch("Map/stopRenderLogInterval");
+    store.dispatch("Robot/stopSetRobotInterval");
   },
 };
 </script>

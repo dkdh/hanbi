@@ -113,7 +113,7 @@ export default new Vuex.Store({
             })
             state.socket.on("Robot2Web", (data) => {
                 if (data) {
-                    // console.log("Robot : ", data)
+                    console.log("Robot : ", data)
                     dispatch("Robot/setRobot", data)
                 } else {
                     console.log("Robot : No Data from server")
