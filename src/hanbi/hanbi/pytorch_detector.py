@@ -129,13 +129,6 @@ def main(args=None):
                     local_detect.x = float(0)
                     local_detect.y = float(0)
                     local_detect.name = results.pandas().xyxy[0].name[i]
-                    
-                    if local_detect.name == 'kickboard':
-                        local_detect.x = 18.486
-                        local_detect.y = -2.688
-                    elif local_detect.name == 'tent':
-                        local_detect.x = 7.091
-                        local_detect.y = 12.167
                 else:
                     local_detect.confidence = float(0)
                     local_detect.x = float(0)
@@ -147,13 +140,6 @@ def main(args=None):
                     local_detect.x = float(0)
                     local_detect.y = float(0)
                     local_detect.name = results.pandas().xyxy[0].name[i]
-                    
-                    if local_detect.name == 'fire':
-                        local_detect.x = 19.712
-                        local_detect.y = 4.398
-                    elif local_detect.name == 'bottle':
-                        local_detect.x = 13.49
-                        local_detect.y = -12.75
                 else:
                     local_detect.confidence = float(0)
                     local_detect.x = float(0)
