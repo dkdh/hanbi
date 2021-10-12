@@ -413,7 +413,7 @@ class Mapper(Node):
 def main(args=None):    
     rclpy.init(args=args)
 
-    ip_server = 'http://j5a102.p.ssafy.io:3000'
+    ip_server = 'http://localhost:3000'
 
     @sio.event
     def connect():
