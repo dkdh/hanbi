@@ -270,13 +270,14 @@ class followTheCarrot(Node):
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel
                     
-                    if self.hanvi_msg.detections[0].name == "tent":
-                        self.tts_msg.header.frame_id = 'tent'
-                        self.tts_pub.publish(self.tts_msg)
+                    if self.hanvi_msg.detections:
+                        if self.hanvi_msg.detections[0].name == "tent":
+                            self.tts_msg.header.frame_id = 'tent'
+                            self.tts_pub.publish(self.tts_msg)
 
-                    if self.hanvi_msg.detections[0].name == "bottle":
-                        self.tts_msg.header.frame_id = 'bottle'
-                        self.tts_pub.publish(self.tts_msg)
+                        if self.hanvi_msg.detections[0].name == "bottle":
+                            self.tts_msg.header.frame_id = 'bottle'
+                            self.tts_pub.publish(self.tts_msg)
 
                     if self.collision == True:
                         print("무언가 감지")
@@ -368,26 +369,25 @@ class followTheCarrot(Node):
                                     print("스톱 플래그 온")
                                     self.stop_flag = True
                                     self.a_star_flag = True
-                                
-                        else:
-                            return
 
 
                     elif self.is_people_check == True and self.people_check_msg.control_mode == 3:
                         print("인원제한 위반")
-                        if self.previous_object != "violation":
-                            self.previous_object = "violation"
+                        if sqrt(pow(self.people_check_msg.put_distance-self.odom_msg.pose.pose.position.x,2)+pow(self.people_check_msg.put_height-self.odom_msg.pose.pose.position.y,2)) < 15.0:
+                            if self.previous_object != "violation":
+                                self.previous_object = "violation"
                             
-                            # 경로 만들기
-                            self.goal_pose_msg.header.frame_id = 'map'
-                            self.goal_pose_msg.pose.position.x = (2.3*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 3.3
-                            self.goal_pose_msg.pose.position.y = (2.3*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 3.3
-                            self.goal_pub.publish(self.goal_pose_msg)
-                            # 돌아올 곳
-                            self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
+                                # 경로 만들기
+                                self.goal_pose_msg.header.frame_id = 'map'
 
-                            self.violation_flag = True
-                            self.a_star_flag = True
+                                self.goal_pose_msg.pose.position.x = (1.8*self.people_check_msg.put_distance + self.odom_msg.pose.pose.position.x) / 2.8
+                                self.goal_pose_msg.pose.position.y = (1.8*self.people_check_msg.put_height + self.odom_msg.pose.pose.position.y) / 2.8
+                                self.goal_pub.publish(self.goal_pose_msg)
+                                # 돌아올 곳
+                                self.return_position = [self.path_msg.poses[-1].pose.position.x, self.path_msg.poses[-1].pose.position.y]
+
+                                self.violation_flag = True
+                                self.a_star_flag = True
             
             else :
                 print("no found forward point")
