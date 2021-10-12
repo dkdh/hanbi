@@ -284,6 +284,7 @@ class followTheCarrot(Node):
                         if self.hanvi_msg.detections:
                             if self.previous_object != self.hanvi_msg.detections[0].name:
                                 self.previous_object = self.hanvi_msg.detections[0].name
+                                print(self.previous_object)
                                 self.thread_flag_1 = False
                                 self.thread_flag_2 = False
 

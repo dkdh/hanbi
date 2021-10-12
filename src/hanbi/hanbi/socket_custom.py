@@ -79,8 +79,9 @@ class SocketClass(Node):
         def listen_node(data):
             print("clicked : ", data['x'], data['y'])
             goal_pose_msg = PoseStamped()
-            goal_pose_msg.pose.position.x = float(data['x'])
-            goal_pose_msg.pose.position.y = float(data['y'])
+            goal_pose_msg.header.frame_id = "map"
+            goal_pose_msg.pose.position.x = round(float(data['x']), 2)
+            goal_pose_msg.pose.position.y = round(float(data['y']), 2)
             self.goal_pub.publish(goal_pose_msg)
 
         #소켓 연결
