@@ -130,7 +130,7 @@ class IMGParser(Node):
         self.people_msg = HandControl()
 
         distance_minimum = 80
-        people_minimum = 3
+        people_minimum = 4
 
         circle_r = int(distance_minimum/2)
 
