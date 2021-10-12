@@ -1,9 +1,5 @@
 <template>
-  <el-card
-    id="BlackboxCont"
-    shadow="always"
-    :body-style="{ padding: '20px' }"
-  >
+  <el-card id="BlackboxCont" shadow="always" :body-style="{ padding: '20px' }">
     <div id="BlackboxWrap" style="width: 100%">
       <div class="card-div">
         <el-card
@@ -32,7 +28,6 @@
 <script>
 import "@/assets/css_kjh/BlackboxCont.css";
 import axios from "axios";
-
 export default {
   // https://iotiothanbi.s3.ap-northeast-2.amazonaws.com/5790214.webm
   data: function () {

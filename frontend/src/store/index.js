@@ -5,6 +5,7 @@ import Environment from "@/store/Environment.js"
 import Robot from "@/store/Robot.js"
 import Map from "@/store/Map.js"
 import Log from "@/store/Log.js"
+import Loading from "@/store/Loading.js"
 import params from "@/js/config"
 import axios from "axios"
 
@@ -80,9 +81,7 @@ export default new Vuex.Store({
                     state.socket.emit('request_stream_from_vue')
                 }, 10)
                 setInterval(() => {
-                    // console.log(111111111111111111)
                     if (state.url) {
-                        // console.log(1111111111111111112222222222222222222)
                         state.socket.emit("uploadVideo", state.url)
                         state.url = null
                     }
@@ -113,7 +112,7 @@ export default new Vuex.Store({
             })
             state.socket.on("Robot2Web", (data) => {
                 if (data) {
-                    console.log("Robot : ", data)
+                    // console.log("Robot : ", data)
                     dispatch("Robot/setRobot", data)
                 } else {
                     console.log("Robot : No Data from server")
@@ -192,6 +191,7 @@ export default new Vuex.Store({
         Environment,
         Robot,
         Map,
-        Log
+        Log,
+        Loading
     },
 });

@@ -5,11 +5,14 @@
       <h2>맵 감지 현황</h2>
     </div>
     <div class="mapWrap">
-      <div class="map">
+      <div
+        class="map"
+        v-loading="is_load_map2"
+        element-loading-spinner="el-icon-loading"
+      >
         <el-progress
           id="mappingProgressBar"
           :percentage="Math.floor((percentage / dSize) * 100)"
-          :color="customColors"
         >
         </el-progress>
         <!-- <img class="mapImg" src="@/assets/map_before.png" /> -->
@@ -35,6 +38,7 @@ import store from "@/store";
 export default {
   computed: {
     ...mapState("Map", ["percentage", "dSize"]),
+    ...mapState("Loading", ["is_load_map2"]),
   },
   date() {
     return {
@@ -60,7 +64,6 @@ export default {
     store.dispatch("Map/drawMapInterval");
     store.dispatch("Robot/setRobotInterval");
   },
-  unmounted() {},
   beforeDestroy() {
     store.dispatch("Map/stopMapInterval");
     store.dispatch("Map/stopDrawMapInterval");

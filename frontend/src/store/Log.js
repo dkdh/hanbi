@@ -40,7 +40,6 @@ export default {
         getLogInterval({ state, rootState }) {
             state.interval1 = setInterval(() => {
                 rootState.socket.emit("History2Web")
-                console.log("hi")
             }, 300)
         },
         stopLogInterval({ state }) {

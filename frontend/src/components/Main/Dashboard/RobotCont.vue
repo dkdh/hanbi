@@ -6,7 +6,11 @@
     </div>
     <!-- <h3>battery {{ battery }}</h3> -->
     <!-- <h3>velocity {{ velocity }}</h3> -->
-    <div style="display: flex; justify-content: center; align-items: center">
+    <div
+      style="display: flex; justify-content: center; align-items: center"
+      v-loading="is_load_RobotCont"
+      element-loading-spinner="el-icon-loading"
+    >
       <div style="margin-right: 25px">
         <el-progress
           type="dashboard"
@@ -34,6 +38,7 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState("Robot", ["battery", "velocity", "mode"]),
+    ...mapState("Loading", ["is_load_RobotCont"]),
   },
   data() {
     return {
