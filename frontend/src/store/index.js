@@ -121,6 +121,7 @@ export default new Vuex.Store({
             state.socket.on("History2Web", (data) => {
                 if (data) {
                     dispatch("Log/setLog", data)
+                    dispatch("takePicture", data)
                 } else {
                     console.log("Log : No Log from server")
                 }
@@ -139,7 +140,7 @@ export default new Vuex.Store({
                 }
             })
         },
-        async setLog({ state }, data) {
+        async takePicture({ state }, data) {
             state.log = data
             if (data.length != state.logLength) {
                 // console.log(state.logLength)
