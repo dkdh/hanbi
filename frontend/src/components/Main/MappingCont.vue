@@ -36,7 +36,10 @@ export default {
           {color: '#5cb87a', percentage: 60},
           {color: '#1989fa', percentage: 80},
           {color: '#6f7ad3', percentage: 100}
-        ]
+        ],
+        interval1 : 0,
+        interval2 : 0,
+        interval3 : 0,
     };
   },
   methods: {
@@ -44,10 +47,22 @@ export default {
   },
   mounted() {
     store.state.socket.emit("MapInit")
-    setInterval(() => {
-      this.drawMapping();
-    }, 1000);
+    store.dispatch("Map/getMapInterval")
+    store.dispatch("Map/drawMapInterval")
+    this.interval3 = setInterval(() => {
+      store.state.socket.emit("Robot2Web")
+    }, 200)
   },
+  unmounted() {
+    
+  },
+  beforeDestroy() {
+    store.dispatch("Map/stopMapInterval")
+    store.dispatch("Map/stopDrawMapInterval")
+    clearInterval(this.interval3)
+  },
+
+
 };
 </script>
 <style>

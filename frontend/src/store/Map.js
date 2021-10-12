@@ -13,6 +13,7 @@ export default {
         },
         percentage: 0,
         isVisited: [],
+        interval1:0
     },
     mutations: {
         drawMapping(state) {
@@ -130,6 +131,23 @@ export default {
                     logDOM[i].style.icon = "el-icon-warning-outline"
                 }
             }
+        },
+        getMepInterval({state}) {
+            state.interval1 = setInterval(() => {
+                state.socket.emit("Map2Web")
+                console.log("hi")
+            }, 300)
+        },
+        stopMapInterval({state}) {
+            clearInterval(state.interval1)
+        },
+        drawMapInterval({state, commit}) {
+            state.interval2 = setInterval(() => {
+            commit("drawMapping")
+            }, 1000);
+        },
+        stopDrawMapInterval({state}) {
+            clearInterval(state.interval2)
         }
     }
 }
