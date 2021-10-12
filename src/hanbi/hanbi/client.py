@@ -50,7 +50,7 @@ class Client(Node):
         self.timer_period = 0.5
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
 
-        self.event_list = {'tent': '닫힌 텐트 감지', 'fire': '화재 발생', 'bottle': '심야 음주 감지', 'kickboard': '도로변 킥보드 발견', 'bag': '분실물 발견', 'trash': '쓰레기 발견'}
+        self.event_list = {'tent': '텐트 감지', 'fire': '화재 발생', 'bottle': '심야 음주 감지', 'kickboard': '도로변 킥보드 발견', 'bag': '분실물 발견', 'trash': '쓰레기 발견'}
         self.people_msg = HandControl()
         self.detect_msg = DetectionList()
         self.event_ed = {'tent': False, 'fire': False, 'bottle': False, 'kickboard': False, 'bag': False, 'trash': False, 'people': False}
