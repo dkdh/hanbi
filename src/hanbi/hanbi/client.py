@@ -17,7 +17,7 @@ from hanvi_interfaces.msg import DetectionList, Detection
 # 버튼을 누르면 해당 키값에 맞는 함수들이 호출이 됩니다. 연결이 된 후에는 emit 함수를 이용해 서버로 키값과 데이터를 보냅니다.
 # 이 노드는 AWS EC2에 구축한 서버와 통신만 하는 노드이고, ROS2와 연동하여 사용하면 스마트홈에서 얻은 데이터들을 서버로 보내고, 웹서버로부터의 명령을 ROS2로 전달할 수 있습니다.
 
-people_minimum = 3
+people_minimum = 4
 
 class Client(Node):
 
