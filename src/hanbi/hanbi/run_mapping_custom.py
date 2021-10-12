@@ -36,7 +36,7 @@ import json
 # 11. 업데이트 중인 map publish
 # 12. 맵 저장
 
-full_path = '.\\..\\map\\map_final5.txt'
+full_path = "H:\\Project\\Ssafy_2\\PJT2\\S05P21A102\\src\\hanbi\\map"
 sio = socketio.Client(reconnection_delay=1, reconnection_delay_max=4)
 
 params_map = {
@@ -282,11 +282,8 @@ class Mapping:
 class Mapper(Node):
 
     def __init__(self):
-        # print(os.path.realpath(__file__))
         print(os.path.dirname(os.path.abspath(__file__))+'../map/map_final5.txt')
-        # print(os.path.dirname(os.path.abspath('.')))
         super().__init__('Mapper')
-        # full_path = '../map/map_final5.txt'
         f = open(full_path, "w")
         for i in range(500):
             f.writelines(str([0 for x in range(500)]))
