@@ -105,7 +105,7 @@ def main(args=None):
     def disconnect():
         print('disconnected from server')
     
-    ip_server = 'http://j5a102.p.ssafy.io:3000/'
+    ip_server = 'http://localhost:3000/'
     sio.connect(ip_server)
     
     

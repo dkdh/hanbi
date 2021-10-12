@@ -154,7 +154,7 @@ def main(args=None):
         
     # 로직 3. 서버 연결
     # sio.connect('http://ec2-3-34-134-166.ap-northeast-2.compute.amazonaws.com:12001/')
-    sio.connect('http://j5a102.p.ssafy.io:3000/')
+    sio.connect('http://localhost:3000/')
 
     # 로직 4. 데이터 송신
     # 이렇게만 쓰면 client.py를 실행했을 때 딱 한 번만 간다.
