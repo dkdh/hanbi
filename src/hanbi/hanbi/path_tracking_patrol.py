@@ -83,6 +83,18 @@ class followTheCarrot(Node):
                 # 복귀할 때 자연스럽게 합류하도록
                 print("A STAR 경로")
                 print(len(self.a_star_msg.poses))
+                if self.hanvi_msg.detections:
+                    # 심야 음주 단속
+                    if self.hanvi_msg.detections[0].name == "bottle":
+                        self.tts_msg.header.frame_id = 'people'
+                        self.tts_pub.publish(self.tts_msg)
+                        time.sleep(0.5)
+                        for i in range(100):
+                            self.cmd_msg.linear.x = 0.0
+                            self.cmd_msg.angular.z=0.0
+                            self.cmd_pub.publish(self.cmd_msg)
+                        time.sleep(200)
+
                 if len(self.a_star_msg.poses) > 1:
                     print(11111111)
                     self.is_look_forward_point= False
