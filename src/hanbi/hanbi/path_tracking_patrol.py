@@ -86,7 +86,7 @@ class followTheCarrot(Node):
                 if self.hanvi_msg.detections:
                     # 심야 음주 단속
                     if self.hanvi_msg.detections[0].name == "bottle":
-                        self.tts_msg.header.frame_id = 'people'
+                        self.tts_msg.header.frame_id = 'bottle'
                         self.tts_pub.publish(self.tts_msg)
                         time.sleep(0.5)
                         for i in range(100):
