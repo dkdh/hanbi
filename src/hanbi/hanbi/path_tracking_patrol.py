@@ -384,7 +384,7 @@ class followTheCarrot(Node):
                                     self.a_star_flag = True
 
 
-                    elif self.is_people_check == True and self.people_check_msg.control_mode == 3:
+                    elif self.is_people_check == True and self.people_check_msg.control_mode >= 3:
                         print("인원제한 위반")
                         if sqrt(pow(self.people_check_msg.put_distance-self.odom_msg.pose.pose.position.x,2)+pow(self.people_check_msg.put_height-self.odom_msg.pose.pose.position.y,2)) < 15.0:
                             if self.previous_object != "violation":
