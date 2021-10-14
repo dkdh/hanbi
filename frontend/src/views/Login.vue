@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h2>비밀번호를 입력해주세요</h2>
+    <h2>비밀번호를 입력해주세요(0310)</h2>
     <input type="password" v-model="password" @keyup.enter="login">
     <button @click="login">Login</button>
   </div>
