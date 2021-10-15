@@ -1,0 +1,17 @@
+#Nav {
+  height: 60px;
+  position: absolute;
+  padding: 0px;
+  width: -webkit-calc(100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#Nav > * {
+  height: 60px;
+}
+#Nav h1 {
+  display: inline;
+}
+
+/*# sourceMappingURL=Nav.css.map */

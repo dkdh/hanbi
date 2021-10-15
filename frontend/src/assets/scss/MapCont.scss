@@ -1,0 +1,80 @@
+$map_size_y: 700px;
+$map_size_x: 700px;
+#MapCont {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  .el-card__body {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    height: 100%;
+    .mapWrap {
+      margin-top: 5rem;
+    }
+    .map {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      > * {
+        transition: all 0.2s linear;
+      }
+      transform: scale(1.2);
+
+      > .onTheMap {
+        position: absolute;
+        transform-origin: (250px, -250px);
+        bottom: 0;
+      }
+      > .robot {
+        width: 10px;
+        height: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      > .event {
+        width: 10px;
+        height: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0px;
+      }
+      > .legend {
+        position: absolute;
+        display: flex;
+        // flex-direction:column;
+
+        top: 0px;
+        color: white;
+        margin: 2px;
+        padding: 10px 30px 10px 15px;
+        > #bdg_event {
+          flex: 1;
+          margin-right: 10px;
+          .el-badge__content {
+            background-color: #ffc300;
+            border: 0px;
+          }
+        }
+        > #bdg_emergency {
+          flex: 1;
+          margin-right: 10px;
+          .el-badge__content {
+            background-color: #ff5733;
+            border: 0px;
+          }
+        }
+      }
+    }
+    // .map:hover {
+    // transform: scale(1.4);
+    // }
+    // .mapImg {
+    //   height: 500px;
+    //   width: 500px;
+    //   border: 1px solid black;
+    // }
+  }
+}

@@ -1,0 +1,37 @@
+#LogCont {
+  height: 100%;
+  width: 100%;
+}
+#LogCont > .el-card__body {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+#LogCont > .el-card__body > #history {
+  margin-top: 15px;
+  width: 80%;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+#LogCont > .el-card__body > #history > .radio {
+  margin: 25px;
+}
+#LogCont > .el-card__body > #history > .radio > .el-timeline {
+  padding-left: 10px;
+}
+#LogCont > .el-card__body > #history .emergency {
+  color: red;
+}
+#LogCont > .el-card__body > #history .el-card {
+  margin-left: 25px;
+}
+#LogCont > .el-card__body > #history .el-timeline {
+  padding-bottom: 200px;
+}
+#LogCont > .el-card__body #history::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera*/
+}
+
+/*# sourceMappingURL=LogView.css.map */

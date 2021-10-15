@@ -1,0 +1,41 @@
+#DashboardCont {
+  width: 100%;
+}
+#DashboardCont #DashboardWrap {
+  display: flex;
+  height: 100%;
+}
+#DashboardCont #DashboardWrap > #c1 {
+  flex: 2;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+#DashboardCont #DashboardWrap > #c1 > #MapCont {
+  height: 100%;
+  width: 100%;
+}
+#DashboardCont #DashboardWrap > #c2 {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+#DashboardCont #DashboardWrap > #c2 > #r1 {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+#DashboardCont #DashboardWrap > #c2 > #r1 > * {
+  width: 100%;
+  flex: 1;
+}
+#DashboardCont #DashboardWrap > #c2 > #r1 > * img {
+  height: 150px;
+}
+#DashboardCont #DashboardWrap > #c2 > #r2 {
+  flex: 2;
+}
+
+/*# sourceMappingURL=DashboardCont.css.map */

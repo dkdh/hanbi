@@ -1,0 +1,16 @@
+$nav-height: 60px;
+#Nav {
+  height: $nav-height;
+  position: absolute;
+  padding: 0px;
+  width: -webkit-calc(100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > * {
+    height: $nav-height;
+  }
+  h1 {
+    display: inline;
+  }
+}

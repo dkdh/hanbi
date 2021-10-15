@@ -1,0 +1,44 @@
+$map_size_y: 700px;
+$map_size_x: 700px;
+#MappingCont {
+  .el-card__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .mapWrap {
+      margin-top: 5rem;
+      #mappingProgressBar {
+        width:450px;
+        z-index:2;
+        position:absolute;
+        border-radius : 5px;
+        padding : 5px 2px 5px 2px;
+        background-color: white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        left:50%;
+        transform: translate(-50%, 10px);
+      }
+      .map {
+        height: 500px;
+        width: 500px;
+        position: relative;
+        transform: scale(1.2);
+        .mappingImg {
+          // height: 500px;
+          // width: 500px;
+          border: 1px solid black;
+          position: relative;
+        }
+        .robot {
+          position: absolute;
+          width: 10px; height: 10px;
+          display : flex;
+          justify-content:center;
+          align-items:center
+        }
+      }
+    }
+  }
+}

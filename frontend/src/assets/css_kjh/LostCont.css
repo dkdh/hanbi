@@ -1,0 +1,20 @@
+#LostCont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+}
+#LostCont #lostWrap > div {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-left: 80px;
+  padding-top: 25px;
+}
+#LostCont #lostWrap > div > .el-card {
+  width: 270px;
+  margin-right: 80px;
+  margin-bottom: 45px;
+}
+
+/*# sourceMappingURL=LostCont.css.map */

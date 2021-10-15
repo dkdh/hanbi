@@ -1,0 +1,41 @@
+#MappingCont .el-card__body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#MappingCont .el-card__body .mapWrap {
+  margin-top: 5rem;
+}
+#MappingCont .el-card__body .mapWrap #mappingProgressBar {
+  width: 450px;
+  z-index: 2;
+  position: absolute;
+  border-radius: 5px;
+  padding: 5px 2px 5px 2px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  transform: translate(-50%, 10px);
+}
+#MappingCont .el-card__body .mapWrap .map {
+  height: 500px;
+  width: 500px;
+  position: relative;
+  transform: scale(1.2);
+}
+#MappingCont .el-card__body .mapWrap .map .mappingImg {
+  border: 1px solid black;
+  position: relative;
+}
+#MappingCont .el-card__body .mapWrap .map .robot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*# sourceMappingURL=MappingCont.css.map */

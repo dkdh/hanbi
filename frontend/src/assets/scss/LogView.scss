@@ -1,0 +1,38 @@
+#LogCont {
+  height: 100%;
+  width: 100%;
+
+  > .el-card__body {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    // overflow-y:auto;
+    > #history {
+      margin-top: 15px;
+      width: 80%;
+      padding-right: 10px;
+      overflow-y:auto;
+    
+
+      > .radio {
+        margin: 25px;
+        > .el-timeline {
+          padding-left: 10px;
+        }
+      }
+      .emergency {
+        color: red;
+      }
+      .el-card {
+        margin-left: 25px;
+      }
+      .el-timeline {
+        padding-bottom: 200px;
+      }
+    }
+    #history::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+  }
+}

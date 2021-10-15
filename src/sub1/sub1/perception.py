@@ -7,8 +7,9 @@ import rclpy
 from rclpy.node import Node
 
 from sensor_msgs.msg import CompressedImage
-from ssafy_msgs.msg import Num
+from ssafy_msgs.msg import HandControl
 from nav_msgs.msg import Odometry
+from squaternion import Quaternion
 
 import torch
 import time
@@ -45,7 +46,7 @@ class IMGParser(Node):
         # turtlebot의 위치를 받기 위한 subscriber
         self.pos_sub = self.create_subscription(
             Odometry,
-            'odom',
+            '/odom',
             self.odom_callback,
             10)
 
@@ -58,7 +59,7 @@ class IMGParser(Node):
 
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
         
-        self.num_pub_ = self.create_publisher(Num, '/people_check', 1)
+        self.num_pub_ = self.create_publisher(HandControl, '/people_check', 1)
 
     def img_callback(self, msg):
         # 로직 2. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장
@@ -92,22 +93,48 @@ class IMGParser(Node):
 
     def odom_callback(self, msg):
         
-        print('x : {} , y : {} '.format(msg.pose.pose.position.x,msg.pose.pose.position.y))
+        # print('x : {} , y : {} '.format(msg.pose.pose.position.x,msg.pose.pose.position.y))
         
         self.pos_x = msg.pose.pose.position.x
-
         self.pos_y = msg.pose.pose.position.y
+
+        q = msg.pose.pose.orientation
+        e = Quaternion.to_euler(q)
+        self.bot_theta = e[2]
+
+        # print('e: ', e)
+
+    def estimate_point(self, cur, point):
+        cur_y = cur[0] # 240
+        cur_x = cur[1] / 2 # 160
+        x = point[0]
+        y = point[1]
+
+        dis = math.sqrt((cur_x - x)**2 + (cur_y - y)**2)
+        r = dis / math.sqrt(500)
+
+        rad = math.atan2((cur_x -x), (cur_y - y)) + self.bot_theta
+        
+        if rad > math.pi:
+            rad -= 2*math.pi
+        elif rad < math.pi:
+            rad += 2*math.pi
+
+        x_ = self.pos_x + r*math.cos(rad)
+        y_ = self.pos_y + r*math.sin(rad)
+
+        return (x_, y_)
 
     def detect_social_distancing(self, img_bgr):
 
-        self.num_msg = Num()
+        self.people_msg = HandControl()
 
         distance_minimum = 80
         people_minimum = 3
 
         circle_r = int(distance_minimum/2)
 
-        corner_points = ((0, 125), (320, 125), (0, 229), (320, 229))
+        corner_points = ((0, 125), (320, 125), (0, 240), (320, 240))
         matrix, _ = compute_perspective_transform(corner_points, img_bgr.shape[1], img_bgr.shape[0], img_bgr)
         bird_view_img = cv2.resize(img_bgr, (img_bgr.shape[1], img_bgr.shape[0]), interpolation = cv2.INTER_AREA)
 
@@ -118,7 +145,6 @@ class IMGParser(Node):
         detected = results.xyxy[0]
         detected = detected[detected[:, 5] == 0]
         detected = detected[detected[:, 4] > 0.5]
-        # print(detected)
 
         # 좌표값만 뽑기
         boxes = detected[:, :4]
@@ -134,7 +160,6 @@ class IMGParser(Node):
         ground_x = torch.unsqueeze((boxes[:, 0] + boxes[:, 2])/2, 1)
         ground_y = torch.unsqueeze(boxes[:, 3], 1)
         ground_points = torch.cat([ground_x, ground_y], dim=1)
-        # print(ground_points)
 
         # 변환
         transformed_downoids = compute_point_perspective_transformation(matrix, ground_points)
@@ -149,8 +174,6 @@ class IMGParser(Node):
             cv2.circle(bird_view_img, (x, y), circle_r, (0, 255, 0), 2)
             cv2.circle(bird_view_img, (x, y), 3, (0, 255, 0), -1)
 
-        # print("transformed_downoids:", transformed_downoids)
-
         # 몇 명과 같이 있는지 리스트
         companies = [1 for i in range(0, len(transformed_downoids))]
 
@@ -163,17 +186,26 @@ class IMGParser(Node):
                         companies[i] += 1
                         companies[j] += 1
 
-        # 위반 사례 확인 - 가장 첫 번째 위반 일행 선택
+        # 초기화
         violate_point = None
+        self.people_msg.control_mode = 0
+        
+        # 위반 사례 확인 - 가장 첫 번째 위반 일행 선택
         for i, company in enumerate(companies):
             if company >= people_minimum:
                 violate_point = ground_points[i]
-                self.num_msg.num = company
+                self.people_msg.control_mode = company
+                # print('img x(320) y(240):', violate_point)
+                object_point = self.estimate_point(img_bgr.shape, transformed_downoids[i])
+                self.people_msg.put_distance = object_point[0]
+                self.people_msg.put_height = object_point[1]
+                # print(object_point)
                 break
 
         # 위반 사례 존재 시 visualize
         if violate_point is not None:
             violate_point_int = (int(violate_point[0]), int(violate_point[1]))
+            # print('x: ', violate_point[0], 'y: ', violate_point[1])
             cv2.circle(img_bgr, violate_point_int, 3, (255, 0, 0), -1)
 
         # cv2.line(img_bgr, (0, 125), (320, 125), (0, 0, 255), 1)
@@ -190,7 +222,9 @@ class IMGParser(Node):
             self.detect_social_distancing(self.img_bgr)
 
             # msg publish
-            self.num_pub_.publish(self.num_msg)
+            # self.people_msg.put_distance = -16.0
+            # self.people_msg.put_height = -19.168
+            self.num_pub_.publish(self.people_msg)
 
         else:
             pass
