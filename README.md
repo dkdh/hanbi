@@ -49,9 +49,9 @@
 
 ## 프로젝트 설계
 
-![image-20211017024907434](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20211017024907434.png)
+![image-20211017034333423](readme.assets/image-20211017034333423.png)
 
-![image-20211017024916808](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20211017024916808.png)
+![image-20211017034354752](readme.assets/image-20211017034354752.png)
 
 ## 기술 스택
 
@@ -61,7 +61,7 @@
 - 웹: Node.js
 - 배포 : jenkins, docker, nginx
 
-![image-20211017024933154](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20211017024933154.png)
+![image-20211017034418165](readme.assets/image-20211017034418165.png)
 
 ### hanbi
 
@@ -103,7 +103,7 @@ ROS2 통신에 쓸 커스텀 메시지를 위한 패키지
 
 ## Jira
 
-![image-20211017024946805](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20211017024946805.png)
+![image-20211017034433352](readme.assets/image-20211017034433352.png)
 
 번다운 차트 예시는 위와 같습니다.
 
